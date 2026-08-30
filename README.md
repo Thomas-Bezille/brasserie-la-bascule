@@ -106,10 +106,14 @@ fichiers statiques compris, plus un en-tête `X-Robots-Tag: noindex` et un `robo
 
 Deux variables la pilotent :
 
-| Variable               | Rôle                                                                                                                                                                                                        |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `SITE_PUBLIE`          | Vaut `non` jusqu'à la mise en ligne. Passée à `oui`, elle ouvre le site au public et aux moteurs. C'est le seul geste à faire le jour J                                                                     |
-| `MOT_DE_PASSE_PREPROD` | Le mot de passe, défini dans Vercel uniquement. **L'identifiant n'est pas vérifié**, n'importe lequel passe. Les navigateurs n'affichant plus le _realm_, c'est le mail accompagnant l'URL qui doit le dire |
+| Variable               | Rôle                                                                                                                                    |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `SITE_PUBLIE`          | Vaut `non` jusqu'à la mise en ligne. Passée à `oui`, elle ouvre le site au public et aux moteurs. C'est le seul geste à faire le jour J |
+| `MOT_DE_PASSE_PREPROD` | Le mot de passe, défini dans Vercel uniquement. **L'identifiant n'est pas vérifié**, n'importe lequel passe                             |
+
+> **La fenêtre de connexion ne peut rien expliquer.** Elle réclame un nom d'utilisateur alors que
+> seul le mot de passe compte, et les navigateurs n'affichent plus le `realm`, par mesure
+> anti-hameçonnage. Le mail qui donne l'URL doit donc préciser que le premier champ est libre.
 
 **Le comportement en cas d'oubli est fermé, pas ouvert.** Si `MOT_DE_PASSE_PREPROD` manque sur un
 déploiement Vercel, le site répond 503. Un mot de passe oublié ne doit jamais se traduire par une
