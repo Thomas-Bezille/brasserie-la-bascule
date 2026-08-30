@@ -96,8 +96,27 @@ brasseur. Un champ absent s'affiche comme absent, il ne s'invente pas.
 
 ## Déploiement
 
-Préproduction et production sur Vercel. La préproduction est protégée par mot de passe et en
-`noindex` tant que le site n'est pas publié.
+Préproduction et production sur Vercel.
+
+### La préproduction est fermée, et c'est le site qui la ferme
+
+La protection par mot de passe de Vercel est réservée à son offre payante. Elle est donc assurée
+par le site lui-même, dans `src/proxy.ts` : authentification HTTP Basic sur toutes les routes,
+fichiers statiques compris, plus un en-tête `X-Robots-Tag: noindex` et un `robots.txt` fermé.
+
+Deux variables la pilotent :
+
+| Variable               | Rôle                                                                                                                                    |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `SITE_PUBLIE`          | Vaut `non` jusqu'à la mise en ligne. Passée à `oui`, elle ouvre le site au public et aux moteurs. C'est le seul geste à faire le jour J |
+| `MOT_DE_PASSE_PREPROD` | Le mot de passe, défini dans Vercel uniquement. L'identifiant n'est pas vérifié                                                         |
+
+**Le comportement en cas d'oubli est fermé, pas ouvert.** Si `MOT_DE_PASSE_PREPROD` manque sur un
+déploiement Vercel, le site répond 503. Un mot de passe oublié ne doit jamais se traduire par une
+préproduction accessible à tous. En local, l'absence de mot de passe n'applique aucune protection.
+
+> Le `noindex` compte autant que le mot de passe : le site présente une entreprise fictive, il ne
+> doit pas se retrouver indexé comme un commerce réel.
 
 Le domaine `labascule.fr` est en cours de transfert. Si le transfert n'aboutit pas à temps, la
 mise en ligne se fait sur une adresse temporaire puis bascule, sans décaler la date.
