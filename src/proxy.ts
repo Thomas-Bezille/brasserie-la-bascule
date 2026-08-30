@@ -15,14 +15,11 @@ import { identifiantsCorrects } from "@/lib/authentification-preprod";
  * se croyait protégé. En local, la protection ne s'applique pas.
  */
 
-// Le realm porte l'identifiant suggéré, mais ne comptez pas dessus pour le
-// communiquer : Firefox et Chrome ne l'affichent plus dans leur fenêtre de
-// connexion, par mesure anti-hameçonnage. Il ne sert donc qu'aux clients HTTP
-// et à certains gestionnaires de mots de passe.
-// C'est le mail accompagnant l'URL qui dit que l'identifiant est libre.
-// Sans accent : l'en-tête doit rester en ASCII.
-const REALM =
-  'Basic realm="Preproduction Brasserie La Bascule - identifiant : bascule", charset="UTF-8"';
+// Le realm nomme l'espace protégé, pour les gestionnaires de mots de passe.
+// Il ne peut porter aucune consigne : les navigateurs ne l'affichent plus, par
+// mesure anti-hameçonnage. Ce qu'il faut dire se dit dans le mail qui
+// accompagne l'URL. Sans accent, l'en-tête devant rester en ASCII.
+const REALM = 'Basic realm="Preproduction Brasserie La Bascule", charset="UTF-8"';
 
 function sansIndexation(reponse: NextResponse): NextResponse {
   reponse.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
