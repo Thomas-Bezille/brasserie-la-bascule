@@ -3,6 +3,7 @@ import {
   complementDuNom,
   formaterCreneaux,
   formaterDegre,
+  formaterDuree,
   formaterHeure,
   formaterPrix,
 } from "./formats";
@@ -66,5 +67,18 @@ describe("complementDuNom", () => {
 
   it("laisse un nom sans article se présenter seul", () => {
     expect(complementDuNom("Sanglier")).toBe("de Sanglier");
+  });
+});
+
+describe("formaterDuree", () => {
+  it("écrit les durées des deux formules de visite", () => {
+    expect(formaterDuree(90)).toBe(`1${INSECABLE}h${INSECABLE}30`);
+    // 2 h 30 et non 2 h : la durée de la formule entreprise a été corrigée le
+    // 21/09, elle n'a jamais été tenue en deux heures.
+    expect(formaterDuree(150)).toBe(`2${INSECABLE}h${INSECABLE}30`);
+  });
+
+  it("écrit une durée ronde sans ses minutes", () => {
+    expect(formaterDuree(120)).toBe(`2${INSECABLE}h`);
   });
 });

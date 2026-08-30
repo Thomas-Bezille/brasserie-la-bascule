@@ -59,3 +59,12 @@ export function complementDuNom(nom: string): string {
   if (nom.startsWith("L'") || nom.startsWith("L’")) return `de l'${nom.slice(2)}`;
   return `de ${nom}`;
 }
+
+/** `1 h 30`, `2 h 30`. Les visites ne durent jamais un compte rond d'heures. */
+export function formaterDuree(minutes: number): string {
+  const heures = Math.floor(minutes / 60);
+  const reste = minutes % 60;
+  return reste === 0
+    ? `${heures}${INSECABLE}h`
+    : `${heures}${INSECABLE}h${INSECABLE}${reste}`;
+}

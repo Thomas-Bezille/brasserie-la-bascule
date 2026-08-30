@@ -33,6 +33,12 @@ const MENTIONS_INTERDITES = [
   /\boffert/i,
   /\bbon plan\b/i,
   /\bprofitez\b/i,
+  // La formulation exacte que le client affichait, et qu'aucun des mots
+  // ci-dessus n'attrape : « 10 % sur la boutique le jour même ». Le motif est
+  // volontairement étroit pour ne pas se déclencher sur les pourcentages de
+  // mise en page, et laisse passer le degré alcoolique, seule donnée que la loi
+  // autorise à mettre en avant.
+  /\d{1,3}\s*%\s*(sur\b|de\s+remise|de\s+r[ée]duction|offerts?)/i,
 ];
 
 const sansCommentaires = (source: string) =>
@@ -40,7 +46,7 @@ const sansCommentaires = (source: string) =>
 
 const fichiersDuSite = () =>
   readdirSync("src", { recursive: true, encoding: "utf-8" })
-    .filter((chemin) => /\.tsx?$/.test(chemin) && !chemin.endsWith(".test.ts"))
+    .filter((chemin) => /\.tsx?$/.test(chemin) && !/\.test\.tsx?$/.test(chemin))
     .map((chemin) => join("src", chemin));
 
 describe("loi Evin", () => {
