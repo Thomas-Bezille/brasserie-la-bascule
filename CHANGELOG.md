@@ -13,3 +13,8 @@ Les dates sont celles du calendrier du projet.
 - Test de garde-fou sur la charte, qui interdit toute couleur hors des trois du site
 - Protection de la préproduction par mot de passe et `noindex`, assurée par le site
   (`src/proxy.ts`), la protection de Vercel étant réservée à son offre payante
+- Couche de données : `donnees/bieres.ts`, les six permanentes et la palette de Sophie,
+  les champs techniques optionnels tant que Marc ne les a pas fournis
+- Couche de données : `donnees/infos-pratiques.ts`, source unique des dix données publiées
+  vérifiées par le client le 21/09
+- Test de garde-fou loi Evin, qui refuse toute mention promotionnelle dans le site
