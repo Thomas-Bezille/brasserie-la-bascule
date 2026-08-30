@@ -9,7 +9,7 @@
     "lint": "eslint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "types": "tsc --noEmit",
+    "types": "next typegen && tsc --noEmit",
     "test": "vitest",
     "prepare": "husky"
   },
