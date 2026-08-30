@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CarteBiere } from "@/composants/biere/CarteBiere";
 import { FicheBiere } from "@/composants/biere/FicheBiere";
+import { DonneesStructurees } from "@/composants/ui/DonneesStructurees";
 import { Surtitre } from "@/composants/ui/Surtitre";
 import { bieres } from "@/donnees/bieres";
+import { donneesBiere } from "@/lib/seo";
 
 /**
  * Une page par bière, en génération statique.
@@ -26,9 +28,13 @@ export async function generateMetadata({
   const biere = trouverBiere(slug);
   if (!biere) return {};
 
+  const description = `${biere.nom}, ${biere.type}, brassée à Vertou par la Brasserie La Bascule.`;
+
   return {
     title: biere.nom,
-    description: `${biere.nom}, ${biere.type}, brassée à Vertou par la Brasserie La Bascule.`,
+    description,
+    alternates: { canonical: `/nos-bieres/${biere.slug}` },
+    openGraph: { title: biere.nom, description, url: `/nos-bieres/${biere.slug}` },
   };
 }
 
@@ -41,6 +47,7 @@ export default async function PageBiere({ params }: PageProps<"/nos-bieres/[slug
 
   return (
     <main className="grow">
+      <DonneesStructurees donnees={donneesBiere(biere)} />
       <section className="px-marge mx-auto max-w-[1240px] py-[clamp(48px,7vw,96px)]">
         <FicheBiere biere={biere} />
       </section>

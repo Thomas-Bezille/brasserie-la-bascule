@@ -111,6 +111,29 @@ export const visites: readonly Formule[] = [
   },
 ];
 
+/**
+ * La note Google, vendue au socle : la note et le nombre d'avis sur l'accueil et
+ * sur la page Visites, avec un lien vers la fiche. C'est un actif de réassurance
+ * sur la page Visites, où le visiteur s'apprête à engager un groupe et une date.
+ *
+ * **Le chiffre est tenu à la main**, dans le cadre du forfait de maintenance.
+ * C'est le niveau simple, retenu par défaut au cahier des charges 5.6, et ce
+ * n'est pas une question de budget : la remontée automatique afficherait aussi
+ * l'avis à deux étoiles du jour où il arrive.
+ *
+ * Ces 47 avis sont ceux de la fiche de Vertou. La fiche en doublon de
+ * Saint-Sébastien en porte 23 autres, et la fusion demandée les réunira : le
+ * chiffre bougera, c'est prévu.
+ *
+ * `url` reste vide tant que l'adresse de la fiche n'a pas été relevée. Le lien
+ * ne s'affiche pas sans elle, plutôt que de pointer dans le vide.
+ */
+export const avisGoogle = {
+  note: 4.8,
+  nombre: 47,
+  url: undefined as string | undefined,
+} as const;
+
 /** 20 places étaient annoncées à tort. Le client préfère en annoncer 12. */
 export const stationnement = {
   places: 12,
