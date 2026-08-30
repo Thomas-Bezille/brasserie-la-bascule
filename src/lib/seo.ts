@@ -23,7 +23,27 @@ import { complementDuNom } from "@/lib/formats";
  * c'est la fiche Google elle-même qui la porte pour les moteurs.
  */
 
-export const URL_SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://labascule.fr";
+/**
+ * L'adresse publique du site, telle qu'elle entre dans les adresses canoniques,
+ * le plan du site et les données structurées.
+ *
+ * **Une variable vide ou mal remplie ne doit pas faire tomber le build.** Elle
+ * l'a fait : `new URL("")` lève, et le déploiement échoue sur les onze pages à
+ * la fois, avec pour seul message « Invalid URL ». Une valeur d'hébergeur se
+ * saisit à la main dans une interface, souvent sans le `https://`, et il ne
+ * faut pas plus qu'un espace en trop pour rendre le site indéployable un
+ * vendredi soir.
+ *
+ * Le repli est donc le domaine cible, qui est de toute façon la bonne valeur en
+ * production. Une adresse fausse en préproduction n'a aucune conséquence : tout
+ * y est en `noindex`.
+ */
+const URL_FOURNIE = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+
+export const URL_SITE =
+  URL_FOURNIE && /^https?:\/\/[^\s]+$/.test(URL_FOURNIE)
+    ? URL_FOURNIE.replace(/\/+$/, "")
+    : "https://labascule.fr";
 
 const JOURS_SCHEMA: Record<string, string> = {
   lundi: "Monday",
