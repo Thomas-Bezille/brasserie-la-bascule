@@ -22,7 +22,7 @@ export function BandeauPratique() {
     <section className="bg-beton border-trait px-marge border-y">
       <dl className="mx-auto grid max-w-[1240px] gap-px sm:grid-cols-2 lg:grid-cols-3">
         <div className="border-trait py-9 sm:border-r sm:pr-8">
-          <Surtitre as="dt" className="text-papier/40">
+          <Surtitre as="dt" className="text-papier/55">
             L&apos;atelier et la boutique
           </Surtitre>
           <dd className="mt-3 text-[15px]">
@@ -33,7 +33,7 @@ export function BandeauPratique() {
         </div>
 
         <div className="border-trait py-9 lg:border-r lg:px-8">
-          <Surtitre as="dt" className="text-papier/40">
+          <Surtitre as="dt" className="text-papier/55">
             Boutique
           </Surtitre>
           <dd className="mt-3 text-[15px]">
@@ -43,7 +43,7 @@ export function BandeauPratique() {
               </span>
             ))}
             {boutique.ouverteATous && (
-              <span className="text-papier/40 mt-2 block text-[13px]">
+              <span className="text-papier/55 mt-2 block text-[13px]">
                 Ouverte à tous, sans réservation ni visite
               </span>
             )}
@@ -51,7 +51,7 @@ export function BandeauPratique() {
         </div>
 
         <div className="py-9 lg:pl-8">
-          <Surtitre as="dt" className="text-papier/40">
+          <Surtitre as="dt" className="text-papier/55">
             Marché de {marche.commune}
           </Surtitre>
           <dd className="mt-3 text-[15px] first-letter:uppercase">

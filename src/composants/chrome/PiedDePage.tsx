@@ -41,7 +41,7 @@ export function PiedDePage() {
           </div>
 
           <div>
-            <Surtitre as="h2" className="text-papier/40">
+            <Surtitre as="h2" className="text-papier/55">
               Horaires de la boutique
             </Surtitre>
             <ul className="text-papier/60 mt-4 text-[15px]">
@@ -55,7 +55,7 @@ export function PiedDePage() {
               </li>
             </ul>
 
-            <Surtitre as="h2" className="text-papier/40 mt-7">
+            <Surtitre as="h2" className="text-papier/55 mt-7">
               Légal
             </Surtitre>
             <ul className="text-papier/60 mt-4 text-[15px]">

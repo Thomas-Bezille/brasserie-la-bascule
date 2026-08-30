@@ -31,7 +31,7 @@ export function HeroAccueil() {
     <section className="relative overflow-x-clip">
       <div className="px-marge mx-auto grid max-w-[1240px] items-center gap-10 py-[clamp(48px,8vw,110px)] lg:grid-cols-[1.1fr_0.9fr]">
         <div>
-          <Surtitre className="text-papier/40">
+          <Surtitre className="text-papier/55">
             Vertou · Loire-Atlantique · depuis 2022
           </Surtitre>
 
@@ -73,7 +73,7 @@ export function HeroAccueil() {
             priority
             className="ml-auto w-[80%] max-w-[420px] lg:-mt-[14%] lg:w-[124%] lg:max-w-none"
           />
-          <p className="text-papier/40 mt-3 text-right text-[13px] italic">
+          <p className="text-papier/55 mt-3 text-right text-[13px] italic">
             Illustration provisoire, à remplacer par le dessin de Sophie
           </p>
         </div>

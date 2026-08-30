@@ -9,7 +9,7 @@
  */
 export function MessageSanitaire() {
   return (
-    <div className="border-trait text-papier/40 mt-12 flex flex-wrap justify-between gap-5 border-t pt-6 text-[12.5px] tracking-[0.05em] uppercase">
+    <div className="border-trait text-papier/55 mt-12 flex flex-wrap justify-between gap-5 border-t pt-6 text-[12.5px] tracking-[0.05em] uppercase">
       <span>
         L&apos;abus d&apos;alcool est dangereux pour la santé. À consommer avec
         modération.

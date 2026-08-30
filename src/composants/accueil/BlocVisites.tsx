@@ -24,7 +24,7 @@ export function BlocVisites() {
     <section className="bg-beton border-trait px-marge border-t py-[clamp(56px,9vw,120px)]">
       <div className="mx-auto grid max-w-[1240px] items-center gap-[clamp(30px,5vw,90px)] lg:grid-cols-2">
         <div>
-          <Surtitre className="text-papier/40">Ce qu&apos;on fait le mieux</Surtitre>
+          <Surtitre className="text-papier/55">Ce qu&apos;on fait le mieux</Surtitre>
           <h2 className="mt-5 text-[clamp(32px,5vw,58px)]">
             Venez voir
             <br />
@@ -51,10 +51,10 @@ export function BlocVisites() {
         <div className="border-trait bg-trait grid gap-px border sm:grid-cols-2">
           {visites.map((formule) => (
             <div key={formule.nom} className="bg-encre p-[clamp(24px,3vw,40px)]">
-              <Surtitre className="text-papier/40">{formule.nom}</Surtitre>
+              <Surtitre className="text-papier/55">{formule.nom}</Surtitre>
               <p className="font-titre mt-4 text-[clamp(38px,4.6vw,58px)] leading-none">
                 {formaterPrix(formule.prixParPersonne)}
-                <small className="font-texte text-papier/40 text-[15px]">
+                <small className="font-texte text-papier/55 text-[15px]">
                   {" "}
                   / personne
                 </small>

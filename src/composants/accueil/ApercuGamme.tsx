@@ -14,7 +14,7 @@ export function ApercuGamme() {
   return (
     <section className="px-marge py-[clamp(56px,9vw,120px)]">
       <div className="mx-auto max-w-[1240px]">
-        <Surtitre className="text-papier/40">La gamme</Surtitre>
+        <Surtitre className="text-papier/55">La gamme</Surtitre>
         <h2 className="mt-5 text-[clamp(32px,5vw,58px)]">
           Six permanentes,
           <br />

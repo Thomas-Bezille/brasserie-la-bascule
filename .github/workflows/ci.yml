@@ -39,6 +39,18 @@ jobs:
         env:
           NEXT_PUBLIC_SITE_URL: https://exemple.fr
 
+      # Le build a déjà échoué sur une variable d'adresse vide, qui est le cas
+      # réel chez l'hébergeur : la CI doit donc aussi construire sans elle.
+      - name: Build sans adresse de site
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: ""
+
+      # Relecture des pages telles qu'elles seront servies : données publiées,
+      # mention sanitaire, mentions promotionnelles, couleurs de bière.
+      - name: Recette
+        run: npm run recette
+
   securite:
     runs-on: ubuntu-latest
     steps:

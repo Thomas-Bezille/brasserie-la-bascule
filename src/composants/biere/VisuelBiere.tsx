@@ -47,7 +47,7 @@ export function VisuelBiere({ biere }: { biere: Biere }) {
       </div>
 
       {biere.illustrationProvisoire && (
-        <p className="text-papier/40 mt-3.5 text-right text-[13px] italic">
+        <p className="text-papier/55 mt-3.5 text-right text-[13px] italic">
           Illustration provisoire, à remplacer par l&apos;étiquette de Sophie
         </p>
       )}

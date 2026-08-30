@@ -39,7 +39,7 @@ export function CarteBiere({ biere }: { biere: Biere }) {
         )}
       </div>
       <b className="font-titre block text-[18px] font-medium">{biere.nom}</b>
-      <span className="text-papier/40 text-[13px]">{biere.type}</span>
+      <span className="text-papier/55 text-[13px]">{biere.type}</span>
     </Link>
   );
 }
