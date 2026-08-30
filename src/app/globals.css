@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   Charte de la Brasserie La Bascule
+   Identité visuelle de Sophie Vasseur, arrêtée le 05/09/2026.
+   Le travail consiste à l'appliquer au web, pas à la redéfinir.
+
+   RÈGLE NON NÉGOCIABLE, retour de Sophie du 20/09 :
+   une couleur de bière ne sort jamais de sa fiche.
+   Les sept couleurs de bière n'ont donc AUCUN token global. Elles vivent dans
+   `src/donnees/bieres.ts` et ne sont injectées qu'en variable locale `--biere`
+   sur le conteneur d'une fiche. Rien d'autre dans le site ne peut les atteindre.
+
+   Il n'y a pas de couleur d'accent. Liens et états se distinguent par le
+   soulignement, la graisse et la taille.
+   ========================================================================= */
+
+@theme {
+  /* Les trois seules couleurs du site */
+  --color-encre: #14110f; /* fond, noir chaud, jamais de noir pur */
+  --color-papier: #f3ede3; /* texte, le crème des étiquettes */
+  --color-beton: #2a2724; /* blocs secondaires, gris chaud */
+
+  /* Le trait, seule bordure du site */
+  --color-trait: rgb(243 237 227 / 0.14);
+
+  --font-titre: var(--police-titre), Georgia, "Times New Roman", serif;
+  --font-texte: var(--police-texte), system-ui, -apple-system, sans-serif;
+
+  /* Marge latérale unique, du téléphone au grand écran */
+  --spacing-marge: clamp(20px, 5vw, 64px);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-encre);
+    color: var(--color-papier);
+    font-family: var(--font-texte);
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.65;
+  }
+
+  /* Fraunces est une police variable : ses axes optiques font la voix des
+     titres. SOFT arrondit les terminaisons, WONK active les glyphes penchés. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-titre);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    font-variation-settings:
+      "SOFT" 40,
+      "WONK" 1;
+  }
+
+  /* Focus au crème, jamais à une couleur de bière */
+  :focus-visible {
+    outline: 2px solid var(--color-papier);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
