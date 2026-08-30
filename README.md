@@ -106,10 +106,10 @@ fichiers statiques compris, plus un en-tête `X-Robots-Tag: noindex` et un `robo
 
 Deux variables la pilotent :
 
-| Variable               | Rôle                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `SITE_PUBLIE`          | Vaut `non` jusqu'à la mise en ligne. Passée à `oui`, elle ouvre le site au public et aux moteurs. C'est le seul geste à faire le jour J |
-| `MOT_DE_PASSE_PREPROD` | Le mot de passe, défini dans Vercel uniquement. L'identifiant n'est pas vérifié                                                         |
+| Variable               | Rôle                                                                                                                                                                             |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SITE_PUBLIE`          | Vaut `non` jusqu'à la mise en ligne. Passée à `oui`, elle ouvre le site au public et aux moteurs. C'est le seul geste à faire le jour J                                          |
+| `MOT_DE_PASSE_PREPROD` | Le mot de passe, défini dans Vercel uniquement. **L'identifiant n'est pas vérifié**, n'importe lequel passe : la fenêtre du navigateur suggère `bascule` pour éviter la question |
 
 **Le comportement en cas d'oubli est fermé, pas ouvert.** Si `MOT_DE_PASSE_PREPROD` manque sur un
 déploiement Vercel, le site répond 503. Un mot de passe oublié ne doit jamais se traduire par une
