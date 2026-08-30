@@ -18,3 +18,10 @@ Les dates sont celles du calendrier du projet.
 - Couche de données : `donnees/infos-pratiques.ts`, source unique des dix données publiées
   vérifiées par le client le 21/09
 - Test de garde-fou loi Evin, qui refuse toute mention promotionnelle dans le site
+- En-tête : navigation, bouton « Réserver une visite » visible en permanence sur téléphone
+  (correction 8 de Marc), menu déroulant sur petit écran
+- Pied de page allégé de moitié (correction 7 de Sophie), horaires lus dans la source unique,
+  mention sanitaire de la loi Evin sur toutes les pages
+- Composants transverses : logo en repli typographique, surtitre, mention sanitaire
+- Mise en forme française des heures, avec espaces insécables
+- Pages d'attente pour les routes du menu non encore écrites, en `noindex`

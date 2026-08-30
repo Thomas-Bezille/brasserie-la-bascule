@@ -45,6 +45,21 @@ export const adresse = {
   commune: "Vertou",
 } as const;
 
+/**
+ * L'adresse `contact@labascule.fr` est créée avec le transfert du domaine, en
+ * cours. Elle est donc affichée avant d'être active : le site n'ouvre au public
+ * que le 9 octobre, après l'aboutissement du transfert.
+ *
+ * **Il n'y a pas de numéro de téléphone public**, et ce n'est pas un oubli :
+ * aucun n'a été fourni. Seuls les portables des deux gérants sont connus, et ce
+ * n'est pas au prestataire de décider lequel se publie. Le cahier des charges
+ * fait pourtant du téléphone caché un repoussoir cité par le client lui-même,
+ * et prévoit un numéro cliquable dans le parcours du particulier. À obtenir.
+ */
+export const contact = {
+  email: "contact@labascule.fr",
+} as const;
+
 export const boutique = {
   /** Correction du 21/09 : le vendredi ferme à 19 h et non 19 h 30, le samedi
       après-midi ouvre à 14 h 30 et non 15 h. */
