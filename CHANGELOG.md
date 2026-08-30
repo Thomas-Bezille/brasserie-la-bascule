@@ -37,3 +37,8 @@ Les dates sont celles du calendrier du projet.
 - Mise en forme française des durées
 - Le garde-fou loi Evin reconnaît la formulation « 10 % sur la boutique », qu'aucun de ses
   motifs n'attrapait
+- Données structurées : `Brewery` avec adresse, horaires et formules de visite, `Product` par
+  bière, sans baliser une donnée que Marc n'a pas fournie
+- Métadonnées par page, adresses canoniques et Open Graph
+- `sitemap.xml`, limité aux pages réellement écrites
+- Note Google sur l'accueil, comprise dans le socle et absente du plan de développement
