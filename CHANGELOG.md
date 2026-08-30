@@ -31,3 +31,9 @@ Les dates sont celles du calendrier du projet.
 - Vignette de bière, réutilisée en bas de fiche et par l'aperçu de la gamme à venir
 - Test de garde-fou d'architecture : une couleur de bière n'est injectée que sur sa fiche
 - Dessin de travail du Renard, repris de la maquette, affiché comme provisoire
+- Accueil : ouverture avec illustration débordante (correction 2), bande des informations
+  pratiques sur le gris béton (correction 5) portant « la boutique est ouverte à tous »
+  (correction 9), aperçu de la gamme et appel vers les visites
+- Mise en forme française des durées
+- Le garde-fou loi Evin reconnaît la formulation « 10 % sur la boutique », qu'aucun de ses
+  motifs n'attrapait
