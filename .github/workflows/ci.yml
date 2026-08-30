@@ -9,9 +9,9 @@ jobs:
   qualite:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version-file: ".nvmrc"
           cache: "npm"
@@ -21,6 +21,12 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      # Next 16 génère les types de routes et de layouts (LayoutProps, PageProps)
+      # dans .next/types, qui n'est pas versionné. Sans cette étape, tsc échoue
+      # en CI sur des types qui existent pourtant en local après un premier build.
+      - name: Génération des types de routes
+        run: npx next typegen
 
       - name: Vérification des types
         run: npx tsc --noEmit
@@ -36,8 +42,8 @@ jobs:
   securite:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version-file: ".nvmrc"
       - name: Audit des dépendances
