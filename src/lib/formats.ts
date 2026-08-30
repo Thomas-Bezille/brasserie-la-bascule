@@ -30,3 +30,32 @@ export function formaterCreneaux(creneaux: readonly Creneau[]): string {
     )
     .join(" et ");
 }
+
+/** `3,50 €`, `15 €`. Virgule décimale et espace insécable avant l'euro. */
+export function formaterPrix(montant: number): string {
+  const nombre = Number.isInteger(montant)
+    ? String(montant)
+    : montant.toFixed(2).replace(".", ",");
+  return `${nombre}${INSECABLE}€`;
+}
+
+/** `6,4 % vol.` Seule donnée technique que la loi Evin autorise à mettre en avant. */
+export function formaterDegre(degre: number): string {
+  return `${String(degre).replace(".", ",")}${INSECABLE}%${INSECABLE}vol.`;
+}
+
+/**
+ * Le complément de nom d'une bière, article contracté.
+ *
+ * Les noms de la gamme portent tous leur article, et une concaténation naïve
+ * écrit « étiquette de Le Corbeau ». Le texte alternatif d'une image est lu à
+ * voix haute par un lecteur d'écran : la faute s'entend.
+ *
+ * `Le Renard` → `du Renard` · `La Carpe` → `de la Carpe` · `L'Abeille` → `de l'Abeille`
+ */
+export function complementDuNom(nom: string): string {
+  if (nom.startsWith("Le ")) return `du ${nom.slice(3)}`;
+  if (nom.startsWith("La ")) return `de la ${nom.slice(3)}`;
+  if (nom.startsWith("L'") || nom.startsWith("L’")) return `de l'${nom.slice(2)}`;
+  return `de ${nom}`;
+}

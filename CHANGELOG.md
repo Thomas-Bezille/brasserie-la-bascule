@@ -25,3 +25,9 @@ Les dates sont celles du calendrier du projet.
 - Composants transverses : logo en repli typographique, surtitre, mention sanitaire
 - Mise en forme française des heures, avec espaces insécables
 - Pages d'attente pour les routes du menu non encore écrites, en `noindex`
+- Fiche de bière et ses deux états, illustration ou repli typographique (correction 3 de Sophie)
+- Tableau technique qui affiche l'attente d'une donnée plutôt qu'une valeur inventée
+- Une page par bière en génération statique, à l'adresse figée par le cahier des charges
+- Vignette de bière, réutilisée en bas de fiche et par l'aperçu de la gamme à venir
+- Test de garde-fou d'architecture : une couleur de bière n'est injectée que sur sa fiche
+- Dessin de travail du Renard, repris de la maquette, affiché comme provisoire
