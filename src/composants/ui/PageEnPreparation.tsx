@@ -16,7 +16,7 @@ import { Surtitre } from "@/composants/ui/Surtitre";
 export function PageEnPreparation({ titre }: { titre: string }) {
   return (
     <main className="px-marge mx-auto w-full max-w-[1240px] grow py-24">
-      <Surtitre className="text-papier/40">En cours d&apos;écriture</Surtitre>
+      <Surtitre className="text-papier/55">En cours d&apos;écriture</Surtitre>
       <h1 className="mt-6 text-[clamp(38px,6vw,68px)]">{titre}</h1>
       <p className="text-papier/60 mt-8 max-w-[62ch]">
         Cette page fait partie du site mais n&apos;est pas encore rédigée. La

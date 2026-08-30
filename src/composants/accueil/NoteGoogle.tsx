@@ -38,7 +38,7 @@ export function NoteGoogle() {
               Lire les avis sur Google
             </a>
           ) : (
-            <p className="text-papier/40 mt-1 text-[14px]">Mis à jour chaque mois</p>
+            <p className="text-papier/55 mt-1 text-[14px]">Mis à jour chaque mois</p>
           )}
         </div>
       </div>

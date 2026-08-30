@@ -20,14 +20,14 @@ import { formaterDegre, formaterPrix } from "@/lib/formats";
 function Ligne({ intitule, children }: { intitule: string; children: ReactNode }) {
   return (
     <div className="border-trait flex justify-between gap-5 border-b py-4 text-[15.5px]">
-      <dt className="text-papier/40 tracking-[0.02em]">{intitule}</dt>
+      <dt className="text-papier/55 tracking-[0.02em]">{intitule}</dt>
       <dd className="text-right">{children}</dd>
     </div>
   );
 }
 
 function EnAttente() {
-  return <span className="text-papier/40 text-[14px] italic">en attente de Marc</span>;
+  return <span className="text-papier/55 text-[14px] italic">en attente de Marc</span>;
 }
 
 export function SpecsBiere({ biere }: { biere: Biere }) {

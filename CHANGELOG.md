@@ -44,3 +44,6 @@ Les dates sont celles du calendrier du projet.
 - Note Google sur l'accueil, comprise dans le socle et absente du plan de développement
 - L'adresse publique du site tolère une variable d'environnement vide ou sans protocole,
   au lieu de faire échouer le déploiement
+- Contraste du texte secondaire remonté au seuil AA, avec le test qui mesure les opacités
+  réellement employées dans le dépôt
+- `npm run recette` : relecture du site construit avant tout envoi au client, en CI après le build

@@ -54,7 +54,7 @@ export default async function PageBiere({ params }: PageProps<"/nos-bieres/[slug
 
       <section className="bg-beton px-marge py-[clamp(48px,7vw,96px)]">
         <div className="mx-auto max-w-[1240px]">
-          <Surtitre className="text-papier/40">Le reste de la gamme</Surtitre>
+          <Surtitre className="text-papier/55">Le reste de la gamme</Surtitre>
           <h2 className="mt-5 text-[clamp(30px,4vw,46px)]">
             Les autres bières brassées à Vertou
           </h2>

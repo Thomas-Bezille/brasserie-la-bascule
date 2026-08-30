@@ -20,7 +20,7 @@ import type { Biere } from "@/donnees/bieres";
 export function FicheBiere({ biere }: { biere: Biere }) {
   return (
     <article style={{ "--biere": biere.couleur } as CSSProperties}>
-      <Surtitre className="text-papier/40">
+      <Surtitre className="text-papier/55">
         <Link href="/nos-bieres" className="hover:text-papier">
           Nos bières
         </Link>{" "}

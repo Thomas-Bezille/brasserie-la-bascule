@@ -14,7 +14,7 @@ export function Logo({ taille = 23 }: { taille?: number }) {
         La Bascule
       </span>
       {/* Espacement des majuscules divisé par deux, correction 7 de Sophie. */}
-      <span className="text-papier/40 font-texte mt-[5px] block text-[9.5px] font-medium tracking-[0.16em] uppercase">
+      <span className="text-papier/55 font-texte mt-[5px] block text-[9.5px] font-medium tracking-[0.16em] uppercase">
         Brasserie artisanale · Vertou
       </span>
     </span>

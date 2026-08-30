@@ -27,15 +27,16 @@ statiques. `.env.local` ne sert qu'à partir du lot 2 (formulaire) et du lot 3 (
 
 ## Les commandes
 
-| Commande         | Ce qu'elle fait              |
-| ---------------- | ---------------------------- |
-| `npm run dev`    | Serveur de développement     |
-| `npm run build`  | Build de production          |
-| `npm start`      | Sert le build                |
-| `npm run lint`   | ESLint                       |
-| `npm run types`  | Vérification TypeScript      |
-| `npm test`       | Vitest, en mode surveillance |
-| `npm run format` | Prettier sur tout le dépôt   |
+| Commande          | Ce qu'elle fait                                |
+| ----------------- | ---------------------------------------------- |
+| `npm run dev`     | Serveur de développement                       |
+| `npm run build`   | Build de production                            |
+| `npm start`       | Sert le build                                  |
+| `npm run lint`    | ESLint                                         |
+| `npm run types`   | Vérification TypeScript                        |
+| `npm test`        | Vitest, en mode surveillance                   |
+| `npm run format`  | Prettier sur tout le dépôt                     |
+| `npm run recette` | Relit le site construit, après `npm run build` |
 
 ## Stack
 
@@ -84,6 +85,17 @@ correction en oubliera une.
 
 **Aucune donnée technique sur les bières n'est écrite si elle ne vient pas de Marc**, co-gérant
 brasseur. Un champ absent s'affiche comme absent, il ne s'invente pas.
+
+## La recette, avant tout envoi au client
+
+`npm run build && npm run recette` relit les pages **telles qu'elles seront servies**, ce qu'aucun
+test de composant ne fait. Elle échoue si une page a perdu sa mention sanitaire, si une ancienne
+valeur corrigée par le client est réapparue, si une mention promotionnelle s'est glissée dans un
+texte, si une couleur de bière est sortie de sa fiche, si une image n'a pas d'alternative ou si une
+page n'a pas exactement un titre de niveau 1.
+
+Elle tourne en intégration continue après le build. Elle est aussi le dernier geste à faire avant
+d'envoyer une adresse de préproduction au client.
 
 ## Contraintes tenues par le projet
 
