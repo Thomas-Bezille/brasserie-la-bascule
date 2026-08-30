@@ -15,10 +15,12 @@ import { identifiantsCorrects } from "@/lib/authentification-preprod";
  * se croyait protégé. En local, la protection ne s'applique pas.
  */
 
-// Le realm est le seul texte que l'on maîtrise dans la fenêtre du navigateur.
-// L'identifiant n'étant pas vérifié, personne ne peut le deviner : il est donc
-// donné ici, sans quoi chaque destinataire de l'URL pose la question.
-// Sans accent : l'en-tête doit rester en ASCII pour être affiché partout.
+// Le realm porte l'identifiant suggéré, mais ne comptez pas dessus pour le
+// communiquer : Firefox et Chrome ne l'affichent plus dans leur fenêtre de
+// connexion, par mesure anti-hameçonnage. Il ne sert donc qu'aux clients HTTP
+// et à certains gestionnaires de mots de passe.
+// C'est le mail accompagnant l'URL qui dit que l'identifiant est libre.
+// Sans accent : l'en-tête doit rester en ASCII.
 const REALM =
   'Basic realm="Preproduction Brasserie La Bascule - identifiant : bascule", charset="UTF-8"';
 
