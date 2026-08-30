@@ -15,7 +15,12 @@ import { identifiantsCorrects } from "@/lib/authentification-preprod";
  * se croyait protégé. En local, la protection ne s'applique pas.
  */
 
-const REALM = 'Basic realm="Preproduction Brasserie La Bascule", charset="UTF-8"';
+// Le realm est le seul texte que l'on maîtrise dans la fenêtre du navigateur.
+// L'identifiant n'étant pas vérifié, personne ne peut le deviner : il est donc
+// donné ici, sans quoi chaque destinataire de l'URL pose la question.
+// Sans accent : l'en-tête doit rester en ASCII pour être affiché partout.
+const REALM =
+  'Basic realm="Preproduction Brasserie La Bascule - identifiant : bascule", charset="UTF-8"';
 
 function sansIndexation(reponse: NextResponse): NextResponse {
   reponse.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
