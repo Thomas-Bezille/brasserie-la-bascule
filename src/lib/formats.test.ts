@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { formaterCreneaux, formaterHeure } from "./formats";
+import {
+  complementDuNom,
+  formaterCreneaux,
+  formaterDegre,
+  formaterHeure,
+  formaterPrix,
+} from "./formats";
 
 const INSECABLE = " ";
 
@@ -31,5 +37,34 @@ describe("formaterCreneaux", () => {
     ).toBe(
       `10${INSECABLE}h – 13${INSECABLE}h et 14${INSECABLE}h${INSECABLE}30 – 19${INSECABLE}h`,
     );
+  });
+});
+
+describe("formaterPrix", () => {
+  it("écrit les prix de bouteille avec la virgule décimale", () => {
+    expect(formaterPrix(3.5)).toBe(`3,50${INSECABLE}€`);
+    expect(formaterPrix(6.9)).toBe(`6,90${INSECABLE}€`);
+  });
+
+  it("écrit un prix entier sans décimale", () => {
+    expect(formaterPrix(15)).toBe(`15${INSECABLE}€`);
+  });
+});
+
+describe("formaterDegre", () => {
+  it("écrit le degré du Renard tel que Marc l'a corrigé", () => {
+    expect(formaterDegre(6.4)).toBe(`6,4${INSECABLE}%${INSECABLE}vol.`);
+  });
+});
+
+describe("complementDuNom", () => {
+  it("contracte l'article des noms de la gamme", () => {
+    expect(complementDuNom("Le Renard")).toBe("du Renard");
+    expect(complementDuNom("La Carpe")).toBe("de la Carpe");
+    expect(complementDuNom("L'Abeille")).toBe("de l'Abeille");
+  });
+
+  it("laisse un nom sans article se présenter seul", () => {
+    expect(complementDuNom("Sanglier")).toBe("de Sanglier");
   });
 });
