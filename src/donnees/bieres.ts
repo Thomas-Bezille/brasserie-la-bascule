@@ -99,7 +99,29 @@ export const bieres: readonly Biere[] = [
     // Marc lui-même le 21/09/2026. C'est ce qui fait du Renard la fiche de la
     // préproduction du 25.
     degre: 6.4,
-    houblons: ["Slovénie", "Yakima (États-Unis)"],
+    // **Trois houblons et non deux, corrigé par Marc le 24/09/2026.** Les deux
+    // valeurs qu'il avait données le 21 étaient des origines, pas des variétés,
+    // et il manquait la troisième. Publier « Slovénie et Yakima » n'était pas
+    // faux, c'était incomplet, ce qui se voit moins et se corrige plus tard.
+    houblons: [
+      "Styrian Golding (Slovénie)",
+      "Citra (Yakima, États-Unis)",
+      "Simcoe (Yakima, États-Unis)",
+    ],
+    /**
+     * Écrite le 25/09/2026 à partir des notes de Marc, et **offerte** au titre
+     * de l'erreur de la note de maquette v1. Les cinq autres relèvent du lot 2,
+     * proposé à 150 €.
+     *
+     * Deux de ses phrases n'ont pas été reprises, et c'est tout le travail du
+     * lot : « les gens qui n'aiment pas les IPA modernes aiment celle-là » est
+     * une allégation sur l'appréciation des consommateurs, et la comparaison
+     * avec « les IPA d'ici » vise la concurrence. La loi Evin n'autorise que des
+     * indications objectives, dont la couleur, l'odeur et le goût.
+     * `src/lib/loi-evin.test.ts` garde la porte fermée.
+     */
+    notesDegustation:
+      "Cuivre clair et légèrement trouble, la bière n'étant pas filtrée. La mousse est blanche, fine, et elle tient. Au nez, des agrumes et de la résine, le pamplemousse d'abord, sur un fond herbacé apporté par le houblon slovène. En bouche, elle est sèche, sans sucre résiduel : l'amertume arrive en fin de bouche et s'y prolonge.",
     // Dessin de travail repris de la maquette, en attendant l'étiquette de
     // Sophie. Il n'est là que pour montrer la fiche illustrée : les cinq autres
     // bières restent sur leur repli typographique, ce qui donne à Sophie les
