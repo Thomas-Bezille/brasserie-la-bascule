@@ -37,6 +37,15 @@ export type Formule = {
   readonly effectifMin: number;
   readonly effectifMax: number;
   readonly dureeMinutes: number;
+
+  /** Ce que la formule comprend, tel que la maquette relue par le client
+      l'annonce. La remise de 10 % qui figurait ici n'y est plus : loi Evin,
+      correction 10 du 21/09/2026. */
+  readonly compris: readonly string[];
+  /** Correction 6 de Sophie : la colonne Entreprise passe devant Découverte.
+      C'est une décision de présentation, mais elle vient du client, donc elle
+      vit dans la donnée et non dans une exception de mise en page. */
+  readonly miseEnAvant?: boolean;
 };
 
 export const adresse = {
@@ -101,6 +110,7 @@ export const visites: readonly Formule[] = [
     effectifMin: 6,
     effectifMax: 10,
     dureeMinutes: 90,
+    compris: ["Visite complète de l'atelier", "Dégustation des six bières permanentes"],
   },
   {
     nom: "Visite entreprise",
@@ -108,6 +118,13 @@ export const visites: readonly Formule[] = [
     effectifMin: 15,
     effectifMax: 20,
     dureeMinutes: 150,
+    compris: [
+      "Atelier privatisé",
+      "Dégustation commentée par le brasseur",
+      "Planche de produits du vignoble",
+      "Devis, facture et horaires adaptés",
+    ],
+    miseEnAvant: true,
   },
 ];
 

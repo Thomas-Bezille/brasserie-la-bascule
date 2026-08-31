@@ -32,6 +32,25 @@ const COULEURS_DE_BIERE = {
   "#9e2b25": "la-guepe",
 };
 
+/**
+ * Ce qui n'a pas le droit d'exister sur un site ouvert au public.
+ *
+ * Ces marqueurs sont normaux en préproduction et interdits en production : une
+ * page d'attente ou un bloc « ça arrive » qui survit à la mise en ligne est une
+ * promesse faite au visiteur que personne ne tient. Le contrôle ne s'active
+ * qu'avec `SITE_PUBLIE=oui`, c'est-à-dire au seul moment où il compte, et il
+ * fait échouer la recette plutôt que de laisser passer.
+ *
+ * Vise en particulier le bloc de réservation en préparation : la réservation
+ * est vendue 600 € et c'est le seul appel à l'action de l'en-tête.
+ */
+const MARQUEURS_D_ATTENTE = [
+  [/en cours d'écriture/i, "page d'attente"],
+  [/n'est pas encore rédigée/i, "page d'attente"],
+  [/en cours d'installation/i, "bloc en préparation"],
+  [/la réservation en ligne arrive/i, "réservation non développée"],
+];
+
 const MENTIONS_PROMOTIONNELLES =
   /\bremises?\b|\bpromo|\br[ée]ductions?\b|\bgratuit|\boffert|\d{1,3}\s*%\s*(sur\b|de\s+remise)/i;
 
@@ -64,6 +83,13 @@ for (const { nom, html } of pages()) {
   for (const [valeur, explication] of ANCIENNES_VALEURS) {
     if (texte.includes(valeur))
       signaler(nom, `ancienne valeur « ${valeur} » (${explication})`);
+  }
+
+  if (process.env.SITE_PUBLIE === "oui") {
+    for (const [motif, quoi] of MARQUEURS_D_ATTENTE) {
+      if (motif.test(texte))
+        signaler(nom, `${quoi} encore en place alors que le site est publié`);
+    }
   }
 
   if (MENTIONS_PROMOTIONNELLES.test(texte)) {
