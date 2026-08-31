@@ -17,9 +17,12 @@ export function FormuleVisite({ formule }: { formule: Formule }) {
 
   return (
     <article className={`${cadre} border p-[clamp(24px,3.5vw,40px)]`}>
-      <h3 className="font-titre text-[clamp(24px,3vw,32px)] leading-tight font-semibold">
+      {/* h2 et non h3 : ces cartes suivent directement le titre de la page, et
+          sont de même niveau que « Réserver » et « Avant de venir ». Relevé par
+          Lighthouse le 31/08/2026, audit `heading-order`. */}
+      <h2 className="font-titre text-[clamp(24px,3vw,32px)] leading-tight font-semibold">
         {formule.nom}
-      </h3>
+      </h2>
 
       <p className="mt-4 text-[26px]">
         {formaterPrix(formule.prixParPersonne)}{" "}
