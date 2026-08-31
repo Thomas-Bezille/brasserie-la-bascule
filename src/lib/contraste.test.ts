@@ -65,6 +65,33 @@ describe("ce que le badge d'état ne peut pas faire", () => {
    * entièrement lisible existe, et la décision pourrait être revue. Il est là
    * pour ça : il porte le motif, pas seulement la règle.
    */
+  /**
+   * La réponse chiffrée à la question de Sophie du 27/09 : « à quatre fiches sur
+   * huit avec un cadre clair, ce n'est plus une exception, c'est un système,
+   * autant le décider maintenant. »
+   *
+   * Elle a raison, et c'est un système parce qu'il n'y a pas d'alternative :
+   * **aucun gris, sur les 256 possibles, ne permet aux sept couleurs
+   * d'atteindre le seuil du très grand texte.** Le meilleur, le blanc pur,
+   * plafonne à 2,03 sur L'Abeille, et il est de toute façon hors charte. Le
+   * fond qui s'adapte à la bière n'est donc pas une préférence, c'est la seule
+   * façon de tenir l'engagement d'accessibilité sans retoucher ses couleurs.
+   */
+  it("n'a aucun fond unique possible, même hors charte", () => {
+    const gris = (n: number) =>
+      "#" + [n, n, n].map((v) => v.toString(16).padStart(2, "0")).join("");
+
+    const meilleur = Array.from({ length: 256 }, (_, n) => gris(n)).reduce(
+      (record, fond) => {
+        const pire = Math.min(...bieres.map((b) => rapportContraste(b.couleur, fond)));
+        return pire > record ? pire : record;
+      },
+      0,
+    );
+
+    expect(meilleur).toBeLessThan(SEUIL_GRAND_TEXTE);
+  });
+
   it("aucun fond de la charte ne rend toute la gamme lisible en petit texte", () => {
     const gammeLisible = bieres.every((b) =>
       Object.values(FONDS).some(

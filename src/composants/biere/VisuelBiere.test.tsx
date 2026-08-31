@@ -1,69 +1,43 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import type { Biere } from "@/donnees/bieres";
-import { VisuelBiere } from "./VisuelBiere";
+import { VisuelBiere } from "@/composants/biere/VisuelBiere";
+import { bieres } from "@/donnees/bieres";
 
-const CORBEAU: Biere = {
-  slug: "le-corbeau",
-  nom: "Le Corbeau",
-  type: "Stout",
-  couleur: "#4A2F3D",
-  etat: "permanente",
-  tailleVisuel: "reduite",
-};
+const corbeau = bieres.find((b) => b.slug === "le-corbeau")!;
+const renard = bieres.find((b) => b.slug === "le-renard")!;
 
-const avecDessin = (biere: Biere): Biere => ({
-  ...biere,
-  illustration: "/illustrations/exemple.svg",
-});
+// La structure est : conteneur de test > div (enveloppe flex) > div (le cadre).
+const cadreDe = (element: HTMLElement) =>
+  element.querySelector("div > div > div")!.className;
 
-/**
- * Correction 3 de Sophie, la seule qu'elle a demandé à voir fonctionner avant
- * le reste : la fiche existe dans les deux états, et le repli n'est pas une
- * page d'erreur déguisée.
- */
-describe("le repli typographique", () => {
-  it("compose le nom quand il n'y a pas d'illustration", () => {
-    render(<VisuelBiere biere={CORBEAU} />);
-    expect(screen.getByText("Le Corbeau")).toBeInTheDocument();
-    expect(screen.queryByRole("img")).toBeNull();
-  });
-
-  it("s'efface dès que l'illustration existe", () => {
-    render(<VisuelBiere biere={avecDessin(CORBEAU)} />);
-    expect(
-      screen.getByRole("img", { name: /étiquette du corbeau/i }),
-    ).toBeInTheDocument();
-  });
-});
-
-describe("les étiquettes scannées de 2022", () => {
+describe("le cadre du visuel", () => {
   /**
-   * La Carpe et Le Corbeau montrent le grain du papier au-delà d'une vingtaine
-   * de centimètres. Sophie a préféré les afficher plus petits plutôt que de les
-   * redessiner, ce qui lui coûterait deux week-ends.
+   * Correction de Sophie du 27/09 : sur le papier, pas de trait. « Un rectangle
+   * clair cerné d'un trait au milieu d'une page sombre, on dirait une erreur de
+   * chargement. »
    */
-  it("s'affichent plus petites que les autres", () => {
-    render(<VisuelBiere biere={avecDessin(CORBEAU)} />);
-    expect(screen.getByRole("img")).toHaveClass("max-h-[240px]");
+  it("perd sa bordure quand il passe sur le papier", () => {
+    const { container } = render(<VisuelBiere biere={corbeau} surPapier />);
+    const cadre = cadreDe(container);
+
+    expect(cadre).toContain("bg-papier");
+    expect(cadre).not.toMatch(/\bborder\b/);
   });
 
-  it("laissent les autres à leur taille normale", () => {
-    render(<VisuelBiere biere={avecDessin({ ...CORBEAU, tailleVisuel: undefined })} />);
-    expect(screen.getByRole("img")).toHaveClass("max-h-[340px]");
-  });
-});
+  it("garde le cadre validé en maquette quand il reste sur le béton", () => {
+    const { container } = render(<VisuelBiere biere={renard} />);
+    const cadre = cadreDe(container);
 
-describe("un dessin de travail", () => {
-  it("le dit, pour qu'il ne passe pas pour l'étiquette définitive", () => {
-    render(
-      <VisuelBiere biere={{ ...avecDessin(CORBEAU), illustrationProvisoire: true }} />,
-    );
-    expect(screen.getByText(/illustration provisoire/i)).toBeInTheDocument();
+    expect(cadre).toContain("bg-beton");
+    expect(cadre).toMatch(/\bborder\b/);
   });
 
-  it("ne le dit pas quand le dessin est celui de Sophie", () => {
-    render(<VisuelBiere biere={avecDessin(CORBEAU)} />);
-    expect(screen.queryByText(/illustration provisoire/i)).toBeNull();
+  it("laisse au nom la même respiration qu'en grand écran", () => {
+    const { container } = render(<VisuelBiere biere={corbeau} surPapier />);
+    const cadre = cadreDe(container);
+
+    // Seconde correction du 27/09 : « Le Corbeau » touchait presque le bord sur
+    // téléphone. La marge horizontale est plus grande que la verticale.
+    expect(cadre).toContain("px-[clamp(34px,9vw,64px)]");
   });
 });
