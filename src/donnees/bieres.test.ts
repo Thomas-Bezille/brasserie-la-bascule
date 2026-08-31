@@ -75,10 +75,24 @@ describe("les données techniques", () => {
     }
   });
 
-  it("donnent au Renard les deux valeurs corrigées par Marc le 21/09/2026", () => {
+  it("donnent au Renard les valeurs corrigées par Marc, houblons compris", () => {
     const renard = trouver("le-renard");
     expect(renard.degre).toBe(6.4);
-    expect(renard.houblons).toEqual(["Slovénie", "Yakima (États-Unis)"]);
+
+    // Corrigé le 24/09/2026 : Marc avait donné deux origines le 21, il y a
+    // trois variétés. La donnée publiée était incomplète, pas fausse.
+    expect(renard.houblons).toEqual([
+      "Styrian Golding (Slovénie)",
+      "Citra (Yakima, États-Unis)",
+      "Simcoe (Yakima, États-Unis)",
+    ]);
+  });
+
+  it("n'invente aucun IBU, Marc n'ayant pas de quoi le mesurer", () => {
+    // « Si vous avez besoin d'un chiffre je ne peux pas vous en donner un, je ne
+    // vais pas inventer », 24/09/2026. La fiche affiche l'absence, elle ne la
+    // comble pas : c'est la règle n° 1 de `bieres.ts`.
+    for (const biere of bieres) expect(biere.ibu).toBeUndefined();
   });
 });
 

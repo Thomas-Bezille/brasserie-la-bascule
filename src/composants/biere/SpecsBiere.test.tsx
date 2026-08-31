@@ -30,7 +30,11 @@ describe("les champs que Marc n'a pas fournis", () => {
     render(<SpecsBiere biere={biere("le-renard")} />);
 
     expect(ligne("Degré")).toHaveTextContent("6,4 % vol.");
-    expect(ligne("Houblons")).toHaveTextContent("Slovénie, Yakima (États-Unis)");
+    // Trois variétés depuis le 24/09/2026 : ce que Marc avait donné le 21
+    // étaient des origines, et il en manquait une.
+    expect(ligne("Houblons")).toHaveTextContent(
+      "Styrian Golding (Slovénie), Citra (Yakima, États-Unis), Simcoe (Yakima, États-Unis)",
+    );
   });
 
   it("attendent tout d'une bière dont rien n'est arrêté", () => {
