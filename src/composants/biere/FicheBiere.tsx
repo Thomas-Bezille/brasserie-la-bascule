@@ -5,6 +5,7 @@ import { SpecsBiere } from "@/composants/biere/SpecsBiere";
 import { VisuelBiere } from "@/composants/biere/VisuelBiere";
 import { Surtitre } from "@/composants/ui/Surtitre";
 import type { Biere } from "@/donnees/bieres";
+import { fondDuVisuel } from "@/lib/contraste";
 
 /**
  * La fiche d'une bière.
@@ -16,8 +17,16 @@ import type { Biere } from "@/donnees/bieres";
  * atteignable, il n'y a rien à discipliner. Le cuivre n'apparaît que sur la page
  * de La Rouquine, le vert que sur celle du Renard, et c'est ce qui permet de
  * reconnaître une bière de la gamme sur une étagère de caviste.
+ *
+ * C'est aussi pour cette raison que **le fond du cadre du visuel se décide
+ * ici** (31/08/2026) : il dépend de la couleur, et la couleur ne se lit que
+ * dans ce fichier. `VisuelBiere` reçoit le résultat, jamais la donnée. Le test
+ * `couleur-biere.test.ts` a d'ailleurs refusé la première version, où le calcul
+ * était fait sur place.
  */
 export function FicheBiere({ biere }: { biere: Biere }) {
+  const visuelSurPapier = !biere.illustration && fondDuVisuel(biere.couleur) === "papier";
+
   return (
     <article style={{ "--biere": biere.couleur } as CSSProperties}>
       <Surtitre className="text-papier/55">
@@ -29,7 +38,7 @@ export function FicheBiere({ biere }: { biere: Biere }) {
 
       <div className="mt-8 grid items-start gap-[clamp(30px,5vw,80px)] lg:grid-cols-[0.9fr_1.1fr]">
         <div className="lg:sticky lg:top-[132px]">
-          <VisuelBiere biere={biere} />
+          <VisuelBiere biere={biere} surPapier={visuelSurPapier} />
         </div>
 
         <div>

@@ -12,18 +12,40 @@ import { complementDuNom } from "@/lib/formats";
  * - **illustration absente** : le **repli typographique**. Le nom en grand dans
  *   Fraunces, à la couleur de la bière, rien d'autre.
  *
+ * **Le fond du cadre suit la bière quand elle est en repli** (31/08/2026). Trois
+ * des sept couleurs n'atteignent pas le seuil de lisibilité sur le gris béton :
+ * Le Corbeau y est à 1,25:1. Elles basculent sur le papier, où elles passent
+ * largement, plutôt que d'être retouchées. Le calcul est dans `lib/contraste`,
+ * la couleur de Sophie n'est pas modifiée d'un octet, et sa règle du 20/09 tient
+ * toujours : c'est le cadre qui s'adapte à la bière, jamais l'inverse.
+ *
+ * Le fond ne change que dans l'état de repli. Une illustration n'a pas de
+ * problème de contraste, et le cadre validé en maquette reste le sien.
+ *
+ * Le choix arrive en `surPapier`, décidé par `FicheBiere` : la couleur d'une
+ * bière ne se lit que là-bas, et ce composant n'a pas à la connaître.
+ *
  * Le repli n'est pas un pis-aller d'attente, c'est un état permanent du site.
  * Une étiquette demande quinze à vingt heures à Sophie, qui dessine le week-end,
  * quand une bière de saison se décide trois semaines avant sa sortie. Sans lui,
  * l'autrice de l'identité deviendrait le point de blocage de chaque mise en
  * ligne. « Prévoyez-le maintenant, pas en mars. »
  */
-export function VisuelBiere({ biere }: { biere: Biere }) {
+export function VisuelBiere({
+  biere,
+  surPapier = false,
+}: {
+  biere: Biere;
+  surPapier?: boolean;
+}) {
   const hauteur = biere.tailleVisuel === "reduite" ? "max-h-[240px]" : "max-h-[340px]";
+  const cadre = surPapier ? "bg-papier border-encre/12" : "bg-beton border-trait";
 
   return (
     <div>
-      <div className="bg-beton border-trait flex min-h-[min(60vh,520px)] items-center justify-center border p-[clamp(30px,5vw,64px)]">
+      <div
+        className={`${cadre} flex min-h-[min(60vh,520px)] items-center justify-center border p-[clamp(30px,5vw,64px)]`}
+      >
         {biere.illustration ? (
           <Image
             src={biere.illustration}
