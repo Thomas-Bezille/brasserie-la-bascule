@@ -106,3 +106,26 @@ describe("la page courante", () => {
     }
   });
 });
+
+describe("le lien du logo", () => {
+  /**
+   * WCAG 2.5.3 « intitulé dans le nom » : le nom accessible d'un lien doit
+   * contenir le texte qu'on lit dessus. Un aria-label qui reformule le logo
+   * l'écrase à la place, et quelqu'un qui pilote son navigateur à la voix
+   * demande alors une cible qui n'existe pas. Relevé par Lighthouse le
+   * 31/08/2026 sur les deux pages en ligne, avec « Brasserie La Bascule,
+   * accueil » posé sur un logo qui affiche « La Bascule ».
+   */
+  it("annonce le texte que le logo affiche", () => {
+    cheminCourant.valeur = "/contact";
+    render(<Entete />);
+
+    const lien = screen.getAllByRole("link").find((l) => l.getAttribute("href") === "/");
+    expect(lien).toBeDefined();
+
+    const nomAccessible = (lien!.textContent ?? "").replace(/\s+/g, " ").trim();
+    expect(nomAccessible).toContain("La Bascule");
+    expect(nomAccessible).toContain("Brasserie artisanale");
+    expect(lien!).not.toHaveAttribute("aria-label");
+  });
+});
