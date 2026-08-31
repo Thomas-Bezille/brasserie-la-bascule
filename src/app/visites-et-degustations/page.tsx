@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { NoteGoogle } from "@/composants/accueil/NoteGoogle";
 import { Surtitre } from "@/composants/ui/Surtitre";
 import { AvantDeVenir } from "@/composants/visites/AvantDeVenir";
 import { FormuleVisite } from "@/composants/visites/FormuleVisite";
-import { ReservationEnPreparation } from "@/composants/visites/ReservationEnPreparation";
+import { ModuleReservation } from "@/composants/visites/ModuleReservation";
 import { visites } from "@/donnees/infos-pratiques";
 
 /**
@@ -25,6 +26,25 @@ export const metadata: Metadata = {
     "Visitez l'atelier de la Brasserie La Bascule à Vertou, du grain concassé à la bouteille, avec une dégustation de la gamme. De 6 à 20 personnes, en semaine et le samedi.",
   alternates: { canonical: "/visites-et-degustations" },
 };
+
+/**
+ * Le temps que les créneaux arrivent. Il occupe la même hauteur que le module
+ * pour que rien ne saute sous les yeux du visiteur : le décalage cumulé de mise
+ * en page est mesuré à zéro et le cahier des charges l'engage.
+ */
+function ReservationEnChargement() {
+  return (
+    <section
+      id="reserver"
+      aria-busy="true"
+      className="bg-beton border-trait px-marge border-t py-[clamp(56px,9vw,110px)]"
+    >
+      <div className="mx-auto max-w-[1240px]">
+        <p className="text-papier/55">Chargement des créneaux…</p>
+      </div>
+    </section>
+  );
+}
 
 export default function Page() {
   const formules = [...visites].sort(
@@ -53,7 +73,9 @@ export default function Page() {
         </div>
       </section>
 
-      <ReservationEnPreparation />
+      <Suspense fallback={<ReservationEnChargement />}>
+        <ModuleReservation />
+      </Suspense>
       <NoteGoogle />
       <AvantDeVenir />
     </>

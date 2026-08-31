@@ -104,6 +104,23 @@ for (const { nom, html } of pages()) {
   if (titres.length !== 1)
     signaler(nom, `${titres.length} titre(s) de niveau 1, il en faut un`);
 
+  /**
+   * L'ordre des titres, relevé par Lighthouse le 31/08/2026 sur la page des
+   * visites : des cartes en `h3` suivaient directement le `h1`. Un niveau sauté
+   * ne se voit pas à l'écran, mais quelqu'un qui parcourt la page au lecteur
+   * d'écran perd la structure.
+   */
+  let precedent = 0;
+  for (const [, niveau] of html.matchAll(/<h([1-6])[\s>]/g)) {
+    const actuel = Number(niveau);
+    if (precedent > 0 && actuel > precedent + 1)
+      signaler(
+        nom,
+        `titre de niveau ${actuel} après un niveau ${precedent}, un niveau est sauté`,
+      );
+    precedent = actuel;
+  }
+
   for (const [balise] of html.matchAll(/<img\b[^>]*>/g)) {
     if (!/\balt=/.test(balise)) signaler(nom, "une image sans attribut alt");
   }
@@ -113,6 +130,55 @@ for (const { nom, html } of pages()) {
       signaler(nom, `couleur ${couleur} hors de la fiche ${proprietaire}`);
     }
   }
+}
+
+/**
+ * **Les pages qu'on n'a pas pu relire.**
+ *
+ * La recette lit le HTML produit au build. Une page rendue à la requête n'en
+ * produit aucun : elle sort donc du contrôle **sans que rien ne le signale**,
+ * et c'est arrivé le 31/08/2026 à la page des visites, la plus importante du
+ * site, le jour où son module de réservation a dû devenir dynamique pour ne pas
+ * afficher des créneaux figés au déploiement. Le compte est passé de 13 pages à
+ * 12, et il aurait pu le rester longtemps.
+ *
+ * Le trou n'est pas refermé ici, il est rendu visible : relire une page
+ * dynamique suppose de démarrer un serveur, ce qui est un autre chantier. En
+ * attendant, toute route sans HTML est nommée, et la recette échoue si l'une
+ * d'elles n'est pas déclarée ci-dessous en connaissance de cause.
+ */
+const ROUTES_DYNAMIQUES_ADMISES = new Set([
+  "/visites-et-degustations", // module de réservation, créneaux lus à la requête
+]);
+
+const routesDuBuild = () => {
+  const manifeste = JSON.parse(
+    readFileSync(join(".next", "app-path-routes-manifest.json"), "utf-8"),
+  );
+  return Object.values(manifeste).filter(
+    (route) =>
+      typeof route === "string" &&
+      !route.startsWith("/_") &&
+      !route.includes("[") &&
+      // Écarte ce qui n'est pas une page : icône, plan du site, robots.
+      !route.split("/").pop().includes("."),
+  );
+};
+
+const fichierAttendu = (route) =>
+  route === "/" ? "index.html" : `${route.replace(/^\//, "")}.html`;
+
+const relues = new Set(pages().map(({ nom }) => nom));
+for (const route of routesDuBuild()) {
+  if (relues.has(fichierAttendu(route))) continue;
+  if (ROUTES_DYNAMIQUES_ADMISES.has(route)) {
+    console.log(`  · ${route} : rendue à la requête, non relue par la recette`);
+    continue;
+  }
+  signaler(
+    route,
+    "aucun HTML produit : la page échappe à la recette sans que ce soit déclaré",
+  );
 }
 
 const accueil = pages().find(({ nom }) => nom === "index.html");
