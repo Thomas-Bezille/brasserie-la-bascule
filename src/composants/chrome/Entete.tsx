@@ -50,8 +50,12 @@ export function Entete() {
   return (
     <header className="bg-encre/92 border-trait sticky top-0 z-50 border-b backdrop-blur-[10px]">
       <div className="px-marge mx-auto flex max-w-[1240px] items-center justify-between gap-6 py-4">
-        <Link href="/" aria-label="Brasserie La Bascule, accueil" onClick={fermerMenu}>
+        {/* Pas d'aria-label ici : il remplacerait le texte visible du logo par un autre
+            libellé, ce que le critère WCAG 2.5.3 interdit. Le complément se dit dans un
+            texte réservé aux lecteurs d'écran, qui s'ajoute au nom au lieu de l'écraser. */}
+        <Link href="/" onClick={fermerMenu}>
           <Logo />
+          <span className="sr-only">, retour à l’accueil</span>
         </Link>
 
         <nav
