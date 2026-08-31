@@ -47,7 +47,18 @@ export type Biere = {
   readonly malts?: readonly string[];
   readonly houblons?: readonly string[];
   readonly origineIngredients?: string;
-  /** Lot de rédaction du devis, à écrire. */
+  /**
+   * **Lot 2 du devis, non retenu** (180 €, CDC v1.2 § 17). Le champ reste donc
+   * vide pour les six : c'est le périmètre, pas un oubli, et il ne se comble pas
+   * en attendant. Seule celle du Renard est offerte, au titre d'une note de la
+   * maquette v1 qui l'annonçait à tort comprise dans le lot 1 retenu ; erreur
+   * signalée au client le 22/09/2026, fil client § 27.
+   *
+   * Comme les champs techniques ci-dessus, elle attend les mots de Marc. Une
+   * note de dégustation décrit ce que la bière donne au nez et en bouche : c'est
+   * une donnée produit, pas de la plume, et la loi Evin n'autorise à en parler
+   * qu'en termes objectifs.
+   */
   readonly notesDegustation?: string;
   /** Absente : la fiche bascule sur son repli typographique. */
   readonly illustration?: string;
