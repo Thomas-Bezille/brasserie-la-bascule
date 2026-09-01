@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { visites } from "@/donnees/infos-pratiques";
 import { agendaDuSite, etatDeLAgenda } from "@/lib/reservation/agenda";
 import { oublierLesReservationsDeSimulation } from "@/lib/reservation/agenda-simulation";
@@ -64,6 +64,32 @@ describe("la configuration de l'agenda", () => {
   it("ne rend aucun agenda quand rien n'est configuré, plutôt que de lever", async () => {
     await expect(agendaDuSite({})).resolves.toBeNull();
   });
+
+  it("ne rend aucun agenda Meetergo tant qu'aucun type de rendez-vous n'est fourni", async () => {
+    await expect(
+      agendaDuSite({ AGENDA_FOURNISSEUR: "meetergo", AGENDA_CLE_API: "rgo-x" }),
+    ).resolves.toBeNull();
+  });
+
+  it("branche l'agenda Meetergo une fois ses types de rendez-vous configurés", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({ ok: true, status: 200, json: async () => ({ dates: [] }) })),
+    );
+
+    const agenda = await agendaDuSite({
+      AGENDA_FOURNISSEUR: "meetergo",
+      AGENDA_CLE_API: "rgo-x",
+      AGENDA_MEETERGO_TYPE_DECOUVERTE: "type-decouverte",
+      AGENDA_MEETERGO_TYPE_ENTREPRISE: "type-entreprise",
+    });
+
+    expect(agenda?.fournisseur).toBe("meetergo");
+  });
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
 });
 
 describe("la validation d'une demande", () => {
