@@ -196,10 +196,11 @@ describe("les créneaux", () => {
       },
     ]);
 
-    const [url] = appels.map((a) => a.url);
-    expect(url).toContain("/booking-availability?");
+    const url = appels.find((a) => a.url.includes("/booking-availability"))!.url;
     expect(url).toContain("meetingTypeId=type-decouverte");
     expect(url).toContain("timezone=Europe%2FParis");
+    // Meetergo refuse la requête sans hôte : il est résolu puis transmis.
+    expect(url).toContain("hostIds=hote-1");
   });
 
   it("interroge le bon type de rendez-vous selon la formule", async () => {
@@ -208,7 +209,19 @@ describe("les créneaux", () => {
 
     await agenda.creneaux(entreprise.nom, depuis, jusqua);
 
-    expect(appels[0].url).toContain("meetingTypeId=type-entreprise");
+    const url = appels.find((a) => a.url.includes("/booking-availability"))!.url;
+    expect(url).toContain("meetingTypeId=type-entreprise");
+  });
+
+  it("ne rend rien quand l'hôte du type de rendez-vous est introuvable", async () => {
+    const { faux } = poser({ meetingType: { ok: false, status: 500 } });
+    const agenda = agendaDeMeetergo(ENV)!;
+
+    expect(await agenda.creneaux(decouverte.nom, depuis, jusqua)).toEqual([]);
+    // La requête de créneaux n'est pas tentée sans hôte.
+    expect(
+      faux.mock.calls.some((c) => String(c[0]).includes("/booking-availability")),
+    ).toBe(false);
   });
 
   it("ne rend rien et n'appelle rien pour une formule sans type configuré", async () => {
@@ -293,7 +306,7 @@ describe("la réservation", () => {
     });
   });
 
-  it("réserve sans hôte quand le type de rendez-vous est illisible", async () => {
+  it("ne réserve pas quand l'hôte du type de rendez-vous est introuvable", async () => {
     const { appels } = poser({
       meetingType: { ok: false, status: 500 },
       booking: { status: 201, corps: { appointmentId: "rdv-1" } },
@@ -302,9 +315,8 @@ describe("la réservation", () => {
 
     const resultat = await agenda.reserver(demande());
 
-    expect(resultat.etat).toBe("confirmee");
-    const post = appels.find((a) => a.methode === "POST")!;
-    expect(post.corps!.hostIds).toBeUndefined();
+    expect(resultat.etat).toBe("indisponible");
+    expect(appels.some((a) => a.methode === "POST")).toBe(false);
   });
 
   it("rend « créneau complet » quand l'API signale un créneau déjà pris", async () => {
