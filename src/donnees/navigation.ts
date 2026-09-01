@@ -30,7 +30,7 @@ export const liensLegaux: readonly Lien[] = [
   {
     libelle: "Politique de confidentialité",
     href: "/politique-de-confidentialite",
-    livree: false,
+    livree: true,
   },
 ];
 
