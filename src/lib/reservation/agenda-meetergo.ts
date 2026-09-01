@@ -15,12 +15,16 @@ import type {
  * voit que l'interface `Agenda`. Changer de prestataire reste le travail d'une
  * journée, décision de `03-conception/decision-agenda-reservation.md`, section 6 ter.
  *
- * **Deux appels suffisent** (référence complète dans
+ * **Deux appels portent le service**, un troisième les rend possibles (référence
+ * complète dans
  * `mimir/livrables/projet-web-perso/2026-08-26-brasserie-la-bascule/04-developpement/integration-meetergo.md`) :
  *
  * - `GET /v4/booking-availability` pour lister les créneaux d'un type de rendez-vous ;
  * - `POST /v4/booking` pour poser une réservation. La réponse porte un
- *   `appointmentId` : c'est la référence de confirmation rendue au visiteur.
+ *   `appointmentId` : c'est la référence de confirmation rendue au visiteur ;
+ * - `GET /v4/meeting-type/{id}` pour lire l'hôte du type de rendez-vous, lu une
+ *   fois puis gardé en mémoire. Les deux autres appels le réclament : Meetergo
+ *   refuse `booking-availability` comme `booking` sans `hostIds`.
  *
  * **Les questions métier (effectif, entreprise, message) passent dans
  * `attendee.notes`**, un dictionnaire `clé -> texte` prévu pour ça. Le site n'a
@@ -145,7 +149,8 @@ export function agendaDeMeetergo(env: EnvironnementMeetergo): Agenda | null {
   } as const;
 
   /** L'hôte d'un type de rendez-vous, lu une fois puis gardé en mémoire.
-      `null` = lecture faite, aucun hôte trouvé (on réservera sans le préciser). */
+      `null` = lecture faite, aucun hôte trouvé : ni les créneaux ni la
+      réservation ne peuvent aboutir, Meetergo les refuse sans `hostIds`. */
   const hoteParType = new Map<string, string | null>();
 
   async function hoteDuType(typeId: string): Promise<string | null> {
@@ -179,12 +184,28 @@ export function agendaDeMeetergo(env: EnvironnementMeetergo): Agenda | null {
       const typeId = config.typeParFormule.get(formule);
       if (!typeId) return [];
 
+      /**
+       * `GET /v4/booking-availability` refuse la requête sans `hostIds` (« Expected
+       * hostIds or queueId »), alors que la spec le donne pour facultatif. Nos
+       * types de rendez-vous ont un hôte unique : on le résout comme pour la
+       * réservation, et sans lui il n'y a pas de créneaux à afficher.
+       */
+      const hote = await hoteDuType(typeId);
+      if (!hote) {
+        journaliser(
+          "récupération des créneaux",
+          `hôte introuvable pour le type ${typeId}`,
+        );
+        return [];
+      }
+
       const parametres = new URLSearchParams({
         meetingTypeId: typeId,
         start: depuis.toISOString(),
         end: jusqua.toISOString(),
         timezone: FUSEAU,
       });
+      parametres.append("hostIds", hote);
 
       let corps: ReponseDisponibilite;
       try {
@@ -246,6 +267,10 @@ export function agendaDeMeetergo(env: EnvironnementMeetergo): Agenda | null {
       }
 
       const hote = await hoteDuType(typeId);
+      if (!hote) {
+        journaliser("réservation", `hôte introuvable pour le type ${typeId}`);
+        return { etat: "indisponible" };
+      }
 
       const notes: Record<string, string> = {
         "Nombre de personnes": String(demande.nombreDePersonnes),
@@ -268,8 +293,8 @@ export function agendaDeMeetergo(env: EnvironnementMeetergo): Agenda | null {
           language: "fr",
           notes,
         },
+        hostIds: [hote],
       };
-      if (hote) corpsDemande.hostIds = [hote];
 
       let reponse: Response;
       try {
