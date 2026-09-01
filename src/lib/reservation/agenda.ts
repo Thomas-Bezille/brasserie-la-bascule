@@ -15,11 +15,12 @@ import type { Agenda } from "@/lib/reservation/types";
  * - `AGENDA_FOURNISSEUR` : `meetergo`, `calcom`, ou `simulation` en développement
  * - `AGENDA_CLE_API` : le jeton, qui ne quitte jamais le serveur
  *
- * L'adaptateur réel s'écrira quand le compte sera ouvert et le premier appel
- * réussi. Voir `03-conception/decision-agenda-reservation.md`, section 6 bis :
- * la page de tarifs de Meetergo et sa documentation ne disent pas la même chose
- * sur l'accès à l'API du plan gratuit, et cela se vérifie en ouvrant un compte,
- * pas en lisant.
+ * L'adaptateur `meetergo` est écrit (`agenda-meetergo.ts`) : l'essai du 01/09 a
+ * confirmé l'accès à l'API sur le plan gratuit avec un Personal Access Token.
+ * Il lui manque, pour servir, les identifiants de types de rendez-vous
+ * (`AGENDA_MEETERGO_TYPE_*`) et des créneaux réels validés par le client. Voir
+ * `03-conception/decision-agenda-reservation.md` et
+ * `04-developpement/integration-meetergo.md`.
  */
 
 export type NomDeFournisseur = "meetergo" | "calcom" | "simulation";
@@ -92,8 +93,11 @@ export async function agendaDuSite(
       const { agendaDeSimulation } = await import("@/lib/reservation/agenda-simulation");
       return agendaDeSimulation();
     }
-    // Les deux adaptateurs réels s'écriront après l'essai comparatif des comptes.
-    case "meetergo":
+    case "meetergo": {
+      const { agendaDeMeetergo } = await import("@/lib/reservation/agenda-meetergo");
+      return agendaDeMeetergo(env);
+    }
+    // Cal.com reste le repli de réversibilité, son adaptateur n'est pas écrit.
     case "calcom":
       return null;
   }
