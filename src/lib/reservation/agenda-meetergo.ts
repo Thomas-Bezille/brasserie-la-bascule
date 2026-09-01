@@ -73,22 +73,38 @@ export type ConfigMeetergo = {
 };
 
 /**
+ * Nettoie une valeur d'environnement : espaces, puis une éventuelle paire de
+ * guillemets autour de la valeur.
+ *
+ * Une variable d'environnement n'a jamais de guillemets légitimes, mais il est
+ * facile d'en coller dans un tableau de bord d'hébergeur. Un identifiant de type
+ * de rendez-vous entre guillemets a produit une URL `.../meeting-type/%22...%22`
+ * et un 500 de Meetergo, sans autre symptôme qu'une liste de créneaux vide.
+ */
+export function valeurDEnvironnement(brut: string | undefined): string | undefined {
+  const sansEspaces = brut?.trim();
+  if (!sansEspaces) return undefined;
+  const sansGuillemets = sansEspaces.replace(/^(["'])([\s\S]*)\1$/, "$2").trim();
+  return sansGuillemets || undefined;
+}
+
+/**
  * Lit la configuration Meetergo de l'environnement. Renvoie `null` sans clé :
  * `etatDeLAgenda` l'exige déjà, c'est une seconde barrière.
  */
 export function configDeMeetergo(env: EnvironnementMeetergo): ConfigMeetergo | null {
-  const cle = env.AGENDA_CLE_API?.trim();
+  const cle = valeurDEnvironnement(env.AGENDA_CLE_API);
   if (!cle) return null;
 
   const typeParFormule = new Map<string, string>();
   for (const [formule, variable] of Object.entries(VARIABLE_DE_TYPE_PAR_FORMULE)) {
-    const valeur = env[variable]?.trim();
+    const valeur = valeurDEnvironnement(env[variable]);
     if (valeur) typeParFormule.set(formule, valeur);
   }
 
   return {
     cle,
-    urlBase: env.AGENDA_MEETERGO_URL_BASE?.trim() || URL_BASE_PAR_DEFAUT,
+    urlBase: valeurDEnvironnement(env.AGENDA_MEETERGO_URL_BASE) ?? URL_BASE_PAR_DEFAUT,
     typeParFormule,
   };
 }

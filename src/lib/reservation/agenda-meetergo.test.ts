@@ -4,6 +4,7 @@ import {
   VARIABLE_DE_TYPE_PAR_FORMULE,
   agendaDeMeetergo,
   configDeMeetergo,
+  valeurDEnvironnement,
 } from "@/lib/reservation/agenda-meetergo";
 import type { DemandeDeReservation } from "@/lib/reservation/types";
 
@@ -129,6 +130,43 @@ describe("la configuration Meetergo", () => {
     expect(Object.keys(VARIABLE_DE_TYPE_PAR_FORMULE).sort()).toEqual(
       visites.map((f) => f.nom).sort(),
     );
+  });
+
+  /**
+   * Un identifiant de type de rendez-vous collé entre guillemets dans un tableau
+   * de bord d'hébergeur avait produit une URL `.../meeting-type/%22...%22` et un
+   * 500 de Meetergo, sans autre symptôme qu'une liste de créneaux vide.
+   */
+  it("retire les guillemets parasites autour des valeurs d'environnement", () => {
+    const config = configDeMeetergo({
+      AGENDA_CLE_API: '"rgo-x"',
+      AGENDA_MEETERGO_TYPE_DECOUVERTE: "'type-decouverte'",
+      AGENDA_MEETERGO_TYPE_ENTREPRISE: '  "type-entreprise"  ',
+    })!;
+    expect(config.cle).toBe("rgo-x");
+    expect(config.typeParFormule.get("Visite découverte")).toBe("type-decouverte");
+    expect(config.typeParFormule.get("Visite entreprise")).toBe("type-entreprise");
+  });
+});
+
+describe("valeurDEnvironnement", () => {
+  it("laisse une valeur propre intacte", () => {
+    expect(valeurDEnvironnement("rgo-abc")).toBe("rgo-abc");
+  });
+
+  it("retire les espaces et une paire de guillemets qui entoure la valeur", () => {
+    expect(valeurDEnvironnement('  "rgo-abc"  ')).toBe("rgo-abc");
+    expect(valeurDEnvironnement("'2253549e-b637'")).toBe("2253549e-b637");
+  });
+
+  it("ne touche pas aux guillemets internes", () => {
+    expect(valeurDEnvironnement('rgo-"abc"-def')).toBe('rgo-"abc"-def');
+  });
+
+  it("rend undefined pour vide, absent ou guillemets seuls", () => {
+    expect(valeurDEnvironnement(undefined)).toBeUndefined();
+    expect(valeurDEnvironnement("   ")).toBeUndefined();
+    expect(valeurDEnvironnement('""')).toBeUndefined();
   });
 });
 
