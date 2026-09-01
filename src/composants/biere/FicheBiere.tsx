@@ -36,8 +36,19 @@ export function FicheBiere({ biere }: { biere: Biere }) {
         · {biere.type}
       </Surtitre>
 
-      <div className="mt-8 grid items-start gap-[clamp(30px,5vw,80px)] lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="lg:sticky lg:top-[132px]">
+      {/*
+        **Correction de Sophie du 27/09.** En repli sur fond papier, le cadre ne
+        colle plus et s'étire jusqu'au bas de la fiche : un rectangle clair qui
+        s'arrête au milieu d'une page sombre « ressemble à une erreur de
+        chargement ». Les fiches illustrées gardent leur colonne collante, le
+        dessin restant visible pendant qu'on lit les caractéristiques.
+      */}
+      <div
+        className={`mt-8 grid gap-[clamp(30px,5vw,80px)] lg:grid-cols-[0.9fr_1.1fr] ${
+          visuelSurPapier ? "items-stretch" : "items-start"
+        }`}
+      >
+        <div className={visuelSurPapier ? "" : "lg:sticky lg:top-[132px]"}>
           <VisuelBiere biere={biere} surPapier={visuelSurPapier} />
         </div>
 

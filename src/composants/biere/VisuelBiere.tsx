@@ -39,12 +39,19 @@ export function VisuelBiere({
   surPapier?: boolean;
 }) {
   const hauteur = biere.tailleVisuel === "reduite" ? "max-h-[240px]" : "max-h-[340px]";
-  const cadre = surPapier ? "bg-papier border-encre/12" : "bg-beton border-trait";
+
+  /**
+   * **Correction de Sophie du 27/09 :** sur le papier, pas de trait, et le fond
+   * descend jusqu'en bas du bloc. Un rectangle clair cerné d'un trait au milieu
+   * d'une page sombre « ressemble à une erreur de chargement » ; le même aplat,
+   * pleine hauteur et sans bordure, se lit comme un panneau voulu.
+   */
+  const cadre = surPapier ? "bg-papier" : "bg-beton border-trait border";
 
   return (
-    <div>
+    <div className="flex h-full flex-col">
       <div
-        className={`${cadre} flex min-h-[min(60vh,520px)] items-center justify-center border p-[clamp(30px,5vw,64px)]`}
+        className={`${cadre} flex min-h-[min(60vh,520px)] grow items-center justify-center px-[clamp(34px,9vw,64px)] py-[clamp(30px,5vw,64px)]`}
       >
         {biere.illustration ? (
           <Image
@@ -57,7 +64,11 @@ export function VisuelBiere({
           />
         ) : (
           <p
-            className="font-titre text-center text-[clamp(40px,7vw,72px)] leading-[1.05] font-semibold"
+            /* Le nom respire autant sur téléphone qu'en grand écran, seconde
+               correction de Sophie du 27/09 : « Le Corbeau », le mot le plus
+               long de la gamme, touchait presque le bord. La marge horizontale
+               du cadre monte à 9vw et la taille du nom part de plus bas. */
+            className="font-titre text-center text-[clamp(34px,6.4vw,72px)] leading-[1.05] font-semibold text-balance"
             style={{
               color: "var(--biere)",
               fontVariationSettings: '"SOFT" 60, "WONK" 1',
