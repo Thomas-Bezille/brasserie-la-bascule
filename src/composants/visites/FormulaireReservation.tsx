@@ -2,10 +2,8 @@
 
 import Link from "next/link";
 import { useActionState, useId, useMemo, useState } from "react";
-import {
-  demanderUneReservation,
-  FORMULAIRE_VIERGE,
-} from "@/app/visites-et-degustations/actions";
+import { demanderUneReservation } from "@/app/visites-et-degustations/actions";
+import { FORMULAIRE_VIERGE } from "@/app/visites-et-degustations/etat-formulaire";
 import type { Formule } from "@/donnees/infos-pratiques";
 import type { Creneau } from "@/lib/reservation/types";
 

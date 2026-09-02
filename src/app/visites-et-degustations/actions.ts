@@ -2,7 +2,8 @@
 
 import { agendaDuSite } from "@/lib/reservation/agenda";
 import type { DemandeDeReservation } from "@/lib/reservation/types";
-import { validerDemande, type Anomalie } from "@/lib/reservation/validation";
+import { validerDemande } from "@/lib/reservation/validation";
+import type { EtatDuFormulaire } from "./etat-formulaire";
 
 /**
  * L'envoi d'une demande de réservation.
@@ -11,16 +12,11 @@ import { validerDemande, type Anomalie } from "@/lib/reservation/validation";
  * ce qui permet au site de n'avoir aucun script tiers, donc aucun cookie tiers,
  * donc pas de bandeau de consentement : un engagement pris à la section 9 du
  * cahier des charges et tenu partout ailleurs sur le site.
+ *
+ * **Ce fichier ne peut exporter que des fonctions async.** L'état du formulaire
+ * et sa valeur initiale sont dans `./etat-formulaire`, un module ordinaire :
+ * les exporter d'ici lève une erreur à l'exécution de l'action.
  */
-
-export type EtatDuFormulaire =
-  | { readonly statut: "vierge" }
-  | { readonly statut: "anomalies"; readonly anomalies: readonly Anomalie[] }
-  | { readonly statut: "creneau-complet" }
-  | { readonly statut: "indisponible" }
-  | { readonly statut: "confirme"; readonly reference: string };
-
-export const FORMULAIRE_VIERGE: EtatDuFormulaire = { statut: "vierge" };
 
 function texte(donnees: FormData, champ: string): string {
   const valeur = donnees.get(champ);
