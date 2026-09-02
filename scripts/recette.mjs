@@ -50,6 +50,7 @@ const MARQUEURS_D_ATTENTE = [
   [/en cours d'installation/i, "bloc en préparation"],
   [/la réservation en ligne arrive/i, "réservation non développée"],
   [/formulaire de contact ouvrira/i, "formulaire de contact non branché"],
+  [/carte de nos points de vente est en préparation/i, "points de vente non fournis"],
 ];
 
 const MENTIONS_PROMOTIONNELLES =
