@@ -1,7 +1,8 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { visites } from "@/donnees/infos-pratiques";
 import { oublierLesReservationsDeSimulation } from "@/lib/reservation/agenda-simulation";
-import { demanderUneReservation, FORMULAIRE_VIERGE } from "./actions";
+import { demanderUneReservation } from "./actions";
+import { FORMULAIRE_VIERGE } from "./etat-formulaire";
 
 const decouverte = visites.find((f) => f.nom === "Visite découverte")!;
 
@@ -23,6 +24,21 @@ function formulaire(modifications: Record<string, string> = {}) {
 afterEach(() => {
   vi.unstubAllEnvs();
   oublierLesReservationsDeSimulation();
+});
+
+describe("le module d'actions", () => {
+  /**
+   * Un fichier `"use server"` ne peut exporter que des fonctions async. Une
+   * valeur y passe le build et les tests unitaires, puis lève « can only export
+   * async functions » à la première invocation réelle, avec un 500 côté
+   * visiteur. Ce test attrape la régression ici, où elle est lisible.
+   */
+  it("n'expose que des fonctions", async () => {
+    const exportes = await import("./actions");
+    for (const [nom, valeur] of Object.entries(exportes)) {
+      expect(typeof valeur, `export « ${nom} »`).toBe("function");
+    }
+  });
 });
 
 describe("l'envoi d'une demande de réservation", () => {
