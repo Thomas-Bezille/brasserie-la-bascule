@@ -22,7 +22,7 @@ export const navigationPrincipale: readonly Lien[] = [
   { libelle: "Nos bières", href: "/nos-bieres", livree: false },
   { libelle: "Visites et dégustations", href: "/visites-et-degustations", livree: true },
   { libelle: "Où nous trouver", href: "/ou-nous-trouver", livree: false },
-  { libelle: "Contact", href: "/contact", livree: false },
+  { libelle: "Contact", href: "/contact", livree: true },
 ];
 
 export const liensLegaux: readonly Lien[] = [
