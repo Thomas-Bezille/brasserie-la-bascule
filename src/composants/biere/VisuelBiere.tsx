@@ -10,15 +10,14 @@ import { complementDuNom } from "@/lib/formats";
  * - **illustration absente** : le **repli typographique**. Le nom en grand dans
  *   Fraunces, à la couleur de la bière, rien d'autre.
  *
- * **Le fond du cadre suit la bière quand elle est en repli** (31/08/2026). Trois
+ * **Le fond du cadre suit la bière** (31/08/2026), dans les deux états. Trois
  * des sept couleurs n'atteignent pas le seuil de lisibilité sur le gris béton :
- * Le Corbeau y est à 1,25:1. Elles basculent sur le papier, où elles passent
- * largement, plutôt que d'être retouchées. Le calcul est dans `lib/contraste`,
- * la couleur de Sophie n'est pas modifiée d'un octet, et sa règle du 20/09 tient
- * toujours : c'est le cadre qui s'adapte à la bière, jamais l'inverse.
- *
- * Le fond ne change que dans l'état de repli. Une illustration n'a pas de
- * problème de contraste, et le cadre validé en maquette reste le sien.
+ * Le Corbeau y est à 1,25:1. Ça vaut pour le nom du repli comme pour l'étiquette
+ * de Sophie, qui est un dessin au trait dans la couleur de la bière. Elles
+ * basculent sur le papier, où elles passent largement, plutôt que d'être
+ * retouchées. Le calcul est dans `lib/contraste`, la couleur de Sophie n'est pas
+ * modifiée d'un octet, et sa règle du 20/09 tient : c'est le cadre qui s'adapte
+ * à la bière, jamais l'inverse.
  *
  * Le choix arrive en `surPapier`, décidé par `FicheBiere` : la couleur d'une
  * bière ne se lit que là-bas, et ce composant n'a pas à la connaître.

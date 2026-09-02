@@ -25,7 +25,13 @@ import { fondDuVisuel } from "@/lib/contraste";
  * était fait sur place.
  */
 export function FicheBiere({ biere }: { biere: Biere }) {
-  const visuelSurPapier = !biere.illustration && fondDuVisuel(biere.couleur) === "papier";
+  /**
+   * S'applique au repli typographique **comme aux étiquettes de Sophie** : ses
+   * dessins sont au trait, dans la couleur de la bière. Le corbeau prune sur le
+   * béton est à 1,25:1, invisible. Le cadre bascule sur le papier pour les mêmes
+   * couleurs, illustration ou pas.
+   */
+  const visuelSurPapier = fondDuVisuel(biere.couleur) === "papier";
 
   return (
     <article style={{ "--biere": biere.couleur } as CSSProperties}>
@@ -37,11 +43,12 @@ export function FicheBiere({ biere }: { biere: Biere }) {
       </Surtitre>
 
       {/*
-        **Correction de Sophie du 27/09.** En repli sur fond papier, le cadre ne
-        colle plus et s'étire jusqu'au bas de la fiche : un rectangle clair qui
+        **Correction de Sophie du 27/09.** Sur fond papier, le cadre ne colle
+        plus et s'étire jusqu'au bas de la fiche : un rectangle clair qui
         s'arrête au milieu d'une page sombre « ressemble à une erreur de
-        chargement ». Les fiches illustrées gardent leur colonne collante, le
-        dessin restant visible pendant qu'on lit les caractéristiques.
+        chargement ». Les fiches qui restent sur le béton gardent leur colonne
+        collante, le visuel restant en vue pendant qu'on lit les
+        caractéristiques.
       */}
       <div
         className={`mt-8 grid gap-[clamp(30px,5vw,80px)] lg:grid-cols-[0.9fr_1.1fr] ${
