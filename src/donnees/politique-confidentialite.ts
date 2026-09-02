@@ -49,7 +49,8 @@ export const traitements: readonly Traitement[] = [
   {
     id: "contact",
     titre: "Formulaire de contact",
-    donnees: "Nom, adresse électronique et message.",
+    donnees:
+      "Nom, adresse électronique et message, et si vous les renseignez votre téléphone, le nom de votre entreprise et le motif de votre demande.",
     finalite: "Répondre à votre demande.",
     baseLegale:
       "L'intérêt légitime de la brasserie à répondre aux personnes qui la sollicitent (article 6.1.f du RGPD).",

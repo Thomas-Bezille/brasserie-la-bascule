@@ -49,6 +49,7 @@ const MARQUEURS_D_ATTENTE = [
   [/n'est pas encore rédigée/i, "page d'attente"],
   [/en cours d'installation/i, "bloc en préparation"],
   [/la réservation en ligne arrive/i, "réservation non développée"],
+  [/formulaire de contact ouvrira/i, "formulaire de contact non branché"],
 ];
 
 const MENTIONS_PROMOTIONNELLES =
