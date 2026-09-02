@@ -24,4 +24,24 @@ describe("le fond du visuel d'une fiche", () => {
     expect(container.querySelector(".bg-beton")).not.toBeNull();
     expect(container.querySelector(".lg\\:sticky")).not.toBeNull();
   });
+
+  /**
+   * Le cadre pleine hauteur et statique de Sophie ne vaut que pour le repli
+   * typographique. Une fiche illustrée, même sur cadre crème, garde la colonne
+   * collante comme les autres : la gêne du « rectangle blanc posé là » ne vaut
+   * que pour une boîte vide.
+   */
+  it("garde la colonne collante sur une fiche illustrée, même en cadre crème", () => {
+    const { container } = render(<FicheBiere biere={corbeau} />);
+    expect(container.querySelector(".lg\\:sticky")).not.toBeNull();
+    expect(container.querySelector(".items-stretch")).toBeNull();
+  });
+
+  it("étire le cadre et retire le collant pour le repli typographique sur papier", () => {
+    const { container } = render(
+      <FicheBiere biere={{ ...corbeau, illustration: undefined }} />,
+    );
+    expect(container.querySelector(".lg\\:sticky")).toBeNull();
+    expect(container.querySelector(".items-stretch")).not.toBeNull();
+  });
 });
