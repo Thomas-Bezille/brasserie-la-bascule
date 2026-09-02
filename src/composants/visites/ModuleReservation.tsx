@@ -29,8 +29,13 @@ import type { Creneau } from "@/lib/reservation/types";
  * fournisseur, et la recette refuse sa présence sur un site publié.
  */
 
-/** Trois semaines : assez pour choisir, assez court pour que Marc s'y retrouve. */
-const HORIZON_JOURS = 21;
+/**
+ * Quatre mois, la limite posée par Marc le 30/09 : « réservation possible
+ * jusqu'à 4 mois avant, pas plus ». Au-delà, il ne sait ni ce qu'il brasse ni
+ * quand il pourra recevoir. Les créneaux réels tiendront compte du reste (rien
+ * en juillet-août), c'est une donnée de l'agenda, pas de l'affichage.
+ */
+const HORIZON_JOURS = 122;
 
 export async function ModuleReservation() {
   // Marque ce composant comme rendu à la requête : les créneaux ne se figent pas au build.
