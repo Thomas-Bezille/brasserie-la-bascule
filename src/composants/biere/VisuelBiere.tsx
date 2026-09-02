@@ -6,9 +6,7 @@ import { complementDuNom } from "@/lib/formats";
  * Le visuel d'une fiche, dans ses **deux états**. C'est la correction 3 de
  * Sophie, et la seule qu'elle a demandé à voir fonctionner avant le reste.
  *
- * - **illustration présente** : le dessin, à taille normale ou réduite selon la
- *   donnée. La Carpe et Le Corbeau sont des scans de 2022 qui montrent le grain
- *   du papier au-delà d'une vingtaine de centimètres.
+ * - **illustration présente** : l'étiquette de Sophie, un PNG détouré carré.
  * - **illustration absente** : le **repli typographique**. Le nom en grand dans
  *   Fraunces, à la couleur de la bière, rien d'autre.
  *
@@ -38,8 +36,6 @@ export function VisuelBiere({
   biere: Biere;
   surPapier?: boolean;
 }) {
-  const hauteur = biere.tailleVisuel === "reduite" ? "max-h-[240px]" : "max-h-[340px]";
-
   /**
    * **Correction de Sophie du 27/09 :** sur le papier, pas de trait, et le fond
    * descend jusqu'en bas du bloc. Un rectangle clair cerné d'un trait au milieu
@@ -57,10 +53,11 @@ export function VisuelBiere({
           <Image
             src={biere.illustration}
             alt={`Étiquette ${complementDuNom(biere.nom)}`}
-            width={400}
-            height={400}
+            width={1200}
+            height={1200}
             priority
-            className={`${hauteur} h-auto w-auto`}
+            sizes="(min-width: 1024px) 520px, 60vw"
+            className="h-auto max-h-[340px] w-auto"
           />
         ) : (
           <p
@@ -78,12 +75,6 @@ export function VisuelBiere({
           </p>
         )}
       </div>
-
-      {biere.illustrationProvisoire && (
-        <p className="text-papier/55 mt-3.5 text-right text-[13px] italic">
-          Illustration provisoire, à remplacer par l&apos;étiquette de Sophie
-        </p>
-      )}
     </div>
   );
 }
