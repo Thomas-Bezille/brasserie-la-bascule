@@ -26,9 +26,36 @@ function sansIndexation(reponse: NextResponse): NextResponse {
   return reponse;
 }
 
+/**
+ * Reconnaît la requête interne de l'optimiseur d'images de Next.
+ *
+ * `<Image>` sert les PNG via `/_next/image`, que le navigateur appelle avec le
+ * mot de passe. Mais l'optimiseur va ensuite chercher le fichier source par une
+ * requête serveur à serveur qui ne porte **aucun en-tête de navigateur** : ni
+ * `user-agent`, ni `authorization`, ni `accept`. Sans exception, le proxy la
+ * refuse en 401 et `<Image>` échoue sur « isn't a valid image … received null »,
+ * en préproduction seulement, là où le mot de passe est actif.
+ *
+ * On laisse donc passer les fichiers image quand la requête n'a ni `user-agent`
+ * ni `authorization`. Un humain qui viserait `/illustrations/x.png` dans son
+ * navigateur porte toujours un `user-agent` : il reste au mot de passe, la
+ * consigne « protéger aussi les fichiers statiques » tient pour lui.
+ */
+function estRequeteInterneDImage(requete: NextRequest): boolean {
+  const estImage = /\.(png|jpe?g|webp|avif|gif)$/i.test(requete.nextUrl.pathname);
+  const sansNavigateur =
+    !requete.headers.get("user-agent") && !requete.headers.get("authorization");
+  return estImage && sansNavigateur;
+}
+
 export function proxy(requete: NextRequest) {
   if (process.env.SITE_PUBLIE === "oui") {
     return NextResponse.next();
+  }
+
+  // L'optimiseur d'images lit ses fichiers sources sans passer le mot de passe.
+  if (estRequeteInterneDImage(requete)) {
+    return sansIndexation(NextResponse.next());
   }
 
   const motDePasse = process.env.MOT_DE_PASSE_PREPROD;
@@ -64,8 +91,10 @@ export function proxy(requete: NextRequest) {
 }
 
 export const config = {
-  // Tout est protégé, y compris les images et les fichiers statiques : une
-  // préproduction dont les visuels du client restent accessibles n'est pas
+  // Tout est protégé, y compris les fichiers statiques : une préproduction dont
+  // les visuels du client restent accessibles à un navigateur n'est pas
   // protégée. Le navigateur renvoie seul les identifiants sur la même origine.
+  // Seule exception, dans la fonction : la requête interne, sans navigateur, de
+  // l'optimiseur d'images de Next, sans quoi aucun PNG ne s'affiche.
   matcher: "/:chemin*",
 };
