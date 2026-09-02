@@ -30,12 +30,17 @@ import type { Creneau } from "@/lib/reservation/types";
  */
 
 /**
- * Quatre mois, la limite posée par Marc le 30/09 : « réservation possible
- * jusqu'à 4 mois avant, pas plus ». Au-delà, il ne sait ni ce qu'il brasse ni
- * quand il pourra recevoir. Les créneaux réels tiendront compte du reste (rien
- * en juillet-août), c'est une donnée de l'agenda, pas de l'affichage.
+ * La fenêtre de créneaux qu'on demande à l'agenda et qu'on affiche, huit
+ * semaines. Assez pour planifier une visite de groupe, assez court pour tenir
+ * dans une seule requête `booking-availability` sans dépasser le délai.
+ *
+ * **Ce n'est pas la même chose que « jusqu'à quand on peut réserver ».** La
+ * limite des quatre mois posée par Marc le 30/09 est un plafond sur la distance
+ * d'une réservation, pas sur la largeur de cette fenêtre : elle se règle côté
+ * Meetergo, sur le `daysIntoFuture` de chaque type de rendez-vous. Élargir cette
+ * constante à 122 jours a cassé la lecture des créneaux (PR #26 annulée ici).
  */
-const HORIZON_JOURS = 122;
+const FENETRE_JOURS = 56;
 
 export async function ModuleReservation() {
   // Marque ce composant comme rendu à la requête : les créneaux ne se figent pas au build.
@@ -45,7 +50,7 @@ export async function ModuleReservation() {
   const agenda = await agendaDuSite();
 
   const depuis = new Date();
-  const jusqua = new Date(depuis.getTime() + HORIZON_JOURS * 24 * 60 * 60 * 1000);
+  const jusqua = new Date(depuis.getTime() + FENETRE_JOURS * 24 * 60 * 60 * 1000);
 
   const creneauxParFormule: Record<string, readonly Creneau[]> = {};
   if (agenda) {
