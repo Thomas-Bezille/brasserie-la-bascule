@@ -25,8 +25,9 @@ export function CarteBiere({ biere }: { biere: Biere }) {
           <Image
             src={biere.illustration}
             alt=""
-            width={120}
-            height={150}
+            width={1200}
+            height={1200}
+            sizes="120px"
             className="h-full w-auto"
           />
         ) : (

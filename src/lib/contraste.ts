@@ -56,8 +56,9 @@ export function rapportContraste(a: string, b: string): number {
 }
 
 /**
- * Le fond du cadre du visuel, choisi pour que le nom de la bière reste lisible
- * quand la fiche est en repli typographique.
+ * Le fond du cadre du visuel, choisi pour que la bière reste lisible : son nom
+ * en repli typographique, et son étiquette, que Sophie dessine au trait dans la
+ * couleur de la bière.
  *
  * Le béton est le fond par défaut, celui de la maquette validée. Une couleur
  * trop sombre pour lui bascule sur le papier, où les bières sombres passent

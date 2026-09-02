@@ -6,21 +6,18 @@ import { complementDuNom } from "@/lib/formats";
  * Le visuel d'une fiche, dans ses **deux états**. C'est la correction 3 de
  * Sophie, et la seule qu'elle a demandé à voir fonctionner avant le reste.
  *
- * - **illustration présente** : le dessin, à taille normale ou réduite selon la
- *   donnée. La Carpe et Le Corbeau sont des scans de 2022 qui montrent le grain
- *   du papier au-delà d'une vingtaine de centimètres.
+ * - **illustration présente** : l'étiquette de Sophie, un PNG détouré carré.
  * - **illustration absente** : le **repli typographique**. Le nom en grand dans
  *   Fraunces, à la couleur de la bière, rien d'autre.
  *
- * **Le fond du cadre suit la bière quand elle est en repli** (31/08/2026). Trois
+ * **Le fond du cadre suit la bière** (31/08/2026), dans les deux états. Trois
  * des sept couleurs n'atteignent pas le seuil de lisibilité sur le gris béton :
- * Le Corbeau y est à 1,25:1. Elles basculent sur le papier, où elles passent
- * largement, plutôt que d'être retouchées. Le calcul est dans `lib/contraste`,
- * la couleur de Sophie n'est pas modifiée d'un octet, et sa règle du 20/09 tient
- * toujours : c'est le cadre qui s'adapte à la bière, jamais l'inverse.
- *
- * Le fond ne change que dans l'état de repli. Une illustration n'a pas de
- * problème de contraste, et le cadre validé en maquette reste le sien.
+ * Le Corbeau y est à 1,25:1. Ça vaut pour le nom du repli comme pour l'étiquette
+ * de Sophie, qui est un dessin au trait dans la couleur de la bière. Elles
+ * basculent sur le papier, où elles passent largement, plutôt que d'être
+ * retouchées. Le calcul est dans `lib/contraste`, la couleur de Sophie n'est pas
+ * modifiée d'un octet, et sa règle du 20/09 tient : c'est le cadre qui s'adapte
+ * à la bière, jamais l'inverse.
  *
  * Le choix arrive en `surPapier`, décidé par `FicheBiere` : la couleur d'une
  * bière ne se lit que là-bas, et ce composant n'a pas à la connaître.
@@ -38,8 +35,6 @@ export function VisuelBiere({
   biere: Biere;
   surPapier?: boolean;
 }) {
-  const hauteur = biere.tailleVisuel === "reduite" ? "max-h-[240px]" : "max-h-[340px]";
-
   /**
    * **Correction de Sophie du 27/09 :** sur le papier, pas de trait, et le fond
    * descend jusqu'en bas du bloc. Un rectangle clair cerné d'un trait au milieu
@@ -57,10 +52,11 @@ export function VisuelBiere({
           <Image
             src={biere.illustration}
             alt={`Étiquette ${complementDuNom(biere.nom)}`}
-            width={400}
-            height={400}
+            width={1200}
+            height={1200}
             priority
-            className={`${hauteur} h-auto w-auto`}
+            sizes="(min-width: 1024px) 520px, 60vw"
+            className="h-auto max-h-[340px] w-auto"
           />
         ) : (
           <p
@@ -78,12 +74,6 @@ export function VisuelBiere({
           </p>
         )}
       </div>
-
-      {biere.illustrationProvisoire && (
-        <p className="text-papier/55 mt-3.5 text-right text-[13px] italic">
-          Illustration provisoire, à remplacer par l&apos;étiquette de Sophie
-        </p>
-      )}
     </div>
   );
 }

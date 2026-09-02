@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { VisuelBiere } from "@/composants/biere/VisuelBiere";
 import { bieres } from "@/donnees/bieres";
@@ -39,5 +39,15 @@ describe("le cadre du visuel", () => {
     // Seconde correction du 27/09 : « Le Corbeau » touchait presque le bord sur
     // téléphone. La marge horizontale est plus grande que la verticale.
     expect(cadre).toContain("px-[clamp(34px,9vw,64px)]");
+  });
+
+  /**
+   * Toutes les permanentes ont désormais leur étiquette, mais le repli
+   * typographique reste un état permanent du site : une bière de saison sans
+   * dessin doit s'afficher sans attendre Sophie.
+   */
+  it("bascule sur le repli typographique quand la bière n'a pas d'étiquette", () => {
+    render(<VisuelBiere biere={{ ...renard, illustration: undefined }} surPapier />);
+    expect(screen.getByText(renard.nom)).toBeInTheDocument();
   });
 });

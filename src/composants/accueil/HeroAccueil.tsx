@@ -22,9 +22,8 @@ import { Surtitre } from "@/composants/ui/Surtitre";
  * > plutôt qu'un en-tête devenu opaque au défilement, qui aurait alourdi le haut
  * > de page sur toutes les autres pages du site pour ce seul écran.
  *
- * Le renard est un dessin de travail, celui de la maquette. Julien voudrait le
- * garder ; Sophie a demandé qu'on ne lui réponde pas là-dessus et s'en occupe
- * elle-même.
+ * Le dessin est la bascule de Sophie, la marque, celle du favicon. Livrée le 28,
+ * elle remplace le renard de travail de la maquette.
  */
 export function HeroAccueil() {
   return (
@@ -66,16 +65,14 @@ export function HeroAccueil() {
 
         <div className="-mr-marge">
           <Image
-            src="/illustrations/hero-renard-provisoire.svg"
+            src="/illustrations/bascule.png"
             alt=""
-            width={400}
-            height={400}
+            width={1200}
+            height={1200}
             priority
+            sizes="(min-width: 1024px) 640px, 80vw"
             className="ml-auto w-[80%] max-w-[420px] lg:-mt-[14%] lg:w-[124%] lg:max-w-none"
           />
-          <p className="text-papier/55 mt-3 text-right text-[13px] italic">
-            Illustration provisoire, à remplacer par le dessin de Sophie
-          </p>
         </div>
       </div>
     </section>

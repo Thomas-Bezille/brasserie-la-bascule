@@ -25,7 +25,22 @@ import { fondDuVisuel } from "@/lib/contraste";
  * était fait sur place.
  */
 export function FicheBiere({ biere }: { biere: Biere }) {
-  const visuelSurPapier = !biere.illustration && fondDuVisuel(biere.couleur) === "papier";
+  /**
+   * Le fond du cadre. S'applique au repli typographique **comme aux étiquettes
+   * de Sophie** : ses dessins sont au trait, dans la couleur de la bière. Le
+   * corbeau prune sur le béton est à 1,25:1, invisible. Le cadre bascule sur le
+   * papier pour les mêmes couleurs, illustration ou pas.
+   */
+  const visuelSurPapier = fondDuVisuel(biere.couleur) === "papier";
+
+  /**
+   * Le cadre pleine hauteur et statique, la demande de Sophie du 27/09, ne vaut
+   * que pour le repli typographique sur papier : une boîte crème presque vide qui
+   * s'arrête au milieu d'une page sombre « ressemble à une erreur de chargement ».
+   * Avec une étiquette dedans, cette gêne disparaît : la fiche garde sa colonne
+   * collante comme toutes les autres, crème ou béton.
+   */
+  const cadreEtire = visuelSurPapier && !biere.illustration;
 
   return (
     <article style={{ "--biere": biere.couleur } as CSSProperties}>
@@ -37,18 +52,18 @@ export function FicheBiere({ biere }: { biere: Biere }) {
       </Surtitre>
 
       {/*
-        **Correction de Sophie du 27/09.** En repli sur fond papier, le cadre ne
-        colle plus et s'étire jusqu'au bas de la fiche : un rectangle clair qui
-        s'arrête au milieu d'une page sombre « ressemble à une erreur de
-        chargement ». Les fiches illustrées gardent leur colonne collante, le
-        dessin restant visible pendant qu'on lit les caractéristiques.
+        **Correction de Sophie du 27/09.** Seul le repli typographique sur papier
+        s'étire jusqu'au bas de la fiche et perd sa colonne collante : une boîte
+        crème presque vide qui s'arrête au milieu d'une page sombre « ressemble à
+        une erreur de chargement ». Toutes les autres fiches, illustrées ou sur
+        le béton, gardent le visuel en vue pendant qu'on lit les caractéristiques.
       */}
       <div
         className={`mt-8 grid gap-[clamp(30px,5vw,80px)] lg:grid-cols-[0.9fr_1.1fr] ${
-          visuelSurPapier ? "items-stretch" : "items-start"
+          cadreEtire ? "items-stretch" : "items-start"
         }`}
       >
-        <div className={visuelSurPapier ? "" : "lg:sticky lg:top-[132px]"}>
+        <div className={cadreEtire ? "" : "lg:sticky lg:top-[132px]"}>
           <VisuelBiere biere={biere} surPapier={visuelSurPapier} />
         </div>
 

@@ -96,17 +96,24 @@ describe("les données techniques", () => {
   });
 });
 
-describe("les visuels", () => {
+describe("les illustrations", () => {
+  it("donnent à chaque permanente son étiquette dans public/illustrations", () => {
+    for (const biere of bieres.filter((b) => b.etat === "permanente")) {
+      expect(biere.illustration, `${biere.nom} sans étiquette`).toBe(
+        `/illustrations/${biere.slug}.png`,
+      );
+    }
+  });
+
   /**
-   * La Carpe et Le Corbeau sont des scans de 2022 au format de l'étiquette : ils
-   * montrent le grain du papier passé une vingtaine de centimètres. La
-   * contrainte est une propriété du fichier, pas une exception de mise en page.
+   * Le dessin de travail du Renard, seule illustration provisoire de la
+   * préproduction, a été remplacé par l'étiquette de Sophie. Ce test empêche
+   * qu'un `-provisoire` revienne dans une adresse.
    */
-  it("réduisent les deux étiquettes scannées, et elles seules", () => {
-    const reduites = bieres
-      .filter((b) => b.tailleVisuel === "reduite")
-      .map((b) => b.slug);
-    expect(reduites.sort()).toEqual(["la-carpe", "le-corbeau"]);
+  it("ne pointent vers aucun dessin de travail", () => {
+    for (const biere of bieres) {
+      if (biere.illustration) expect(biere.illustration).not.toMatch(/provisoire/i);
+    }
   });
 });
 

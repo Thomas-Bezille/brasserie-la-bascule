@@ -22,15 +22,6 @@
  */
 export type EtatBiere = "permanente" | "disponible" | "retour-printemps" | "terminee";
 
-/**
- * `reduite` pour les étiquettes scannées en 2022, qui montrent le grain du
- * papier au-delà d'une vingtaine de centimètres. La contrainte est une propriété
- * du fichier fourni, elle a donc sa place dans la donnée et non dans une
- * exception de mise en page : elle disparaît d'elle-même le jour où Sophie les
- * redessine.
- */
-export type TailleVisuel = "normale" | "reduite";
-
 export type Biere = {
   /** Figé à vie, CDC 5.1. Ne dépend d'aucun état et ne change jamais. */
   readonly slug: string;
@@ -60,26 +51,23 @@ export type Biere = {
    * qu'en termes objectifs.
    */
   readonly notesDegustation?: string;
-  /** Absente : la fiche bascule sur son repli typographique. */
-  readonly illustration?: string;
   /**
-   * Vrai tant que le dessin affiché n'est pas l'étiquette de Sophie. La fiche
-   * porte alors la mention en clair, sous le visuel. Le champ disparaît à la
-   * livraison de ses fichiers : c'est ce qui empêche un dessin de travail de se
-   * retrouver en ligne le 9 octobre sans que personne ne l'ait vu.
+   * L'étiquette de Sophie, un PNG détouré carré dans `public/illustrations/`.
+   * Absente, la fiche bascule sur son **repli typographique** : c'est un état
+   * permanent du site, pour qu'une bière de saison sans étiquette dessinée
+   * puisse être mise en ligne sans attendre le week-end de dessin de Sophie.
    */
-  readonly illustrationProvisoire?: boolean;
-  readonly tailleVisuel?: TailleVisuel;
+  readonly illustration?: string;
 };
 
 /**
  * Les six permanentes. Le Sanglier, bière d'automne, n'y figure pas encore :
  * son style n'est pas arrêté par Marc et sa cuvée est embouteillée mi-octobre.
- * Il sera ajouté avec ses données, pas avant.
+ * Il sera ajouté avec ses données, pas avant, et restera sur son repli
+ * typographique jusqu'à ce que Sophie dessine son étiquette.
  *
- * Les fichiers web de Sophie sont attendus le 28/09/2026, soit après la
- * préproduction. Seul Le Renard porte un dessin de travail, pour que la fiche
- * illustrée et le repli typographique soient tous deux visibles en ligne le 25.
+ * Les six étiquettes de Sophie sont en place, livrées à la spec : PNG détouré,
+ * fond transparent, carré, dans `public/illustrations/<slug>.png`.
  */
 export const bieres: readonly Biere[] = [
   {
@@ -88,6 +76,7 @@ export const bieres: readonly Biere[] = [
     type: "Ambrée",
     couleur: "#B25537",
     etat: "permanente",
+    illustration: "/illustrations/la-rouquine.png",
   },
   {
     slug: "le-renard",
@@ -122,13 +111,7 @@ export const bieres: readonly Biere[] = [
      */
     notesDegustation:
       "Cuivre clair et légèrement trouble, la bière n'étant pas filtrée. La mousse est blanche, fine, et elle tient. Au nez, des agrumes et de la résine, le pamplemousse d'abord, sur un fond herbacé apporté par le houblon slovène. En bouche, elle est sèche, sans sucre résiduel : l'amertume arrive en fin de bouche et s'y prolonge.",
-    // Dessin de travail repris de la maquette, en attendant l'étiquette de
-    // Sophie. Il n'est là que pour montrer la fiche illustrée : les cinq autres
-    // bières restent sur leur repli typographique, ce qui donne à Sophie les
-    // deux états à comparer en vrai, sans code de démonstration à retirer plus
-    // tard.
-    illustration: "/illustrations/le-renard-provisoire.svg",
-    illustrationProvisoire: true,
+    illustration: "/illustrations/le-renard.png",
   },
   {
     slug: "l-abeille",
@@ -136,6 +119,7 @@ export const bieres: readonly Biere[] = [
     type: "Blonde au miel",
     couleur: "#E3AE2B",
     etat: "permanente",
+    illustration: "/illustrations/l-abeille.png",
   },
   {
     slug: "la-carpe",
@@ -143,7 +127,7 @@ export const bieres: readonly Biere[] = [
     type: "Blanche",
     couleur: "#7FA9A6",
     etat: "permanente",
-    tailleVisuel: "reduite",
+    illustration: "/illustrations/la-carpe.png",
   },
   {
     slug: "le-corbeau",
@@ -151,7 +135,7 @@ export const bieres: readonly Biere[] = [
     type: "Stout",
     couleur: "#4A2F3D",
     etat: "permanente",
-    tailleVisuel: "reduite",
+    illustration: "/illustrations/le-corbeau.png",
   },
   {
     slug: "la-guepe",
@@ -159,5 +143,6 @@ export const bieres: readonly Biere[] = [
     type: "Triple",
     couleur: "#9E2B25",
     etat: "permanente",
+    illustration: "/illustrations/la-guepe.png",
   },
 ];
