@@ -8,19 +8,28 @@ const renard = bieres.find((b) => b.slug === "le-renard")!;
 
 describe("le fond du visuel d'une fiche", () => {
   /**
-   * Le Corbeau a une étiquette, et Sophie la dessine au trait dans le prune de
-   * la bière : 1,25:1 sur le béton, invisible. Le cadre doit basculer sur le
-   * papier comme il le fait pour le repli typographique.
+   * Une fiche qui a son étiquette passe toujours sur le papier : l'étiquette de
+   * Sophie porte son propre fond ardoise, et les six se posent de la même façon
+   * sur le crème, alors qu'elles se fondraient dans le béton du site.
    */
-  it("passe sur le papier quand la couleur est trop sombre, étiquette comprise", () => {
-    expect(corbeau.illustration).toBeDefined();
-    const { container } = render(<FicheBiere biere={corbeau} />);
-    expect(container.querySelector(".bg-papier")).not.toBeNull();
-    expect(container.querySelector(".bg-beton")).toBeNull();
+  it("passe sur le papier dès que la bière a son étiquette", () => {
+    for (const biere of [corbeau, renard]) {
+      expect(biere.etiquette).toBeDefined();
+      const { container } = render(<FicheBiere biere={biere} />);
+      expect(container.querySelector(".bg-papier")).not.toBeNull();
+      expect(container.querySelector(".bg-beton")).toBeNull();
+    }
   });
 
-  it("reste sur le béton, colonne collante, quand la couleur passe le seuil", () => {
-    const { container } = render(<FicheBiere biere={renard} />);
+  /**
+   * Sans étiquette, le repli typographique suit le calcul de contraste : le vert
+   * du Renard passe le seuil du très grand texte sur le béton, il y reste, avec
+   * la colonne collante des autres fiches.
+   */
+  it("garde le béton et la colonne collante pour un repli dont la couleur passe le seuil", () => {
+    const { container } = render(
+      <FicheBiere biere={{ ...renard, etiquette: undefined }} />,
+    );
     expect(container.querySelector(".bg-beton")).not.toBeNull();
     expect(container.querySelector(".lg\\:sticky")).not.toBeNull();
   });
@@ -31,7 +40,7 @@ describe("le fond du visuel d'une fiche", () => {
    * collante comme les autres : la gêne du « rectangle blanc posé là » ne vaut
    * que pour une boîte vide.
    */
-  it("garde la colonne collante sur une fiche illustrée, même en cadre crème", () => {
+  it("garde la colonne collante sur une fiche avec étiquette, même en cadre crème", () => {
     const { container } = render(<FicheBiere biere={corbeau} />);
     expect(container.querySelector(".lg\\:sticky")).not.toBeNull();
     expect(container.querySelector(".items-stretch")).toBeNull();
@@ -39,7 +48,7 @@ describe("le fond du visuel d'une fiche", () => {
 
   it("étire le cadre et retire le collant pour le repli typographique sur papier", () => {
     const { container } = render(
-      <FicheBiere biere={{ ...corbeau, illustration: undefined }} />,
+      <FicheBiere biere={{ ...corbeau, etiquette: undefined }} />,
     );
     expect(container.querySelector(".lg\\:sticky")).toBeNull();
     expect(container.querySelector(".items-stretch")).not.toBeNull();

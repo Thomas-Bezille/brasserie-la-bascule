@@ -52,12 +52,21 @@ export type Biere = {
    */
   readonly notesDegustation?: string;
   /**
-   * L'étiquette de Sophie, un PNG détouré carré dans `public/illustrations/`.
-   * Absente, la fiche bascule sur son **repli typographique** : c'est un état
-   * permanent du site, pour qu'une bière de saison sans étiquette dessinée
-   * puisse être mise en ligne sans attendre le week-end de dessin de Sophie.
+   * Deux visuels de Sophie, tirés du même univers mais employés à des places
+   * différentes. Les deux sont optionnels et indépendants l'un de l'autre.
+   *
+   * - `animal` : l'animal seul, dessiné au trait dans la couleur de la bière,
+   *   détouré sur fond transparent. Sert aux **vignettes** : l'aperçu de la
+   *   gamme sur l'accueil et le bloc « le reste de la gamme » en bas de fiche.
+   *   Voir `CarteBiere`.
+   * - `etiquette` : l'étiquette de bouteille complète, format portrait, fond
+   *   ardoise, bord déchiré. C'est la **grande image de la fiche**. Absente, la
+   *   fiche bascule sur son **repli typographique** (nom en grand) : un état
+   *   permanent du site, pour qu'une bière de saison sans étiquette dessinée
+   *   soit mise en ligne sans attendre le week-end de dessin de Sophie.
    */
-  readonly illustration?: string;
+  readonly animal?: string;
+  readonly etiquette?: string;
 };
 
 /**
@@ -66,8 +75,9 @@ export type Biere = {
  * Il sera ajouté avec ses données, pas avant, et restera sur son repli
  * typographique jusqu'à ce que Sophie dessine son étiquette.
  *
- * Les six étiquettes de Sophie sont en place, livrées à la spec : PNG détouré,
- * fond transparent, carré, dans `public/illustrations/<slug>.png`.
+ * Les deux visuels de Sophie sont en place pour les six : l'animal détouré dans
+ * `public/illustrations/animaux/<slug>.png`, l'étiquette de bouteille dans
+ * `public/illustrations/etiquettes/<slug>.png`.
  */
 export const bieres: readonly Biere[] = [
   {
@@ -76,7 +86,8 @@ export const bieres: readonly Biere[] = [
     type: "Ambrée",
     couleur: "#B25537",
     etat: "permanente",
-    illustration: "/illustrations/la-rouquine.png",
+    animal: "/illustrations/animaux/la-rouquine.png",
+    etiquette: "/illustrations/etiquettes/la-rouquine.png",
   },
   {
     slug: "le-renard",
@@ -84,10 +95,11 @@ export const bieres: readonly Biere[] = [
     type: "India Pale Ale",
     couleur: "#5F7A3C",
     etat: "permanente",
-    // Les deux seules valeurs techniques arrêtées à ce jour, corrigées par
-    // Marc lui-même le 21/09/2026. C'est ce qui fait du Renard la fiche de la
-    // préproduction du 25.
-    degre: 6.4,
+    // 6,2 et non 6,4. Marc avait donné 6,4 à l'oral le 21/09/2026 ; l'étiquette
+    // imprimée de Sophie porte 6,2 % vol., et le degré d'une étiquette bon à
+    // tirer est une mention légale que Marc a validée pour l'impression. En cas
+    // d'écart, c'est l'étiquette qui fait foi (décision Thomas, 01/10/2026).
+    degre: 6.2,
     // **Trois houblons et non deux, corrigé par Marc le 24/09/2026.** Les deux
     // valeurs qu'il avait données le 21 étaient des origines, pas des variétés,
     // et il manquait la troisième. Publier « Slovénie et Yakima » n'était pas
@@ -97,6 +109,7 @@ export const bieres: readonly Biere[] = [
       "Citra (Yakima, États-Unis)",
       "Simcoe (Yakima, États-Unis)",
     ],
+    animal: "/illustrations/animaux/le-renard.png",
     /**
      * Écrite le 25/09/2026 à partir des notes de Marc, et **offerte** au titre
      * de l'erreur de la note de maquette v1. Les cinq autres relèvent du lot 2,
@@ -111,7 +124,7 @@ export const bieres: readonly Biere[] = [
      */
     notesDegustation:
       "Cuivre clair et légèrement trouble, la bière n'étant pas filtrée. La mousse est blanche, fine, et elle tient. Au nez, des agrumes et de la résine, le pamplemousse d'abord, sur un fond herbacé apporté par le houblon slovène. En bouche, elle est sèche, sans sucre résiduel : l'amertume arrive en fin de bouche et s'y prolonge.",
-    illustration: "/illustrations/le-renard.png",
+    etiquette: "/illustrations/etiquettes/le-renard.png",
   },
   {
     slug: "l-abeille",
@@ -119,7 +132,8 @@ export const bieres: readonly Biere[] = [
     type: "Blonde au miel",
     couleur: "#E3AE2B",
     etat: "permanente",
-    illustration: "/illustrations/l-abeille.png",
+    animal: "/illustrations/animaux/l-abeille.png",
+    etiquette: "/illustrations/etiquettes/l-abeille.png",
   },
   {
     slug: "la-carpe",
@@ -127,7 +141,8 @@ export const bieres: readonly Biere[] = [
     type: "Blanche",
     couleur: "#7FA9A6",
     etat: "permanente",
-    illustration: "/illustrations/la-carpe.png",
+    animal: "/illustrations/animaux/la-carpe.png",
+    etiquette: "/illustrations/etiquettes/la-carpe.png",
   },
   {
     slug: "le-corbeau",
@@ -135,7 +150,8 @@ export const bieres: readonly Biere[] = [
     type: "Stout",
     couleur: "#4A2F3D",
     etat: "permanente",
-    illustration: "/illustrations/le-corbeau.png",
+    animal: "/illustrations/animaux/le-corbeau.png",
+    etiquette: "/illustrations/etiquettes/le-corbeau.png",
   },
   {
     slug: "la-guepe",
@@ -143,6 +159,7 @@ export const bieres: readonly Biere[] = [
     type: "Triple",
     couleur: "#9E2B25",
     etat: "permanente",
-    illustration: "/illustrations/la-guepe.png",
+    animal: "/illustrations/animaux/la-guepe.png",
+    etiquette: "/illustrations/etiquettes/la-guepe.png",
   },
 ];

@@ -3,12 +3,12 @@ import { Surtitre } from "@/composants/ui/Surtitre";
 import { bieres } from "@/donnees/bieres";
 
 /**
- * L'aperçu de la gamme. Les vignettes sont celles de la fiche, à l'identique :
- * un seul composant pour les deux emplacements, donc un seul endroit à corriger
- * quand les étiquettes de Sophie arriveront.
+ * L'aperçu de la gamme. Mêmes vignettes qu'en bas de fiche, un seul composant
+ * `CarteBiere` pour les deux emplacements : chacune porte l'animal de Sophie,
+ * ce que dit déjà le paragraphe ci-dessous.
  *
- * Aucune couleur de bière n'apparaît ici. Quand un dessin existe, c'est lui qui
- * la porte ; le texte reste au crème.
+ * Aucune couleur de bière n'apparaît ici. Quand l'animal existe, c'est le
+ * dessin qui la porte ; le texte reste au crème.
  */
 export function ApercuGamme() {
   return (

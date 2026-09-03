@@ -46,7 +46,7 @@ describe("la fiche d'entreprise", () => {
 describe("une bière en donnée structurée", () => {
   it("balise le degré quand Marc l'a fourni", () => {
     expect(donneesBiere(biere("le-renard"))).toMatchObject({
-      additionalProperty: { name: "Degré d'alcool", value: "6.4 % vol." },
+      additionalProperty: { name: "Degré d'alcool", value: "6.2 % vol." },
     });
   });
 

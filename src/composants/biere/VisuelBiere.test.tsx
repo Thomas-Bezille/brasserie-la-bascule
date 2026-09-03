@@ -47,7 +47,7 @@ describe("le cadre du visuel", () => {
    * dessin doit s'afficher sans attendre Sophie.
    */
   it("bascule sur le repli typographique quand la bière n'a pas d'étiquette", () => {
-    render(<VisuelBiere biere={{ ...renard, illustration: undefined }} surPapier />);
+    render(<VisuelBiere biere={{ ...renard, etiquette: undefined }} surPapier />);
     expect(screen.getByText(renard.nom)).toBeInTheDocument();
   });
 });

@@ -20,7 +20,7 @@ const ANCIENNES_VALEURS = [
   ["3,20", "prix de la 33 cl, passé à 3,50 € en juin"],
   ["6,50", "prix de la 75 cl, passé à 6,90 € en juin"],
   ["20 places", "stationnement, le client préfère annoncer 12 places"],
-  ["6,2", "degré du Renard, corrigé à 6,4 par Marc"],
+  ["6,4", "degré du Renard : l'étiquette imprimée porte 6,2 % vol. et fait foi"],
 ];
 
 const COULEURS_DE_BIERE = {

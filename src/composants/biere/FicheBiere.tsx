@@ -26,21 +26,27 @@ import { fondDuVisuel } from "@/lib/contraste";
  */
 export function FicheBiere({ biere }: { biere: Biere }) {
   /**
-   * Le fond du cadre. S'applique au repli typographique **comme aux étiquettes
-   * de Sophie** : ses dessins sont au trait, dans la couleur de la bière. Le
-   * corbeau prune sur le béton est à 1,25:1, invisible. Le cadre bascule sur le
-   * papier pour les mêmes couleurs, illustration ou pas.
+   * Le fond du cadre.
+   *
+   * - **Avec une étiquette :** toujours le papier. L'étiquette de Sophie porte
+   *   son propre fond ardoise ; posée sur le crème, les six se détachent de la
+   *   même façon, alors que sur le béton du site elles se fondraient.
+   * - **Sans étiquette (repli typographique) :** le calcul de contraste. Le nom
+   *   est écrit dans la couleur de la bière, et le corbeau prune sur le béton
+   *   est à 1,25:1, invisible. Ces couleurs-là basculent sur le papier.
    */
-  const visuelSurPapier = fondDuVisuel(biere.couleur) === "papier";
+  const visuelSurPapier = biere.etiquette
+    ? true
+    : fondDuVisuel(biere.couleur) === "papier";
 
   /**
    * Le cadre pleine hauteur et statique, la demande de Sophie du 27/09, ne vaut
    * que pour le repli typographique sur papier : une boîte crème presque vide qui
    * s'arrête au milieu d'une page sombre « ressemble à une erreur de chargement ».
    * Avec une étiquette dedans, cette gêne disparaît : la fiche garde sa colonne
-   * collante comme toutes les autres, crème ou béton.
+   * collante comme toutes les autres.
    */
-  const cadreEtire = visuelSurPapier && !biere.illustration;
+  const cadreEtire = visuelSurPapier && !biere.etiquette;
 
   return (
     <article style={{ "--biere": biere.couleur } as CSSProperties}>

@@ -39,7 +39,7 @@ export function formaterPrix(montant: number): string {
   return `${nombre}${INSECABLE}€`;
 }
 
-/** `6,4 % vol.` Seule donnée technique que la loi Evin autorise à mettre en avant. */
+/** `6,2 % vol.` Seule donnée technique que la loi Evin autorise à mettre en avant. */
 export function formaterDegre(degre: number): string {
   return `${String(degre).replace(".", ",")}${INSECABLE}%${INSECABLE}vol.`;
 }
