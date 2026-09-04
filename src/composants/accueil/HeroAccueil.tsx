@@ -63,7 +63,13 @@ export function HeroAccueil() {
           </p>
         </div>
 
-        <div className="-mr-marge">
+        <div className="lg:-mr-marge">
+          {/*
+            Débordement réservé au grand écran (correction 2 de Sophie). Sur
+            téléphone, l'image ne dépasse pas de son cadre : rien n'y est
+            coupé, la pousser à droite ne faisait donc que la décentrer sans
+            raison. Elle reste centrée jusqu'à `lg`.
+          */}
           <Image
             src="/illustrations/bascule.png"
             alt=""
@@ -71,7 +77,7 @@ export function HeroAccueil() {
             height={1200}
             priority
             sizes="(min-width: 1024px) 640px, 80vw"
-            className="ml-auto w-[80%] max-w-[420px] lg:-mt-[14%] lg:w-[124%] lg:max-w-none"
+            className="mx-auto w-[80%] max-w-[420px] lg:mx-0 lg:-mt-[14%] lg:ml-auto lg:w-[124%] lg:max-w-none"
           />
         </div>
       </div>
