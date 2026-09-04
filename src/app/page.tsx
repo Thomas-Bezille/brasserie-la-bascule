@@ -1,4 +1,5 @@
 import { ApercuGamme } from "@/composants/accueil/ApercuGamme";
+import { BandeauPortesOuvertes } from "@/composants/accueil/BandeauPortesOuvertes";
 import { BandeauPratique } from "@/composants/accueil/BandeauPratique";
 import { BlocVisites } from "@/composants/accueil/BlocVisites";
 import { HeroAccueil } from "@/composants/accueil/HeroAccueil";
@@ -9,6 +10,7 @@ export default function Accueil() {
     <main className="grow">
       <HeroAccueil />
       <BandeauPratique />
+      <BandeauPortesOuvertes />
       <ApercuGamme />
       <BlocVisites />
       <NoteGoogle />

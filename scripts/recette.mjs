@@ -30,6 +30,7 @@ const COULEURS_DE_BIERE = {
   "#7fa9a6": "la-carpe",
   "#4a2f3d": "le-corbeau",
   "#9e2b25": "la-guepe",
+  "#6b4226": "le-sanglier",
 };
 
 /**
