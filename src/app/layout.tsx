@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Work_Sans } from "next/font/google";
+import { BandeauPortesOuvertes } from "@/composants/chrome/BandeauPortesOuvertes";
 import { Entete } from "@/composants/chrome/Entete";
 import { PiedDePage } from "@/composants/chrome/PiedDePage";
 import { DonneesStructurees } from "@/composants/ui/DonneesStructurees";
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Entete />
         {children}
         <PiedDePage />
+        <BandeauPortesOuvertes />
       </body>
     </html>
   );

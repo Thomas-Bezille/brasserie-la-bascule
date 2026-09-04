@@ -22,9 +22,9 @@ import { donneesPortesOuvertes } from "@/lib/seo";
  *
  * **Pas encore reliée au menu ni au plan du site**, comme « Notre histoire » :
  * ni `navigationPrincipale` ni `liensLegaux` ne la portent. `PORTES_OUVERTES_PUBLIEES`
- * gate le bandeau d'accueil qui y renvoie ; la page elle-même existe et
- * fonctionne dès maintenant, à l'adresse `/portes-ouvertes`, comme « Où nous
- * trouver » avant sa publication.
+ * gate le bandeau sticky du site (`composants/chrome/BandeauPortesOuvertes.tsx`)
+ * qui y renvoie ; la page elle-même existe et fonctionne dès maintenant, à
+ * l'adresse `/portes-ouvertes`, comme « Où nous trouver » avant sa publication.
  */
 export const metadata: Metadata = {
   title: "Portes ouvertes 2026",
