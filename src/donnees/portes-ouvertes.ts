@@ -45,9 +45,9 @@ export const programmeCommun = [
 ] as const;
 
 /**
- * Passe à `true` quand Thomas décide de publier : visuels de Sophie reçus, ou
- * décision assumée de les publier sans eux avant l'échéance du 16/10 (avenant
- * n° 1, § 5). Gate uniquement le bandeau d'accueil : la page elle-même existe
- * et fonctionne, comme « Où nous trouver » avant sa publication.
+ * **Publié sans les visuels de Sophie, décision de Thomas.** Pas encore
+ * livrés, mais l'échéance de l'avenant n° 1 (§ 5) approche, et le repli
+ * typographique du Sanglier tient exactement ce cas : le bandeau se remplace
+ * de lui-même quand ils arrivent, rien à refaire ici.
  */
-export const PORTES_OUVERTES_PUBLIEES = false;
+export const PORTES_OUVERTES_PUBLIEES = true;

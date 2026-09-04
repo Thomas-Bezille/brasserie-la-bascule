@@ -5,11 +5,11 @@ import { PORTES_OUVERTES_PUBLIEES } from "@/donnees/portes-ouvertes";
 /**
  * Le bandeau d'accueil qui renvoie vers la page « Portes ouvertes ».
  *
- * **Ne s'affiche pas avant que Thomas ne le décide.** Les visuels et l'affiche
- * de Sophie ne sont pas encore livrés (avenant n° 1), et la page elle-même
- * attend son échéance de publication (09/10 si le contenu est prêt, sinon au
- * plus tard le 16/10). Le contenu de la page est prêt ; `PORTES_OUVERTES_PUBLIEES`
- * reste à `false` jusqu'à cette décision.
+ * **Publié sans les visuels de Sophie, décision de Thomas (session 15).**
+ * Toujours pas livrés (avenant n° 1), mais l'échéance du 16/10 approchait :
+ * le bandeau tourne sur son texte en attendant, et se complétera de lui-même
+ * quand ils arriveront, sans reprise. `PORTES_OUVERTES_PUBLIEES` porte cette
+ * décision.
  *
  * `publie` est une entrée pour que le test voie les deux états sans toucher à
  * la constante, même parti pris que `Coffrets`.
