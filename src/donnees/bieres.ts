@@ -70,14 +70,15 @@ export type Biere = {
 };
 
 /**
- * Les six permanentes. Le Sanglier, bière d'automne, n'y figure pas encore :
- * son style n'est pas arrêté par Marc et sa cuvée est embouteillée mi-octobre.
- * Il sera ajouté avec ses données, pas avant, et restera sur son repli
- * typographique jusqu'à ce que Sophie dessine son étiquette.
+ * Les six permanentes, plus Le Sanglier, bière d'automne aux châtaignes
+ * locales, sorti mi-octobre pour les portes ouvertes des 24 et 25 (avenant
+ * n° 1). Sa couleur, `#6B4226`, est arrêtée au CDC 7.1 depuis le 22/09 ; ses
+ * données techniques attendent Marc comme les autres, et Sophie n'a pas encore
+ * dessiné son étiquette, donc il reste sur son repli typographique.
  *
- * Les deux visuels de Sophie sont en place pour les six : l'animal détouré dans
- * `public/illustrations/animaux/<slug>.png`, l'étiquette de bouteille dans
- * `public/illustrations/etiquettes/<slug>.png`.
+ * Les deux visuels de Sophie sont en place pour les six permanentes : l'animal
+ * détouré dans `public/illustrations/animaux/<slug>.png`, l'étiquette de
+ * bouteille dans `public/illustrations/etiquettes/<slug>.png`.
  */
 export const bieres: readonly Biere[] = [
   {
@@ -161,5 +162,12 @@ export const bieres: readonly Biere[] = [
     etat: "permanente",
     animal: "/illustrations/animaux/la-guepe.png",
     etiquette: "/illustrations/etiquettes/la-guepe.png",
+  },
+  {
+    slug: "le-sanglier",
+    nom: "Le Sanglier",
+    type: "Bière d'automne aux châtaignes",
+    couleur: "#6B4226",
+    etat: "disponible",
   },
 ];

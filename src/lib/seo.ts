@@ -6,6 +6,7 @@ import {
   prixBouteilles,
   visites,
 } from "@/donnees/infos-pratiques";
+import { joursPortesOuvertes } from "@/donnees/portes-ouvertes";
 import { complementDuNom } from "@/lib/formats";
 
 /**
@@ -139,4 +140,38 @@ export function donneesBiere(biere: Biere) {
       },
     },
   };
+}
+
+/**
+ * Les portes ouvertes, en `Event`, un par jour : `startDate`/`endDate` d'un
+ * même `Event` couvriraient la nuit du samedi au dimanche, ce qui n'existe pas,
+ * l'atelier fermant chaque soir. `isAccessibleForFree` porte l'entrée libre,
+ * annoncée par Julien (fil client § 31) : ni promotionnel ni un prix à zéro
+ * euros, c'est le champ que schema.org prévoit pour ça.
+ */
+export function donneesPortesOuvertes() {
+  return joursPortesOuvertes.map(({ date, jour, creneau }) => ({
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: `Portes ouvertes La Bascule · ${jour}`,
+    description:
+      "Visites de l'atelier toutes les heures et dégustation du Sanglier, notre bière d'automne aux châtaignes. Entrée libre.",
+    startDate: `${date}T${creneau.ouverture}:00`,
+    endDate: `${date}T${creneau.fermeture}:00`,
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    eventStatus: "https://schema.org/EventScheduled",
+    isAccessibleForFree: true,
+    location: {
+      "@type": "Place",
+      name: "Brasserie La Bascule",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: adresse.voie,
+        postalCode: adresse.codePostal,
+        addressLocality: adresse.commune,
+        addressCountry: "FR",
+      },
+    },
+    organizer: { "@type": "Brewery", name: "Brasserie La Bascule", url: URL_SITE },
+  }));
 }

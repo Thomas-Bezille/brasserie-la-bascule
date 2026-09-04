@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { bieres } from "@/donnees/bieres";
-import { donneesBiere, donneesBrasserie } from "./seo";
+import { joursPortesOuvertes } from "@/donnees/portes-ouvertes";
+import { donneesBiere, donneesBrasserie, donneesPortesOuvertes } from "./seo";
 
 const biere = (slug: string) => {
   const trouvee = bieres.find((b) => b.slug === slug);
@@ -71,5 +72,33 @@ describe("une bière en donnée structurée", () => {
     expect(donneesBiere(biere("le-corbeau")).offers.itemOffered.name).toBe(
       "Bouteille 33 cl du Corbeau",
     );
+  });
+});
+
+describe("les portes ouvertes en donnée structurée", () => {
+  it("donne un `Event` par jour, un pour chaque date de `joursPortesOuvertes`", () => {
+    expect(donneesPortesOuvertes()).toHaveLength(joursPortesOuvertes.length);
+  });
+
+  /**
+   * Un seul `Event` du samedi matin au dimanche soir couvrirait une nuit où
+   * l'atelier est fermé : chaque jour a ses propres horaires de début et de fin.
+   */
+  it("borne chaque jour à ses propres horaires, sans déborder sur la nuit", () => {
+    const [samedi, dimanche] = donneesPortesOuvertes();
+    expect(samedi).toMatchObject({
+      startDate: "2026-10-24T10:00:00",
+      endDate: "2026-10-24T19:00:00",
+    });
+    expect(dimanche).toMatchObject({
+      startDate: "2026-10-25T10:00:00",
+      endDate: "2026-10-25T19:00:00",
+    });
+  });
+
+  it("annonce l'entrée libre par le champ prévu par schema.org, pas par du texte", () => {
+    for (const evenement of donneesPortesOuvertes()) {
+      expect(evenement.isAccessibleForFree).toBe(true);
+    }
   });
 });
