@@ -6,13 +6,16 @@ import type { Biere } from "@/donnees/bieres";
  * La vignette d'une bière, employée par le bloc « le reste de la gamme » en bas
  * de fiche, et par l'aperçu de la gamme sur l'accueil.
  *
- * Elle porte les deux mêmes états que la fiche : le dessin quand il existe, le
- * nom composé sinon.
+ * Elle porte l'**animal** de Sophie, dessiné au trait dans la couleur de la
+ * bière, quand il existe ; le nom composé sinon. C'est l'animal et non
+ * l'étiquette : à cette taille, une étiquette de bouteille entière ne se lit
+ * pas, et « c'est à l'animal qu'on nous reconnaît sur une étagère de caviste ».
  *
- * **La vignette n'a aucune couleur de bière.** Quand le dessin existe, c'est lui
- * qui la porte, et c'est tout : ni le texte, ni les bordures. Une vignette
- * s'affiche sur l'accueil et en bas des fiches voisines, donc hors de la fiche
- * de sa bière, là où la règle de Sophie interdit la couleur.
+ * **La vignette n'a aucune couleur de bière dans son code.** Quand l'animal
+ * existe, c'est le dessin qui la porte, et c'est tout : ni le texte, ni les
+ * bordures. Une vignette s'affiche sur l'accueil et en bas des fiches voisines,
+ * donc hors de la fiche de sa bière, là où la règle de Sophie interdit la
+ * couleur en variable.
  */
 export function CarteBiere({ biere }: { biere: Biere }) {
   return (
@@ -21,13 +24,13 @@ export function CarteBiere({ biere }: { biere: Biere }) {
       className="bg-encre hover:bg-beton block px-5 py-7 text-center transition-colors"
     >
       <div className="mb-4 flex h-[100px] items-center justify-center">
-        {biere.illustration ? (
+        {biere.animal ? (
           <Image
-            src={biere.illustration}
+            src={biere.animal}
             alt=""
-            width={1200}
-            height={1200}
-            sizes="120px"
+            width={1254}
+            height={1254}
+            sizes="140px"
             className="h-full w-auto"
           />
         ) : (

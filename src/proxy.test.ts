@@ -43,7 +43,7 @@ describe("la protection de la préproduction", () => {
     vi.stubEnv("SITE_PUBLIE", "non");
     vi.stubEnv("MOT_DE_PASSE_PREPROD", "secret");
 
-    const r = proxy(requete("/illustrations/le-renard.png"));
+    const r = proxy(requete("/illustrations/etiquettes/le-renard.png"));
     expect(r.status).not.toBe(401);
     expect(r.headers.get("x-robots-tag")).toContain("noindex");
   });
@@ -53,7 +53,7 @@ describe("la protection de la préproduction", () => {
     vi.stubEnv("MOT_DE_PASSE_PREPROD", "secret");
 
     const r = proxy(
-      requete("/illustrations/le-renard.png", { "user-agent": "Mozilla/5.0" }),
+      requete("/illustrations/etiquettes/le-renard.png", { "user-agent": "Mozilla/5.0" }),
     );
     expect(r.status).toBe(401);
   });

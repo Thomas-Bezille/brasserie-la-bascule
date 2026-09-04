@@ -53,8 +53,8 @@ describe("formaterPrix", () => {
 });
 
 describe("formaterDegre", () => {
-  it("écrit le degré du Renard tel que Marc l'a corrigé", () => {
-    expect(formaterDegre(6.4)).toBe(`6,4${INSECABLE}%${INSECABLE}vol.`);
+  it("écrit le degré du Renard tel que le porte son étiquette", () => {
+    expect(formaterDegre(6.2)).toBe(`6,2${INSECABLE}%${INSECABLE}vol.`);
   });
 });
 

@@ -77,7 +77,9 @@ describe("les données techniques", () => {
 
   it("donnent au Renard les valeurs corrigées par Marc, houblons compris", () => {
     const renard = trouver("le-renard");
-    expect(renard.degre).toBe(6.4);
+    // 6,2 vient de l'étiquette imprimée, qui fait foi sur le degré face au 6,4
+    // donné à l'oral le 21/09 (décision Thomas, 01/10/2026).
+    expect(renard.degre).toBe(6.2);
 
     // Corrigé le 24/09/2026 : Marc avait donné deux origines le 21, il y a
     // trois variétés. La donnée publiée était incomplète, pas fausse.
@@ -97,22 +99,27 @@ describe("les données techniques", () => {
 });
 
 describe("les illustrations", () => {
-  it("donnent à chaque permanente son étiquette dans public/illustrations", () => {
+  it("donnent à chaque permanente son animal et son étiquette dans public/illustrations", () => {
     for (const biere of bieres.filter((b) => b.etat === "permanente")) {
-      expect(biere.illustration, `${biere.nom} sans étiquette`).toBe(
-        `/illustrations/${biere.slug}.png`,
+      expect(biere.animal, `${biere.nom} sans animal`).toBe(
+        `/illustrations/animaux/${biere.slug}.png`,
+      );
+      expect(biere.etiquette, `${biere.nom} sans étiquette`).toBe(
+        `/illustrations/etiquettes/${biere.slug}.png`,
       );
     }
   });
 
   /**
    * Le dessin de travail du Renard, seule illustration provisoire de la
-   * préproduction, a été remplacé par l'étiquette de Sophie. Ce test empêche
+   * préproduction, a été remplacé par les visuels de Sophie. Ce test empêche
    * qu'un `-provisoire` revienne dans une adresse.
    */
   it("ne pointent vers aucun dessin de travail", () => {
     for (const biere of bieres) {
-      if (biere.illustration) expect(biere.illustration).not.toMatch(/provisoire/i);
+      for (const chemin of [biere.animal, biere.etiquette]) {
+        if (chemin) expect(chemin).not.toMatch(/provisoire/i);
+      }
     }
   });
 });

@@ -29,7 +29,7 @@ describe("les champs que Marc n'a pas fournis", () => {
   it("laissent la place aux deux valeurs que Marc a bien corrigées", () => {
     render(<SpecsBiere biere={biere("le-renard")} />);
 
-    expect(ligne("Degré")).toHaveTextContent("6,4 % vol.");
+    expect(ligne("Degré")).toHaveTextContent("6,2 % vol.");
     // Trois variétés depuis le 24/09/2026 : ce que Marc avait donné le 21
     // étaient des origines, et il en manquait une.
     expect(ligne("Houblons")).toHaveTextContent(

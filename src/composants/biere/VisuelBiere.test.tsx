@@ -12,20 +12,39 @@ const cadreDe = (element: HTMLElement) =>
 
 describe("le cadre du visuel", () => {
   /**
+   * Changement du 04/09/2026 : une étiquette n'a plus de cadre du tout. Elle
+   * porte déjà son propre fond ardoise, quasi noir ; une boîte crème derrière
+   * doublait le contraste et « agressait les yeux ». Le cadre papier/béton ne
+   * vaut donc plus que pour le repli typographique, testé plus bas.
+   */
+  it("n'a aucun fond ni bordure quand la bière a son étiquette", () => {
+    const { container } = render(<VisuelBiere biere={corbeau} surPapier />);
+    const cadre = cadreDe(container);
+
+    expect(cadre).not.toContain("bg-papier");
+    expect(cadre).not.toContain("bg-beton");
+    expect(cadre).not.toMatch(/\bborder\b/);
+  });
+
+  /**
    * Correction de Sophie du 27/09 : sur le papier, pas de trait. « Un rectangle
    * clair cerné d'un trait au milieu d'une page sombre, on dirait une erreur de
    * chargement. »
    */
-  it("perd sa bordure quand il passe sur le papier", () => {
-    const { container } = render(<VisuelBiere biere={corbeau} surPapier />);
+  it("perd sa bordure quand le repli passe sur le papier", () => {
+    const { container } = render(
+      <VisuelBiere biere={{ ...corbeau, etiquette: undefined }} surPapier />,
+    );
     const cadre = cadreDe(container);
 
     expect(cadre).toContain("bg-papier");
     expect(cadre).not.toMatch(/\bborder\b/);
   });
 
-  it("garde le cadre validé en maquette quand il reste sur le béton", () => {
-    const { container } = render(<VisuelBiere biere={renard} />);
+  it("garde le cadre validé en maquette quand le repli reste sur le béton", () => {
+    const { container } = render(
+      <VisuelBiere biere={{ ...renard, etiquette: undefined }} />,
+    );
     const cadre = cadreDe(container);
 
     expect(cadre).toContain("bg-beton");
@@ -33,7 +52,9 @@ describe("le cadre du visuel", () => {
   });
 
   it("laisse au nom la même respiration qu'en grand écran", () => {
-    const { container } = render(<VisuelBiere biere={corbeau} surPapier />);
+    const { container } = render(
+      <VisuelBiere biere={{ ...corbeau, etiquette: undefined }} surPapier />,
+    );
     const cadre = cadreDe(container);
 
     // Seconde correction du 27/09 : « Le Corbeau » touchait presque le bord sur
@@ -47,7 +68,7 @@ describe("le cadre du visuel", () => {
    * dessin doit s'afficher sans attendre Sophie.
    */
   it("bascule sur le repli typographique quand la bière n'a pas d'étiquette", () => {
-    render(<VisuelBiere biere={{ ...renard, illustration: undefined }} surPapier />);
+    render(<VisuelBiere biere={{ ...renard, etiquette: undefined }} surPapier />);
     expect(screen.getByText(renard.nom)).toBeInTheDocument();
   });
 });
