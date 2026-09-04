@@ -8,16 +8,20 @@ const renard = bieres.find((b) => b.slug === "le-renard")!;
 
 describe("le fond du visuel d'une fiche", () => {
   /**
-   * Une fiche qui a son étiquette passe toujours sur le papier : l'étiquette de
-   * Sophie porte son propre fond ardoise, et les six se posent de la même façon
-   * sur le crème, alors qu'elles se fondraient dans le béton du site.
+   * Changement du 04/09/2026 : une fiche qui a son étiquette n'a plus aucun
+   * cadre. L'étiquette de Sophie porte son propre fond ardoise, quasi noir,
+   * déjà très proche du fond de la page ; une boîte crème derrière doublait le
+   * contraste et « agressait les yeux ». Le papier ne sert plus qu'au repli.
    */
-  it("passe sur le papier dès que la bière a son étiquette", () => {
+  it("n'a ni papier ni béton dès que la bière a son étiquette", () => {
     for (const biere of [corbeau, renard]) {
       expect(biere.etiquette).toBeDefined();
       const { container } = render(<FicheBiere biere={biere} />);
-      expect(container.querySelector(".bg-papier")).not.toBeNull();
-      expect(container.querySelector(".bg-beton")).toBeNull();
+      // Scopé à la colonne du visuel : les boutons plus bas dans la fiche
+      // portent eux aussi `bg-papier`, sans rapport avec le cadre.
+      const colonneVisuel = container.querySelector(".grid > div:first-child")!;
+      expect(colonneVisuel.querySelector(".bg-papier")).toBeNull();
+      expect(colonneVisuel.querySelector(".bg-beton")).toBeNull();
     }
   });
 
@@ -36,11 +40,11 @@ describe("le fond du visuel d'une fiche", () => {
 
   /**
    * Le cadre pleine hauteur et statique de Sophie ne vaut que pour le repli
-   * typographique. Une fiche illustrée, même sur cadre crème, garde la colonne
-   * collante comme les autres : la gêne du « rectangle blanc posé là » ne vaut
-   * que pour une boîte vide.
+   * typographique. Une fiche illustrée, sans cadre du tout depuis le
+   * 04/09/2026, garde la colonne collante comme les autres : la gêne du
+   * « rectangle posé là » ne valait que pour une boîte vide.
    */
-  it("garde la colonne collante sur une fiche avec étiquette, même en cadre crème", () => {
+  it("garde la colonne collante sur une fiche avec étiquette", () => {
     const { container } = render(<FicheBiere biere={corbeau} />);
     expect(container.querySelector(".lg\\:sticky")).not.toBeNull();
     expect(container.querySelector(".items-stretch")).toBeNull();

@@ -26,18 +26,14 @@ import { fondDuVisuel } from "@/lib/contraste";
  */
 export function FicheBiere({ biere }: { biere: Biere }) {
   /**
-   * Le fond du cadre.
-   *
-   * - **Avec une étiquette :** toujours le papier. L'étiquette de Sophie porte
-   *   son propre fond ardoise ; posée sur le crème, les six se détachent de la
-   *   même façon, alors que sur le béton du site elles se fondraient.
-   * - **Sans étiquette (repli typographique) :** le calcul de contraste. Le nom
-   *   est écrit dans la couleur de la bière, et le corbeau prune sur le béton
-   *   est à 1,25:1, invisible. Ces couleurs-là basculent sur le papier.
+   * Le fond du cadre, qui **ne vaut plus que pour le repli typographique**
+   * depuis le 04/09/2026 : une étiquette n'a plus de cadre du tout, elle porte
+   * son propre fond ardoise à même la page (voir `VisuelBiere`). Sans
+   * étiquette, le calcul de contraste tranche : le nom est écrit dans la
+   * couleur de la bière, et le corbeau prune sur le béton est à 1,25:1,
+   * invisible. Ces couleurs-là basculent sur le papier.
    */
-  const visuelSurPapier = biere.etiquette
-    ? true
-    : fondDuVisuel(biere.couleur) === "papier";
+  const visuelSurPapier = fondDuVisuel(biere.couleur) === "papier";
 
   /**
    * Le cadre pleine hauteur et statique, la demande de Sophie du 27/09, ne vaut
