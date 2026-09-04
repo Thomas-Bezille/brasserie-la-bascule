@@ -11,6 +11,14 @@ import { PORTES_OUVERTES_PUBLIEES } from "@/donnees/portes-ouvertes";
  * quand ils arriveront, sans reprise. `PORTES_OUVERTES_PUBLIEES` porte cette
  * décision.
  *
+ * **La date porte le bandeau, faute d'illustration** (retouché en session 15,
+ * sur un retour de Thomas : la première version, une carte de texte plate,
+ * « n'était pas très belle »). Sans couleur d'accent et sans visuel de Sophie,
+ * le seul levier restant est l'échelle : « 24–25 » reprend le traitement des
+ * grands titres (`font-titre`, la même famille que le h1 du hero), à une
+ * taille proche de la sienne, pour faire un repère plutôt qu'une fiche produit
+ * de plus.
+ *
  * `publie` est une entrée pour que le test voie les deux états sans toucher à
  * la constante, même parti pris que `Coffrets`.
  */
@@ -23,23 +31,31 @@ export function BandeauPortesOuvertes({
 
   return (
     <section className="border-trait px-marge border-t py-[clamp(40px,6vw,64px)]">
-      <div className="border-trait mx-auto flex max-w-[1240px] flex-wrap items-center justify-between gap-6 border p-[clamp(24px,4vw,40px)]">
-        <div>
-          <Surtitre className="text-papier/55">24 et 25 octobre</Surtitre>
-          <p className="font-titre mt-3 text-[clamp(22px,3vw,32px)] leading-tight font-semibold">
-            Portes ouvertes à l&apos;atelier.
+      <div className="border-trait mx-auto flex max-w-[1240px] flex-col gap-8 border p-[clamp(28px,4.5vw,48px)] sm:flex-row sm:items-center sm:gap-10">
+        <div className="border-trait shrink-0 sm:border-r sm:pr-10">
+          <p className="font-titre text-[clamp(60px,9vw,96px)] leading-[0.85] font-semibold">
+            24<span className="text-papier/40">–</span>25
           </p>
-          <p className="text-papier/60 mt-2 max-w-[52ch]">
-            Visites toutes les heures, dégustation du Sanglier en avant-première. Entrée
-            libre.
-          </p>
+          <Surtitre className="text-papier/55 mt-2">Octobre</Surtitre>
         </div>
-        <Link
-          href="/portes-ouvertes"
-          className="border-papier text-papier hover:bg-papier hover:text-encre shrink-0 border px-[22px] py-3 text-[14px] font-medium transition-colors"
-        >
-          Le programme
-        </Link>
+
+        <div className="flex flex-1 flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="font-titre text-[clamp(22px,2.6vw,30px)] leading-tight font-semibold">
+              Portes ouvertes à l&apos;atelier.
+            </p>
+            <p className="text-papier/60 mt-2 max-w-[46ch]">
+              Visites toutes les heures, dégustation du Sanglier en avant-première. Entrée
+              libre.
+            </p>
+          </div>
+          <Link
+            href="/portes-ouvertes"
+            className="border-papier text-papier hover:bg-papier hover:text-encre shrink-0 border px-[22px] py-3 text-[14px] font-medium transition-colors"
+          >
+            Le programme
+          </Link>
+        </div>
       </div>
     </section>
   );

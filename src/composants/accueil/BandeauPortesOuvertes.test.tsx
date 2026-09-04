@@ -14,6 +14,7 @@ describe("le bandeau Portes ouvertes", () => {
       "href",
       "/portes-ouvertes",
     );
-    expect(screen.getByText(/24 et 25 octobre/)).toBeInTheDocument();
+    expect(screen.getByText(/24.*25/)).toBeInTheDocument();
+    expect(screen.getByText("Octobre")).toBeInTheDocument();
   });
 });
