@@ -53,6 +53,18 @@ describe("le bandeau sticky Portes ouvertes", () => {
   });
 
   /**
+   * Ancienne v2, texte seul, faute de visuel à montrer. Le sanglier de Sophie
+   * est posé depuis (session 16), le bandeau doit le porter.
+   */
+  it("porte l'animal du Sanglier", () => {
+    render(<BandeauPortesOuvertes publie />);
+    const image = screen
+      .getByRole("region", { name: /Portes ouvertes/ })
+      .querySelector("img");
+    expect(image).toHaveAttribute("src", expect.stringContaining("le-sanglier"));
+  });
+
+  /**
    * Proposer « Voir le programme » à quelqu'un qui regarde déjà cette page
    * n'a pas de sens.
    */
