@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import type { Biere } from "@/donnees/bieres";
 import { bieres } from "@/donnees/bieres";
 import { SpecsBiere } from "./SpecsBiere";
 
@@ -7,6 +8,19 @@ const biere = (slug: string) => {
   const trouvee = bieres.find((b) => b.slug === slug);
   if (!trouvee) throw new Error(`bière introuvable : ${slug}`);
   return trouvee;
+};
+
+/**
+ * Les sept bières réelles ont toutes leur degré depuis le 09/10/2026 (fil
+ * client § 34, lu sur les étiquettes). Une bière fictive, sans aucun champ
+ * optionnel, est ce qu'il faut pour tester l'attente de Marc sur le reste.
+ */
+const biereSansDonnees: Biere = {
+  slug: "biere-de-test",
+  nom: "Bière de test",
+  type: "Test",
+  couleur: "#000000",
+  etat: "disponible",
 };
 
 const ligne = (intitule: string) => screen.getByText(intitule).parentElement;
@@ -38,7 +52,7 @@ describe("les champs que Marc n'a pas fournis", () => {
   });
 
   it("attendent tout d'une bière dont rien n'est arrêté", () => {
-    render(<SpecsBiere biere={biere("la-guepe")} />);
+    render(<SpecsBiere biere={biereSansDonnees} />);
     expect(ligne("Degré")).toHaveTextContent("en attente de Marc");
   });
 });

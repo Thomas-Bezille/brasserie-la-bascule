@@ -73,12 +73,14 @@ export type Biere = {
  * Les six permanentes, plus Le Sanglier, bière d'automne aux châtaignes
  * locales, sorti mi-octobre pour les portes ouvertes des 24 et 25 (avenant
  * n° 1). Sa couleur, `#6B4226`, est arrêtée au CDC 7.1 depuis le 22/09 ; ses
- * données techniques attendent Marc comme les autres. Ses visuels de Sophie
- * sont posés depuis le 02/10.
+ * visuels de Sophie sont posés depuis le 02/10.
  *
  * Les deux visuels de Sophie sont en place pour les sept : l'animal détouré
  * dans `public/illustrations/animaux/<slug>.png`, l'étiquette de bouteille
- * dans `public/illustrations/etiquettes/<slug>.png`.
+ * dans `public/illustrations/etiquettes/<slug>.png`. Le degré des sept est
+ * posé depuis le 09/10 (fil client § 34), lu sur ces mêmes étiquettes bon à
+ * tirer. IBU, malts, houblons et origines restent hors d'une étiquette et
+ * attendent toujours les fiches techniques de Marc.
  */
 export const bieres: readonly Biere[] = [
   {
@@ -87,6 +89,9 @@ export const bieres: readonly Biere[] = [
     type: "Ambrée",
     couleur: "#B25537",
     etat: "permanente",
+    // Degré lu sur l'étiquette bon à tirer de Sophie, confirmé par Julien le
+    // 09/10/2026 (fil client § 34), même principe que Le Renard.
+    degre: 6,
     animal: "/illustrations/animaux/la-rouquine.png",
     etiquette: "/illustrations/etiquettes/la-rouquine.png",
   },
@@ -133,6 +138,9 @@ export const bieres: readonly Biere[] = [
     type: "Blonde au miel",
     couleur: "#E3AE2B",
     etat: "permanente",
+    // Degré lu sur l'étiquette bon à tirer de Sophie, confirmé par Julien le
+    // 09/10/2026 (fil client § 34), même principe que Le Renard.
+    degre: 5.5,
     animal: "/illustrations/animaux/l-abeille.png",
     etiquette: "/illustrations/etiquettes/l-abeille.png",
   },
@@ -142,6 +150,9 @@ export const bieres: readonly Biere[] = [
     type: "Blanche",
     couleur: "#7FA9A6",
     etat: "permanente",
+    // Degré lu sur l'étiquette bon à tirer de Sophie, confirmé par Julien le
+    // 09/10/2026 (fil client § 34), même principe que Le Renard.
+    degre: 5,
     animal: "/illustrations/animaux/la-carpe.png",
     etiquette: "/illustrations/etiquettes/la-carpe.png",
   },
@@ -151,6 +162,9 @@ export const bieres: readonly Biere[] = [
     type: "Stout",
     couleur: "#4A2F3D",
     etat: "permanente",
+    // Degré lu sur l'étiquette bon à tirer de Sophie, confirmé par Julien le
+    // 09/10/2026 (fil client § 34), même principe que Le Renard.
+    degre: 6.5,
     animal: "/illustrations/animaux/le-corbeau.png",
     etiquette: "/illustrations/etiquettes/le-corbeau.png",
   },
@@ -160,6 +174,9 @@ export const bieres: readonly Biere[] = [
     type: "Triple",
     couleur: "#9E2B25",
     etat: "permanente",
+    // Degré lu sur l'étiquette bon à tirer de Sophie, confirmé par Julien le
+    // 09/10/2026 (fil client § 34), même principe que Le Renard.
+    degre: 8,
     animal: "/illustrations/animaux/la-guepe.png",
     etiquette: "/illustrations/etiquettes/la-guepe.png",
   },
@@ -169,6 +186,9 @@ export const bieres: readonly Biere[] = [
     type: "Bière d'automne aux châtaignes",
     couleur: "#6B4226",
     etat: "disponible",
+    // Degré lu sur l'étiquette bon à tirer de Sophie, confirmé par Julien le
+    // 09/10/2026 (fil client § 34), même principe que Le Renard.
+    degre: 6.2,
     animal: "/illustrations/animaux/le-sanglier.png",
     etiquette: "/illustrations/etiquettes/le-sanglier.png",
   },
