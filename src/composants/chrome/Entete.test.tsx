@@ -107,6 +107,25 @@ describe("la page courante", () => {
   });
 });
 
+describe("le sixième lien, Portes ouvertes", () => {
+  /**
+   * Hors des cinq pages de la maquette validée (session 16) : présent tant
+   * que `PORTES_OUVERTES_PUBLIEES` l'est, sur les deux menus.
+   */
+  it("apparaît sur le menu de bureau et sur celui de téléphone", async () => {
+    const utilisateur = userEvent.setup();
+    render(<Entete />);
+
+    // Le menu de téléphone n'est dans l'arbre d'accessibilité qu'ouvert,
+    // comme les autres tests de ce fichier qui l'interrogent.
+    await utilisateur.click(screen.getByRole("button", { name: /ouvrir le menu/i }));
+
+    const liens = screen.getAllByRole("link", { name: "Portes ouvertes" });
+    expect(liens.length).toBe(2);
+    for (const lien of liens) expect(lien).toHaveAttribute("href", "/portes-ouvertes");
+  });
+});
+
 describe("le lien du logo", () => {
   /**
    * WCAG 2.5.3 « intitulé dans le nom » : le nom accessible d'un lien doit

@@ -20,11 +20,11 @@ import { donneesPortesOuvertes } from "@/lib/seo";
  * venue » renvoie vers le formulaire de contact existant, dont le motif
  * « Portes ouvertes » est déjà proposé (`lib/contact/types.ts`, page Contact).
  *
- * **Pas encore reliée au menu ni au plan du site**, comme « Notre histoire » :
- * ni `navigationPrincipale` ni `liensLegaux` ne la portent. `PORTES_OUVERTES_PUBLIEES`
- * gate le bandeau sticky du site (`composants/chrome/BandeauPortesOuvertes.tsx`)
- * qui y renvoie ; la page elle-même existe et fonctionne dès maintenant, à
- * l'adresse `/portes-ouvertes`, comme « Où nous trouver » avant sa publication.
+ * **Reliée au menu et au plan du site depuis la session 16** (`lienPortesOuvertes`
+ * dans `donnees/navigation.ts`, `sitemap.ts`). Hors des cinq pages de la
+ * maquette validée, elle suit son propre interrupteur, `PORTES_OUVERTES_PUBLIEES`,
+ * qui gate aussi le bandeau sticky (`composants/chrome/BandeauPortesOuvertes.tsx`) :
+ * Thomas le repassera à `false` après le 25/10, quand l'événement sera passé.
  */
 export const metadata: Metadata = {
   title: "Portes ouvertes 2026",
