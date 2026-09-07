@@ -73,12 +73,12 @@ export type Biere = {
  * Les six permanentes, plus Le Sanglier, bière d'automne aux châtaignes
  * locales, sorti mi-octobre pour les portes ouvertes des 24 et 25 (avenant
  * n° 1). Sa couleur, `#6B4226`, est arrêtée au CDC 7.1 depuis le 22/09 ; ses
- * données techniques attendent Marc comme les autres, et Sophie n'a pas encore
- * dessiné son étiquette, donc il reste sur son repli typographique.
+ * données techniques attendent Marc comme les autres. Ses visuels de Sophie
+ * sont posés depuis le 02/10.
  *
- * Les deux visuels de Sophie sont en place pour les six permanentes : l'animal
- * détouré dans `public/illustrations/animaux/<slug>.png`, l'étiquette de
- * bouteille dans `public/illustrations/etiquettes/<slug>.png`.
+ * Les deux visuels de Sophie sont en place pour les sept : l'animal détouré
+ * dans `public/illustrations/animaux/<slug>.png`, l'étiquette de bouteille
+ * dans `public/illustrations/etiquettes/<slug>.png`.
  */
 export const bieres: readonly Biere[] = [
   {
@@ -169,5 +169,7 @@ export const bieres: readonly Biere[] = [
     type: "Bière d'automne aux châtaignes",
     couleur: "#6B4226",
     etat: "disponible",
+    animal: "/illustrations/animaux/le-sanglier.png",
+    etiquette: "/illustrations/etiquettes/le-sanglier.png",
   },
 ];
