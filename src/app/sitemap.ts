@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { bieres } from "@/donnees/bieres";
 import { liensLegaux, navigationPrincipale } from "@/donnees/navigation";
+import { PORTES_OUVERTES_PUBLIEES } from "@/donnees/portes-ouvertes";
 import { URL_SITE } from "@/lib/seo";
 
 /**
@@ -11,6 +12,10 @@ import { URL_SITE } from "@/lib/seo";
  *
  * Les fiches de bières y sont toutes : elles existent, et leur adresse ne
  * changera plus.
+ *
+ * « Portes ouvertes » n'est pas dans `navigationPrincipale` (hors des cinq
+ * pages de la maquette validée, voir `lienPortesOuvertes`) : elle suit son
+ * propre interrupteur, `PORTES_OUVERTES_PUBLIEES`, plutôt que `livree`.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [...navigationPrincipale, ...liensLegaux]
@@ -19,5 +24,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const fiches = bieres.map(({ slug }) => ({ url: `${URL_SITE}/nos-bieres/${slug}` }));
 
-  return [...pages, ...fiches];
+  const portesOuvertes = PORTES_OUVERTES_PUBLIEES
+    ? [{ url: `${URL_SITE}/portes-ouvertes` }]
+    : [];
+
+  return [...pages, ...fiches, ...portesOuvertes];
 }

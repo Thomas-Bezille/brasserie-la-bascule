@@ -28,4 +28,12 @@ describe("le plan du site", () => {
       expect(adresses()).toContain(`/nos-bieres/${slug}`);
     }
   });
+
+  /**
+   * Hors de `navigationPrincipale` (pas une des cinq pages de la maquette
+   * validée), elle suit son propre interrupteur, `PORTES_OUVERTES_PUBLIEES`.
+   */
+  it("propose Portes ouvertes tant qu'elle est publiée", () => {
+    expect(adresses()).toContain("/portes-ouvertes");
+  });
 });

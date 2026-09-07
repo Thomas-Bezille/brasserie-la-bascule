@@ -1,3 +1,5 @@
+import { PORTES_OUVERTES_PUBLIEES } from "@/donnees/portes-ouvertes";
+
 /**
  * La navigation, source unique.
  *
@@ -24,6 +26,17 @@ export const navigationPrincipale: readonly Lien[] = [
   { libelle: "Où nous trouver", href: "/ou-nous-trouver", livree: false },
   { libelle: "Contact", href: "/contact", livree: true },
 ];
+
+/**
+ * Sixième lien, hors des cinq pages de la maquette validée : l'avenant n° 1
+ * demande une présence au menu « pendant la durée de l'événement ». Comme les
+ * autres interrupteurs du site (`COFFRETS_PUBLIES`, `SITE_PUBLIE`), pas de
+ * fenêtre de date calculée : `PORTES_OUVERTES_PUBLIEES` est ce qui l'affiche,
+ * et c'est Thomas qui le repassera à `false` après le 25/10.
+ */
+export const lienPortesOuvertes: Lien | null = PORTES_OUVERTES_PUBLIEES
+  ? { libelle: "Portes ouvertes", href: "/portes-ouvertes", livree: true }
+  : null;
 
 export const liensLegaux: readonly Lien[] = [
   { libelle: "Mentions légales", href: "/mentions-legales", livree: false },

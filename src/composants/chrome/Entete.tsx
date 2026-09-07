@@ -4,7 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "@/composants/ui/Logo";
-import { lienReservation, navigationPrincipale } from "@/donnees/navigation";
+import {
+  lienPortesOuvertes,
+  lienReservation,
+  navigationPrincipale,
+} from "@/donnees/navigation";
 
 /**
  * En-tête du site.
@@ -47,6 +51,12 @@ export function Entete() {
   const estCourante = (href: string) =>
     href === "/" ? cheminCourant === "/" : cheminCourant.startsWith(href);
 
+  // Sixième lien, hors des cinq pages de la maquette validée : voir
+  // `lienPortesOuvertes` dans `donnees/navigation.ts`.
+  const liens = lienPortesOuvertes
+    ? [...navigationPrincipale, lienPortesOuvertes]
+    : navigationPrincipale;
+
   return (
     <header className="bg-encre/92 border-trait sticky top-0 z-50 border-b backdrop-blur-[10px]">
       <div className="px-marge mx-auto flex max-w-[1240px] items-center justify-between gap-6 py-4">
@@ -60,9 +70,17 @@ export function Entete() {
 
         <nav
           aria-label="Navigation principale"
-          className="hidden items-center gap-[30px] lg:flex"
+          // **Défaut préexistant trouvé en posant le sixième lien (session 16),
+          // gap resserré de 30 à 22 px en même temps.** Entre 1024 px (`lg`,
+          // seuil d'apparition de ce menu) et environ 1080 px, les cinq liens
+          // d'origine débordaient déjà de la largeur disponible et repliaient
+          // les libellés longs sur deux lignes ; « Portes ouvertes » élargissait
+          // cette zone cassée jusqu'à environ 1225 px. Le menu bascule donc à
+          // `xl` (1280 px) plutôt que `lg` : en dessous, le menu téléphone
+          // prend le relais, où il n'y a jamais ce risque de repli.
+          className="hidden items-center gap-[22px] xl:flex"
         >
-          {navigationPrincipale.map((lien) => (
+          {liens.map((lien) => (
             <Link
               key={lien.href}
               href={lien.href}
@@ -96,7 +114,7 @@ export function Entete() {
             aria-expanded={menuOuvert}
             aria-controls="menu-mobile"
             aria-label={menuOuvert ? "Fermer le menu" : "Ouvrir le menu"}
-            className="text-papier p-2 text-[22px] leading-none lg:hidden"
+            className="text-papier p-2 text-[22px] leading-none xl:hidden"
           >
             {menuOuvert ? "✕" : "☰"}
           </button>
@@ -107,9 +125,9 @@ export function Entete() {
         id="menu-mobile"
         aria-label="Navigation principale, téléphone"
         hidden={!menuOuvert}
-        className="bg-encre border-trait px-marge border-b pb-6 lg:hidden"
+        className="bg-encre border-trait px-marge border-b pb-6 xl:hidden"
       >
-        {navigationPrincipale.map((lien) => (
+        {liens.map((lien) => (
           <Link
             key={lien.href}
             href={lien.href}
