@@ -275,7 +275,7 @@ export function FormulaireReservation({
   }
 
   return (
-    <form action={envoyer} className="max-w-[640px]" noValidate>
+    <form action={envoyer} className="max-w-[900px]" noValidate>
       <fieldset className="border-0 p-0">
         <legend className="text-[15px] font-medium">La formule</legend>
         <div className="mt-3 flex flex-wrap gap-2.5">
@@ -312,89 +312,99 @@ export function FormulaireReservation({
           : "Choisissez une formule."}
       </p>
 
-      <div className="mt-8">
-        <p className="text-[15px] font-medium">Le créneau</p>
-        {creneaux.length === 0 ? (
-          <p className="text-papier/60 mt-3">
-            Aucun créneau n&apos;est ouvert pour cette formule en ce moment.
-          </p>
-        ) : (
-          <>
-            <CalendrierCreneaux
-              key={formuleChoisie}
-              creneaux={creneaux}
-              creneauChoisi={creneauChoisi}
-              onChoisir={setCreneauChoisi}
-            />
-            <p className="text-papier/55 mt-3 text-[14px]">
-              {creneauChoisi
-                ? `Créneau choisi : ${new Date(creneauChoisi).toLocaleDateString(
-                    "fr-FR",
-                    {
-                      weekday: "long",
-                      day: "numeric",
-                      month: "long",
-                    },
-                  )}, ${heureDuCreneau(creneauChoisi)}.`
-                : "Cliquez sur un jour disponible pour voir ses horaires."}
+      {/*
+        Le créneau à gauche, les coordonnées à droite : demande de Thomas du
+        08/09/2026, contre le premier essai qui empilait tout en une colonne.
+        Une seule colonne reste en dessous de `lg`, le calendrier garde alors
+        sa place naturelle au-dessus des champs.
+      */}
+      <div className="mt-8 grid gap-10 lg:grid-cols-[380px_1fr]">
+        <div>
+          <p className="text-[15px] font-medium">Le créneau</p>
+          {creneaux.length === 0 ? (
+            <p className="text-papier/60 mt-3">
+              Aucun créneau n&apos;est ouvert pour cette formule en ce moment.
             </p>
-          </>
-        )}
-      </div>
-
-      <div className="mt-8 grid gap-5 sm:grid-cols-2">
-        <Champ
-          identifiant={`${identifiant}-personnes`}
-          nom="nombreDePersonnes"
-          libelle="Nombre de personnes"
-          type="number"
-          anomalie={anomalie("nombreDePersonnes")}
-          attributs={{ min: formule?.effectifMin, max: formule?.effectifMax }}
-        />
-        <Champ
-          identifiant={`${identifiant}-nom`}
-          nom="nom"
-          libelle="Votre nom"
-          anomalie={anomalie("nom")}
-        />
-        <Champ
-          identifiant={`${identifiant}-email`}
-          nom="email"
-          libelle="Courriel"
-          type="email"
-          anomalie={anomalie("email")}
-        />
-        <Champ
-          identifiant={`${identifiant}-telephone`}
-          nom="telephone"
-          libelle="Téléphone"
-          type="tel"
-          anomalie={anomalie("telephone")}
-        />
-        <div className="sm:col-span-2">
-          <Champ
-            identifiant={`${identifiant}-entreprise`}
-            nom="entreprise"
-            libelle="Entreprise (facultatif)"
-            obligatoire={false}
-          />
+          ) : (
+            <>
+              <CalendrierCreneaux
+                key={formuleChoisie}
+                creneaux={creneaux}
+                creneauChoisi={creneauChoisi}
+                onChoisir={setCreneauChoisi}
+              />
+              <p className="text-papier/55 mt-3 text-[14px]">
+                {creneauChoisi
+                  ? `Créneau choisi : ${new Date(creneauChoisi).toLocaleDateString(
+                      "fr-FR",
+                      {
+                        weekday: "long",
+                        day: "numeric",
+                        month: "long",
+                      },
+                    )}, ${heureDuCreneau(creneauChoisi)}.`
+                  : "Cliquez sur un jour disponible pour voir ses horaires."}
+              </p>
+            </>
+          )}
         </div>
-      </div>
 
-      <div className="mt-5">
-        <label htmlFor={`${identifiant}-message`} className="text-[15px] font-medium">
-          Votre message (facultatif)
-        </label>
-        <textarea
-          id={`${identifiant}-message`}
-          name="message"
-          rows={3}
-          className="border-trait bg-encre mt-2 w-full border px-3.5 py-3 text-[16px]"
-        />
-        <p className="text-papier/55 mt-2 text-[14px]">
-          Dites-nous ici si quelqu&apos;un ne boit pas d&apos;alcool, une boisson sans
-          alcool est prévue.
-        </p>
+        <div>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <Champ
+              identifiant={`${identifiant}-personnes`}
+              nom="nombreDePersonnes"
+              libelle="Nombre de personnes"
+              type="number"
+              anomalie={anomalie("nombreDePersonnes")}
+              attributs={{ min: formule?.effectifMin, max: formule?.effectifMax }}
+            />
+            <Champ
+              identifiant={`${identifiant}-nom`}
+              nom="nom"
+              libelle="Votre nom"
+              anomalie={anomalie("nom")}
+            />
+            <Champ
+              identifiant={`${identifiant}-email`}
+              nom="email"
+              libelle="Courriel"
+              type="email"
+              anomalie={anomalie("email")}
+            />
+            <Champ
+              identifiant={`${identifiant}-telephone`}
+              nom="telephone"
+              libelle="Téléphone"
+              type="tel"
+              anomalie={anomalie("telephone")}
+            />
+            <div className="sm:col-span-2">
+              <Champ
+                identifiant={`${identifiant}-entreprise`}
+                nom="entreprise"
+                libelle="Entreprise (facultatif)"
+                obligatoire={false}
+              />
+            </div>
+          </div>
+
+          <div className="mt-5">
+            <label htmlFor={`${identifiant}-message`} className="text-[15px] font-medium">
+              Votre message (facultatif)
+            </label>
+            <textarea
+              id={`${identifiant}-message`}
+              name="message"
+              rows={3}
+              className="border-trait bg-encre mt-2 w-full border px-3.5 py-3 text-[16px]"
+            />
+            <p className="text-papier/55 mt-2 text-[14px]">
+              Dites-nous ici si quelqu&apos;un ne boit pas d&apos;alcool, une boisson sans
+              alcool est prévue.
+            </p>
+          </div>
+        </div>
       </div>
 
       {etat.statut === "creneau-complet" && (
