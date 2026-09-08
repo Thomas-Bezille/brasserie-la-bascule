@@ -5,6 +5,7 @@ import { useActionState, useId, useMemo, useState } from "react";
 import { demanderUneReservation } from "@/app/visites-et-degustations/actions";
 import { FORMULAIRE_VIERGE } from "@/app/visites-et-degustations/etat-formulaire";
 import type { Formule } from "@/donnees/infos-pratiques";
+import { formaterHeure } from "@/lib/formats";
 import type { Creneau } from "@/lib/reservation/types";
 
 /**
@@ -23,14 +24,52 @@ import type { Creneau } from "@/lib/reservation/types";
  * Les créneaux arrivent du serveur, déjà filtrés sur ceux qui ont de la place.
  */
 
-const formaterCreneau = (iso: string) =>
-  new Date(iso).toLocaleString("fr-FR", {
+/**
+ * Le jour d'un créneau, en toutes lettres : sert de clé de regroupement et de
+ * texte affiché, les deux lus sur la même donnée pour ne jamais désaccorder
+ * l'un de l'autre.
+ */
+const jourDuCreneau = (iso: string) =>
+  new Date(iso).toLocaleDateString("fr-FR", {
     weekday: "long",
     day: "numeric",
     month: "long",
-    hour: "2-digit",
-    minute: "2-digit",
   });
+
+/** L'heure seule, dans le même format que le reste du site (`formaterHeure`). */
+const heureDuCreneau = (iso: string) => {
+  const date = new Date(iso);
+  const heures = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return formaterHeure(`${heures}:${minutes}`);
+};
+
+/**
+ * Les créneaux d'une formule, regroupés par jour.
+ *
+ * **Le remplacement du 08/09/2026 d'une liste `<select>` plate.** Sur une
+ * fenêtre de huit semaines, deux jours ouverts par semaine, la liste dépassait
+ * quinze lignes toutes au même format « jour date à heure · places » : rien ne
+ * distinguait un jour du suivant, et « · 10 places » se répétait sur presque
+ * chaque ligne puisque la capacité ne varie pas. Regrouper par jour, et ne
+ * garder que l'heure sur chaque créneau, retire la redite sans retirer
+ * l'information.
+ */
+/** Référence stable : un `?? []` inline recréerait un tableau à chaque rendu. */
+const CRENEAUX_VIDES: readonly Creneau[] = [];
+
+function creneauxParJour(
+  creneaux: readonly Creneau[],
+): ReadonlyMap<string, readonly Creneau[]> {
+  const groupes = new Map<string, Creneau[]>();
+  for (const creneau of creneaux) {
+    const jour = jourDuCreneau(creneau.debut);
+    const groupe = groupes.get(jour);
+    if (groupe) groupe.push(creneau);
+    else groupes.set(jour, [creneau]);
+  }
+  return groupes;
+}
 
 export function FormulaireReservation({
   formules,
@@ -44,9 +83,11 @@ export function FormulaireReservation({
     FORMULAIRE_VIERGE,
   );
   const [formuleChoisie, setFormuleChoisie] = useState(formules[0]?.nom ?? "");
+  const [creneauChoisi, setCreneauChoisi] = useState("");
   const identifiant = useId();
 
-  const creneaux = creneauxParFormule[formuleChoisie] ?? [];
+  const creneaux = creneauxParFormule[formuleChoisie] ?? CRENEAUX_VIDES;
+  const parJour = useMemo(() => creneauxParJour(creneaux), [creneaux]);
   const formule = useMemo(
     () => formules.find((f) => f.nom === formuleChoisie),
     [formules, formuleChoisie],
@@ -91,7 +132,11 @@ export function FormulaireReservation({
                 name="formule"
                 value={f.nom}
                 checked={formuleChoisie === f.nom}
-                onChange={() => setFormuleChoisie(f.nom)}
+                onChange={() => {
+                  setFormuleChoisie(f.nom);
+                  // Les créneaux d'une formule ne sont pas ceux de l'autre.
+                  setCreneauChoisi("");
+                }}
                 className="sr-only"
               />
               {f.nom}
@@ -106,33 +151,48 @@ export function FormulaireReservation({
           : "Choisissez une formule."}
       </p>
 
-      <div className="mt-8">
-        <label htmlFor={`${identifiant}-creneau`} className="text-[15px] font-medium">
-          Le créneau
-        </label>
+      <fieldset className="mt-8 border-0 p-0">
+        <legend className="text-[15px] font-medium">Le créneau</legend>
         {creneaux.length === 0 ? (
           <p className="text-papier/60 mt-3">
             Aucun créneau n&apos;est ouvert pour cette formule en ce moment.
           </p>
         ) : (
-          <select
-            id={`${identifiant}-creneau`}
-            name="creneau"
-            required
-            defaultValue=""
-            className="border-trait bg-encre mt-3 w-full border px-3.5 py-3 text-[16px]"
-          >
-            <option value="" disabled>
-              Choisissez un créneau
-            </option>
-            {creneaux.map((creneau) => (
-              <option key={creneau.debut} value={creneau.debut}>
-                {formaterCreneau(creneau.debut)} · {creneau.placesRestantes} places
-              </option>
+          <div className="mt-3 flex flex-col gap-4">
+            {[...parJour].map(([jour, creneauxDuJour]) => (
+              <div key={jour}>
+                <p className="text-papier/70 text-[14px] font-medium first-letter:uppercase">
+                  {jour}
+                </p>
+                <div className="mt-2 flex flex-wrap gap-2.5">
+                  {creneauxDuJour.map((creneau) => (
+                    <label
+                      key={creneau.debut}
+                      className={`cursor-pointer border px-4 py-2.5 text-[15px] ${
+                        creneauChoisi === creneau.debut
+                          ? "border-papier bg-papier text-encre"
+                          : "border-trait"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="creneau"
+                        value={creneau.debut}
+                        required
+                        checked={creneauChoisi === creneau.debut}
+                        onChange={() => setCreneauChoisi(creneau.debut)}
+                        className="sr-only"
+                      />
+                      {heureDuCreneau(creneau.debut)} · {creneau.placesRestantes}{" "}
+                      {creneau.placesRestantes > 1 ? "places" : "place"}
+                    </label>
+                  ))}
+                </div>
+              </div>
             ))}
-          </select>
+          </div>
         )}
-      </div>
+      </fieldset>
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2">
         <Champ

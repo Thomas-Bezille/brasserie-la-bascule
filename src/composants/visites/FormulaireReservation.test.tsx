@@ -38,10 +38,52 @@ describe("le formulaire de réservation", () => {
   it("propose les créneaux avec le nombre de places restantes", () => {
     rendre();
 
-    const liste = screen.getByLabelText("Le créneau");
-    expect(liste).toBeInTheDocument();
-    expect(screen.getByRole("option", { name: /6 places/ })).toBeInTheDocument();
-    expect(screen.getByRole("option", { name: /10 places/ })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "Le créneau" })).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: /6 places/ })).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: /10 places/ })).toBeInTheDocument();
+  });
+
+  /**
+   * Correctif du 08/09/2026 : une liste `<select>` plate de plus de quinze
+   * lignes toutes au format « jour date à heure · places » était illisible,
+   * rien ne distinguait un jour du suivant. Regroupés, chaque jour n'apparaît
+   * qu'une fois, et l'heure seule suffit sur chaque créneau.
+   */
+  it("regroupe les créneaux par jour plutôt qu'une liste plate", () => {
+    rendre();
+
+    const jour = new Date(creneaux[0]!.debut).toLocaleDateString("fr-FR", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+    });
+    expect(screen.getAllByText(new RegExp(jour, "i")).length).toBeGreaterThan(0);
+  });
+
+  it("oublie le créneau choisi quand on change de formule", () => {
+    const entreprise = visites.find((f) => f.nom === "Visite entreprise")!;
+    const creneauEntreprise: Creneau = {
+      debut: "2026-10-09T17:00:00.000Z",
+      fin: "2026-10-09T19:30:00.000Z",
+      placesRestantes: 4,
+    };
+
+    render(
+      <FormulaireReservation
+        formules={visites}
+        creneauxParFormule={{
+          [decouverte.nom]: creneaux,
+          [entreprise.nom]: [creneauEntreprise],
+        }}
+      />,
+    );
+
+    const premierCreneau = screen.getByRole("radio", { name: /6 places/ });
+    premierCreneau.click();
+    expect(premierCreneau).toBeChecked();
+
+    screen.getByRole("radio", { name: "Visite entreprise" }).click();
+    expect(screen.getByRole("radio", { name: /4 places/ })).not.toBeChecked();
   });
 
   it("empêche d'envoyer quand aucun créneau n'est ouvert", () => {
