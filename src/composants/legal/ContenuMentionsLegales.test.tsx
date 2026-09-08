@@ -16,17 +16,14 @@ describe("les mentions légales", () => {
     expect(screen.getByText(new RegExp(entreprise.siege.commune))).toBeInTheDocument();
   });
 
-  /**
-   * Règle du cahier des charges 6, valable pour la même raison que sur les
-   * fiches de bières : un champ qu'on n'a pas ne s'invente pas, la page signale
-   * l'attente.
-   */
-  it("signale l'attente sur la TVA et l'entrepositaire, les deux seuls champs qui manquent", () => {
-    expect(entreprise.tvaIntracommunautaire).toBeUndefined();
-    expect(entreprise.numeroEntrepositaireAgree).toBeUndefined();
-
+  it("porte la TVA intracommunautaire et le numéro d'entrepositaire agréé", () => {
     render(<ContenuMentionsLegales />);
-    expect(screen.getAllByText(/en attente/i)).toHaveLength(2);
+    expect(
+      screen.getByText(new RegExp(entreprise.tvaIntracommunautaire)),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(new RegExp(entreprise.numeroEntrepositaireAgree)),
+    ).toBeInTheDocument();
   });
 
   it("nomme Julien Mercier directeur de publication", () => {

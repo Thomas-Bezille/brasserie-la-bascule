@@ -19,14 +19,21 @@ describe("l'identité de la société", () => {
     expect(entreprise.siret).toBe("911 283 745 00022");
   });
 
-  it("laisse la TVA intracommunautaire vide tant qu'elle n'est pas connue", () => {
-    // Chez le comptable. Une page qui en a besoin signale l'attente, elle
-    // n'invente pas un numéro.
-    expect(entreprise.tvaIntracommunautaire).toBeUndefined();
+  /**
+   * Sortie de la fiction, 08/09/2026 : la clé de contrôle (46) est la vraie
+   * formule française appliquée au SIREN 911283745, pas un chiffre au hasard.
+   */
+  it("porte une TVA intracommunautaire dont la clé de contrôle est juste", () => {
+    expect(entreprise.tvaIntracommunautaire).toBe("FR46 911 283 745");
+
+    const sansPrefixe = entreprise.tvaIntracommunautaire.slice(2).replace(/\s/g, "");
+    const cle = Number(sansPrefixe.slice(0, 2));
+    const siren = Number(sansPrefixe.slice(2));
+    expect(cle).toBe((12 + 3 * (siren % 97)) % 97);
   });
 
-  it("laisse le numéro d'entrepositaire agréé vide tant que Marc ne l'a pas donné", () => {
-    expect(entreprise.numeroEntrepositaireAgree).toBeUndefined();
+  it("porte un numéro d'entrepositaire agréé, sorti de la fiction le 08/09/2026", () => {
+    expect(entreprise.numeroEntrepositaireAgree).toBe("FR44 2022 0143");
   });
 
   it("nomme Julien Mercier directeur de publication, tranché le 08/09/2026", () => {
