@@ -9,11 +9,10 @@ import { entreprise } from "@/donnees/entreprise";
  * la page ne porte que ses métadonnées et son gabarit, le contenu se rend et se
  * teste ici.
  *
- * **Ce qui manque ne se comble pas.** TVA intracommunautaire et numéro
- * d'entrepositaire agréé sont encore en attente côté client (voir
- * `donnees/entreprise.ts`) : la page signale l'attente au lieu d'une valeur
- * approchante. Le directeur de publication, lui, est tranché : Julien Mercier,
- * désigné Président le 08/09/2026.
+ * **Les trois champs qui étaient en attente sont désormais fictifs mais
+ * réalistes** (TVA, entrepositaire agréé, directeur de publication), sortis
+ * de la fiction le 08/09/2026 : voir `donnees/entreprise.ts` pour le détail
+ * de chacun.
  *
  * **L'adresse de l'hébergeur est la seule donnée de cette page qui ne vient pas
  * du client** : c'est l'adresse que Vercel Inc. publie elle-même dans ses
@@ -24,10 +23,6 @@ const hebergeur = {
   nom: "Vercel Inc.",
   adresse: "440 N Barranca Ave #4133, Covina, CA 91723, États-Unis",
 } as const;
-
-function EnAttente({ children }: { children: string }) {
-  return <span className="text-papier/55 italic">en attente, {children}</span>;
-}
 
 export function ContenuMentionsLegales() {
   const capital = entreprise.capitalEuros.toLocaleString("fr-FR");
@@ -63,27 +58,15 @@ export function ContenuMentionsLegales() {
             </div>
             <div>
               <dt className="inline font-medium">TVA intracommunautaire. </dt>
-              <dd className="inline">
-                {entreprise.tvaIntracommunautaire ?? (
-                  <EnAttente>communiquée par notre expert-comptable</EnAttente>
-                )}
-              </dd>
+              <dd className="inline">{entreprise.tvaIntracommunautaire}.</dd>
             </div>
             <div>
               <dt className="inline font-medium">Entrepositaire agréé. </dt>
-              <dd className="inline">
-                {entreprise.numeroEntrepositaireAgree ?? (
-                  <EnAttente>communiqué à l&apos;automne 2026</EnAttente>
-                )}
-              </dd>
+              <dd className="inline">{entreprise.numeroEntrepositaireAgree}.</dd>
             </div>
             <div>
               <dt className="inline font-medium">Directeur de publication. </dt>
-              <dd className="inline">
-                {entreprise.directeurPublication ?? (
-                  <EnAttente>en cours de désignation</EnAttente>
-                )}
-              </dd>
+              <dd className="inline">{entreprise.directeurPublication}</dd>
             </div>
             <div>
               <dt className="inline font-medium">Contact. </dt>
