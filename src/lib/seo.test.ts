@@ -29,6 +29,10 @@ const biereSansDonnees: Biere = {
 };
 
 describe("la fiche d'entreprise", () => {
+  it("publie le téléphone au format international, sorti de la fiction le 08/09/2026", () => {
+    expect(donneesBrasserie().telephone).toBe("+33261910412");
+  });
+
   it("publie les horaires de la source unique, en jours lisibles par un moteur", () => {
     expect(donneesBrasserie().openingHoursSpecification).toEqual([
       {

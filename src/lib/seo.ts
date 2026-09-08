@@ -7,7 +7,7 @@ import {
   visites,
 } from "@/donnees/infos-pratiques";
 import { joursPortesOuvertes } from "@/donnees/portes-ouvertes";
-import { complementDuNom } from "@/lib/formats";
+import { complementDuNom, telephoneHref } from "@/lib/formats";
 
 /**
  * Les données structurées du site.
@@ -85,6 +85,7 @@ export function donneesBrasserie() {
       "Microbrasserie artisanale à Vertou, près de Nantes. Six bières permanentes, boutique, marché du dimanche et visites de l'atelier avec dégustation.",
     url: URL_SITE,
     email: contact.email,
+    telephone: telephoneHref(contact.telephone).replace("tel:", ""),
     address: {
       "@type": "PostalAddress",
       streetAddress: adresse.voie,

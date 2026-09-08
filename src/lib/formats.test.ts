@@ -6,6 +6,7 @@ import {
   formaterDuree,
   formaterHeure,
   formaterPrix,
+  telephoneHref,
 } from "./formats";
 
 const INSECABLE = " ";
@@ -67,6 +68,12 @@ describe("complementDuNom", () => {
 
   it("laisse un nom sans article se présenter seul", () => {
     expect(complementDuNom("Sanglier")).toBe("de Sanglier");
+  });
+});
+
+describe("telephoneHref", () => {
+  it("convertit le numéro affiché en lien tel: au format international", () => {
+    expect(telephoneHref("02 61 91 04 12")).toBe("tel:+33261910412");
   });
 });
 
