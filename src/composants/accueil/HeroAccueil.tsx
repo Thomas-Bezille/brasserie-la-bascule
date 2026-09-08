@@ -70,12 +70,19 @@ export function HeroAccueil() {
             coupé, la pousser à droite ne faisait donc que la décentrer sans
             raison. Elle reste centrée jusqu'à `lg`.
           */}
+          {/*
+            fetchPriority="high", correctif de l'audit Lighthouse du
+            08/09/2026 : c'est l'image de LCP de l'accueil, et `priority`
+            seul ne suffisait pas à la faire servir en priorité réseau
+            haute, voir le même correctif documenté sur `VisuelBiere`.
+          */}
           <Image
             src="/illustrations/bascule.png"
             alt=""
             width={1200}
             height={1200}
             priority
+            fetchPriority="high"
             sizes="(min-width: 1024px) 640px, 80vw"
             className="mx-auto w-[80%] max-w-[420px] lg:mx-0 lg:-mt-[14%] lg:ml-auto lg:w-[124%] lg:max-w-none"
           />
