@@ -5,7 +5,7 @@ import { FicheBiere } from "@/composants/biere/FicheBiere";
 import { DonneesStructurees } from "@/composants/ui/DonneesStructurees";
 import { Surtitre } from "@/composants/ui/Surtitre";
 import { bieres } from "@/donnees/bieres";
-import { donneesBiere } from "@/lib/seo";
+import { donneesBiere, IMAGE_PAR_DEFAUT } from "@/lib/seo";
 
 /**
  * Une page par bière, en génération statique.
@@ -38,12 +38,14 @@ export async function generateMetadata({
       title: biere.nom,
       description,
       url: `/nos-bieres/${biere.slug}`,
-      // L'étiquette de Sophie, format portrait 866 × 1817. Absente sur un repli
-      // typographique, comme `image` des données structurées `Product` : voir
+      // L'étiquette de Sophie, format portrait 866 × 1817, quand elle existe.
+      // Un repli typographique retombe sur l'image par défaut du site plutôt
+      // que de partager une carte sans visuel du tout : `image` des données
+      // structurées `Product`, elle, reste absente sur ce cas, voir
       // `donneesBiere` dans `lib/seo.ts`.
-      ...(biere.etiquette !== undefined && {
-        images: [{ url: biere.etiquette, width: 866, height: 1817, alt: biere.nom }],
-      }),
+      images: biere.etiquette
+        ? [{ url: biere.etiquette, width: 866, height: 1817, alt: biere.nom }]
+        : [IMAGE_PAR_DEFAUT],
     },
   };
 }

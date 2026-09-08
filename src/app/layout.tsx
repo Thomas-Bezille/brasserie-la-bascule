@@ -4,7 +4,7 @@ import { BandeauPortesOuvertes } from "@/composants/chrome/BandeauPortesOuvertes
 import { Entete } from "@/composants/chrome/Entete";
 import { PiedDePage } from "@/composants/chrome/PiedDePage";
 import { DonneesStructurees } from "@/composants/ui/DonneesStructurees";
-import { donneesBrasserie, URL_SITE } from "@/lib/seo";
+import { donneesBrasserie, IMAGE_PAR_DEFAUT, URL_SITE } from "@/lib/seo";
 import "./globals.css";
 
 // Titres. Axes variables demandés par Sophie : SOFT arrondit les terminaisons,
@@ -32,11 +32,20 @@ export const metadata: Metadata = {
   description:
     "Six bières permanentes brassées à Vertou, près de Nantes. Boutique, marché du dimanche et visites de l'atelier avec dégustation.",
   alternates: { canonical: "/" },
+  /**
+   * `images` n'est repris que par les pages qui **ne posent pas leur propre
+   * `openGraph`** : la fusion de métadonnées de Next.js est peu profonde, une
+   * page qui redéfinit `openGraph` remplace l'objet entier plutôt que de
+   * compléter les clés absentes. C'est le cas de `/nos-bieres/[slug]`, qui pose
+   * son propre `images` (l'étiquette de la bière) et un repli sur cette même
+   * constante quand elle n'existe pas encore.
+   */
   openGraph: {
     type: "website",
     locale: "fr_FR",
     siteName: "Brasserie La Bascule",
     url: "/",
+    images: [IMAGE_PAR_DEFAUT],
   },
 };
 

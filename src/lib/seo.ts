@@ -46,6 +46,19 @@ export const URL_SITE =
     ? URL_FOURNIE.replace(/\/+$/, "")
     : "https://labascule.fr";
 
+/**
+ * L'image de partage par défaut, reprise par toute page qui ne pose pas la
+ * sienne : l'illustration du héro de l'accueil, seule image du site qui ne
+ * soit ni une bière (règle de Sophie, une couleur ne sort jamais de sa fiche)
+ * ni une photo de Camille encore en attente de droits confirmés page par page.
+ */
+export const IMAGE_PAR_DEFAUT = {
+  url: "/illustrations/bascule.png",
+  width: 1200,
+  height: 1200,
+  alt: "Brasserie La Bascule",
+} as const;
+
 const JOURS_SCHEMA: Record<string, string> = {
   lundi: "Monday",
   mardi: "Tuesday",

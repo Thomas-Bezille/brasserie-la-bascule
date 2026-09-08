@@ -2,7 +2,12 @@ import { describe, expect, it } from "vitest";
 import type { Biere } from "@/donnees/bieres";
 import { bieres } from "@/donnees/bieres";
 import { joursPortesOuvertes } from "@/donnees/portes-ouvertes";
-import { donneesBiere, donneesBrasserie, donneesPortesOuvertes } from "./seo";
+import {
+  donneesBiere,
+  donneesBrasserie,
+  donneesPortesOuvertes,
+  IMAGE_PAR_DEFAUT,
+} from "./seo";
 
 const biere = (slug: string) => {
   const trouvee = bieres.find((b) => b.slug === slug);
@@ -96,6 +101,14 @@ describe("une bière en donnée structurée", () => {
 
   it("ne balise pas d'image sur un repli typographique", () => {
     expect(donneesBiere(biereSansDonnees)).not.toHaveProperty("image");
+  });
+});
+
+describe("l'image de partage par défaut", () => {
+  it("pointe vers un chemin public, carrée et nommée", () => {
+    expect(IMAGE_PAR_DEFAUT.url).toBe("/illustrations/bascule.png");
+    expect(IMAGE_PAR_DEFAUT.width).toBe(IMAGE_PAR_DEFAUT.height);
+    expect(IMAGE_PAR_DEFAUT.alt).not.toBe("");
   });
 });
 
