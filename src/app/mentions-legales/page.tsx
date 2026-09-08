@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
-import { PageEnPreparation } from "@/composants/ui/PageEnPreparation";
+import { ContenuMentionsLegales } from "@/composants/legal/ContenuMentionsLegales";
 
 export const metadata: Metadata = {
   title: "Mentions légales",
-  robots: { index: false, follow: false },
+  description:
+    "Éditeur, hébergement et propriété intellectuelle du site Brasserie La Bascule.",
+  alternates: { canonical: "/mentions-legales" },
 };
 
 export default function Page() {
-  return <PageEnPreparation titre="Mentions légales" />;
+  return (
+    <main className="flex grow flex-col">
+      <ContenuMentionsLegales />
+    </main>
+  );
 }

@@ -25,6 +25,16 @@ describe("l'identité de la société", () => {
     expect(entreprise.tvaIntracommunautaire).toBeUndefined();
   });
 
+  it("laisse le numéro d'entrepositaire agréé vide tant que Marc ne l'a pas donné", () => {
+    expect(entreprise.numeroEntrepositaireAgree).toBeUndefined();
+  });
+
+  it("nomme Julien Mercier directeur de publication, tranché le 08/09/2026", () => {
+    expect(entreprise.directeurPublication).toBe(
+      "Julien Mercier, Président de la société.",
+    );
+  });
+
   it("prend l'adresse publiée pour siège, sans la redéfinir", () => {
     expect(entreprise.siege).toBe(adresse);
   });

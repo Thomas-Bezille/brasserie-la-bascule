@@ -39,7 +39,7 @@ export const lienPortesOuvertes: Lien | null = PORTES_OUVERTES_PUBLIEES
   : null;
 
 export const liensLegaux: readonly Lien[] = [
-  { libelle: "Mentions légales", href: "/mentions-legales", livree: false },
+  { libelle: "Mentions légales", href: "/mentions-legales", livree: true },
   {
     libelle: "Politique de confidentialité",
     href: "/politique-de-confidentialite",
