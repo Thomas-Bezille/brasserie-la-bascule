@@ -90,11 +90,19 @@ describe("les données techniques", () => {
     ]);
   });
 
-  it("n'invente aucun IBU, Marc n'ayant pas de quoi le mesurer", () => {
-    // « Si vous avez besoin d'un chiffre je ne peux pas vous en donner un, je ne
-    // vais pas inventer », 24/09/2026. La fiche affiche l'absence, elle ne la
-    // comble pas : c'est la règle n° 1 de `bieres.ts`.
-    for (const biere of bieres) expect(biere.ibu).toBeUndefined();
+  it("donnent à chacune des sept un IBU, des malts, des houblons et une origine", () => {
+    // Sortie de la fiction : ces champs restent typés optionnels (règle n° 1 de
+    // `bieres.ts`, utile pour une future bière sans specs), mais les sept
+    // permanentes et de saison actuelles les portent toutes désormais.
+    for (const biere of bieres) {
+      expect(biere.ibu, `IBU manquant pour ${biere.nom}`).toBeDefined();
+      expect(biere.malts, `malts manquants pour ${biere.nom}`).toBeDefined();
+      expect(biere.houblons, `houblons manquants pour ${biere.nom}`).toBeDefined();
+      expect(
+        biere.origineIngredients,
+        `origine manquante pour ${biere.nom}`,
+      ).toBeDefined();
+    }
   });
 });
 

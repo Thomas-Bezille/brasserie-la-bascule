@@ -32,22 +32,27 @@ describe("les champs que Marc n'a pas fournis", () => {
    * l'emplacement exact de ces mentions, le client les a vues, et la fiche du
    * 25 septembre est livrée avec ses trous en connaissance de cause.
    */
-  it("affichent leur attente au lieu d'un chiffre inventé", () => {
-    render(<SpecsBiere biere={biere("le-renard")} />);
+  it("affichent leur attente au lieu d'un chiffre inventé sur une bière sans données", () => {
+    render(<SpecsBiere biere={biereSansDonnees} />);
 
     expect(ligne("Amertume")).toHaveTextContent("en attente de Marc");
     expect(ligne("Malts")).toHaveTextContent("en attente de Marc");
     expect(ligne("Origine des ingrédients")).toHaveTextContent("en attente de Marc");
   });
 
-  it("laissent la place aux deux valeurs que Marc a bien corrigées", () => {
+  it("affichent les specs complètes du Renard, sortie de la fiction oblige", () => {
     render(<SpecsBiere biere={biere("le-renard")} />);
 
     expect(ligne("Degré")).toHaveTextContent("6,2 % vol.");
+    expect(ligne("Amertume")).toHaveTextContent("52 IBU");
+    expect(ligne("Malts")).toHaveTextContent("Pilsner, Malt de blé, Caramel clair");
     // Trois variétés depuis le 24/09/2026 : ce que Marc avait donné le 21
     // étaient des origines, et il en manquait une.
     expect(ligne("Houblons")).toHaveTextContent(
       "Styrian Golding (Slovénie), Citra (Yakima, États-Unis), Simcoe (Yakima, États-Unis)",
+    );
+    expect(ligne("Origine des ingrédients")).toHaveTextContent(
+      "Malts d'orge et de blé de la Malterie Franco-Belge, houblons slovène et américains (Yakima).",
     );
   });
 
