@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { visites } from "@/donnees/infos-pratiques";
 import { FormulaireReservation } from "@/composants/visites/FormulaireReservation";
@@ -35,13 +35,64 @@ const rendre = (avecCreneaux = true) =>
   );
 
 describe("le formulaire de réservation", () => {
-  it("propose les créneaux avec le nombre de places restantes", () => {
+  /**
+   * Correctif du 08/09/2026 : la liste `<select>` plate, plus de quinze lignes
+   * sur une fenêtre de huit semaines toutes au format « jour date à heure ·
+   * places », a été signalée illisible. Remplacée par un calendrier mensuel :
+   * jour disponible cliquable, jour sans créneau grisé, les horaires se
+   * déplient sous le jour cliqué.
+   */
+  it("affiche le calendrier avec les jours disponibles cliquables, le reste grisé", () => {
     rendre();
 
-    const liste = screen.getByLabelText("Le créneau");
-    expect(liste).toBeInTheDocument();
-    expect(screen.getByRole("option", { name: /6 places/ })).toBeInTheDocument();
-    expect(screen.getByRole("option", { name: /10 places/ })).toBeInTheDocument();
+    const vendredi9 = screen.getByRole("button", { name: "9" });
+    const samedi10 = screen.getByRole("button", { name: "10" });
+    expect(vendredi9).toBeEnabled();
+    expect(samedi10).toBeEnabled();
+
+    // Le 8 octobre 2026 est un jeudi, fermé : même traitement qu'un jour
+    // complet, aucune distinction, voir la règle en tête du composant.
+    expect(screen.getByRole("button", { name: "8" })).toBeDisabled();
+  });
+
+  it("déplie les horaires du jour cliqué, et un seul jour à la fois", () => {
+    rendre();
+
+    fireEvent.click(screen.getByRole("button", { name: "9" }));
+    expect(screen.getByRole("radio", { name: /6 places/ })).toBeInTheDocument();
+    expect(screen.queryByRole("radio", { name: /10 places/ })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "10" }));
+    expect(screen.queryByRole("radio", { name: /6 places/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: /10 places/ })).toBeInTheDocument();
+  });
+
+  it("oublie le créneau choisi quand on change de formule", () => {
+    const entreprise = visites.find((f) => f.nom === "Visite entreprise")!;
+    const creneauEntreprise: Creneau = {
+      debut: "2026-10-09T17:00:00.000Z",
+      fin: "2026-10-09T19:30:00.000Z",
+      placesRestantes: 4,
+    };
+
+    render(
+      <FormulaireReservation
+        formules={visites}
+        creneauxParFormule={{
+          [decouverte.nom]: creneaux,
+          [entreprise.nom]: [creneauEntreprise],
+        }}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "9" }));
+    const premierCreneau = screen.getByRole("radio", { name: /6 places/ });
+    fireEvent.click(premierCreneau);
+    expect(premierCreneau).toBeChecked();
+
+    fireEvent.click(screen.getByRole("radio", { name: "Visite entreprise" }));
+    fireEvent.click(screen.getByRole("button", { name: "9" }));
+    expect(screen.getByRole("radio", { name: /4 places/ })).not.toBeChecked();
   });
 
   it("empêche d'envoyer quand aucun créneau n'est ouvert", () => {
