@@ -34,7 +34,17 @@ export async function generateMetadata({
     title: biere.nom,
     description,
     alternates: { canonical: `/nos-bieres/${biere.slug}` },
-    openGraph: { title: biere.nom, description, url: `/nos-bieres/${biere.slug}` },
+    openGraph: {
+      title: biere.nom,
+      description,
+      url: `/nos-bieres/${biere.slug}`,
+      // L'étiquette de Sophie, format portrait 866 × 1817. Absente sur un repli
+      // typographique, comme `image` des données structurées `Product` : voir
+      // `donneesBiere` dans `lib/seo.ts`.
+      ...(biere.etiquette !== undefined && {
+        images: [{ url: biere.etiquette, width: 866, height: 1817, alt: biere.nom }],
+      }),
+    },
   };
 }
 

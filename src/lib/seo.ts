@@ -107,7 +107,9 @@ export function donneesBrasserie() {
  *
  * Les champs techniques absents ne sont pas balisés : la règle du cahier des
  * charges 6 vaut aussi pour ce que lisent les moteurs. Une donnée qu'on n'a pas
- * ne s'invente pas plus pour Google que pour un client.
+ * ne s'invente pas plus pour Google que pour un client. Même logique pour
+ * `image` : posée seulement quand l'étiquette de Sophie existe, jamais sur un
+ * repli typographique qui n'a pas de visuel à montrer.
  *
  * L'offre est marquée `InStoreOnly` : la bière est vendue à la boutique et chez
  * les partenaires, il n'y a pas de vente en ligne, et un moteur qui promettrait
@@ -121,6 +123,7 @@ export function donneesBiere(biere: Biere) {
     category: biere.type,
     description: `${biere.nom}, ${biere.type} brassée à Vertou par la Brasserie La Bascule.`,
     url: `${URL_SITE}/nos-bieres/${biere.slug}`,
+    ...(biere.etiquette !== undefined && { image: `${URL_SITE}${biere.etiquette}` }),
     brand: { "@type": "Brand", name: "Brasserie La Bascule" },
     ...(biere.degre !== undefined && {
       additionalProperty: {

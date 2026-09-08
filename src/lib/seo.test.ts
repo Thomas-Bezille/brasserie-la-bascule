@@ -87,6 +87,16 @@ describe("une bière en donnée structurée", () => {
       "Bouteille 33 cl du Corbeau",
     );
   });
+
+  it("balise l'image quand l'étiquette de Sophie existe", () => {
+    expect(donneesBiere(biere("le-renard")).image).toBe(
+      "https://labascule.fr/illustrations/etiquettes/le-renard.png",
+    );
+  });
+
+  it("ne balise pas d'image sur un repli typographique", () => {
+    expect(donneesBiere(biereSansDonnees)).not.toHaveProperty("image");
+  });
 });
 
 describe("les portes ouvertes en donnée structurée", () => {
