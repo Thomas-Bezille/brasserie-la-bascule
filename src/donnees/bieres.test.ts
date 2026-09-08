@@ -90,10 +90,11 @@ describe("les données techniques", () => {
     ]);
   });
 
-  it("donnent à chacune des sept un IBU, des malts, des houblons et une origine", () => {
+  it("donnent à chacune des sept un IBU, des malts, des houblons, une origine et une note", () => {
     // Sortie de la fiction : ces champs restent typés optionnels (règle n° 1 de
     // `bieres.ts`, utile pour une future bière sans specs), mais les sept
-    // permanentes et de saison actuelles les portent toutes désormais.
+    // permanentes et de saison actuelles les portent toutes désormais, notes de
+    // dégustation comprises (le lot 2 ne restreint plus que la fiction du devis).
     for (const biere of bieres) {
       expect(biere.ibu, `IBU manquant pour ${biere.nom}`).toBeDefined();
       expect(biere.malts, `malts manquants pour ${biere.nom}`).toBeDefined();
@@ -101,6 +102,10 @@ describe("les données techniques", () => {
       expect(
         biere.origineIngredients,
         `origine manquante pour ${biere.nom}`,
+      ).toBeDefined();
+      expect(
+        biere.notesDegustation,
+        `note de dégustation manquante pour ${biere.nom}`,
       ).toBeDefined();
     }
   });

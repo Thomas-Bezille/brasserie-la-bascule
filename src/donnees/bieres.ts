@@ -46,16 +46,17 @@ export type Biere = {
   readonly houblons?: readonly string[];
   readonly origineIngredients?: string;
   /**
-   * **Lot 2 du devis, non retenu** (180 €, CDC v1.2 § 17). Le champ reste donc
-   * vide pour les six : c'est le périmètre, pas un oubli, et il ne se comble pas
-   * en attendant. Seule celle du Renard est offerte, au titre d'une note de la
-   * maquette v1 qui l'annonçait à tort comprise dans le lot 1 retenu ; erreur
-   * signalée au client le 22/09/2026, fil client § 27.
+   * **Lot 2 du devis, non retenu** (180 €, CDC v1.2 § 17) tant que le projet
+   * jouait la fiction du client : seule celle du Renard était offerte, au titre
+   * d'une note de la maquette v1 qui l'annonçait à tort comprise dans le lot 1.
+   * **Sortie de la fiction** : les six autres sont écrites elles aussi, à partir
+   * de ce que portent les étiquettes de Sophie, pour finir le portfolio.
    *
-   * Comme les champs techniques ci-dessus, elle attend les mots de Marc. Une
-   * note de dégustation décrit ce que la bière donne au nez et en bouche : c'est
-   * une donnée produit, pas de la plume, et la loi Evin n'autorise à en parler
-   * qu'en termes objectifs.
+   * Une note de dégustation décrit ce que la bière donne à l'œil, au nez et en
+   * bouche : c'est une donnée produit, pas de la plume, et la loi Evin
+   * n'autorise à en parler qu'en termes objectifs. Pas d'appréciation portée
+   * sur le consommateur, pas de comparaison avec la concurrence.
+   * `src/lib/loi-evin.test.ts` garde la porte fermée sur le reste du site.
    */
   readonly notesDegustation?: string;
   /**
@@ -104,6 +105,8 @@ export const bieres: readonly Biere[] = [
     houblons: ["Strisselspalt (Alsace, France)", "East Kent Golding (Angleterre)"],
     origineIngredients:
       "Malts d'orge de la Malterie Franco-Belge, houblons d'Alsace et d'Angleterre.",
+    notesDegustation:
+      "Robe cuivrée et limpide, sous une mousse ivoire dense et persistante. Le nez est malté, porté par le caramel et le biscuit, avec une pointe de fruits secs. En bouche, elle est ronde et chaleureuse, et l'amertume, discrète, équilibre la finale sans l'assécher.",
     animal: "/illustrations/animaux/la-rouquine.png",
     etiquette: "/illustrations/etiquettes/la-rouquine.png",
   },
@@ -162,6 +165,8 @@ export const bieres: readonly Biere[] = [
     houblons: ["Hallertau Mittelfrüh (Allemagne)", "Saaz (République tchèque)"],
     origineIngredients:
       "Malts d'orge et de blé de la Malterie Franco-Belge, houblons allemand et tchèque, miel de fleurs de Loire-Atlantique.",
+    notesDegustation:
+      "Robe dorée et brillante, sous une mousse blanche et fine. Le nez est floral et céréalier, avec la douceur discrète du miel. En bouche, elle est légère et désaltérante, le miel reste en retrait derrière le malt, et la finale se referme sur une pointe houblonnée délicate.",
     animal: "/illustrations/animaux/l-abeille.png",
     etiquette: "/illustrations/etiquettes/l-abeille.png",
   },
@@ -179,6 +184,8 @@ export const bieres: readonly Biere[] = [
     houblons: ["Hallertau Mittelfrüh (Allemagne)"],
     origineIngredients:
       "Malts d'orge et de blé de la Malterie Franco-Belge, houblon allemand, écorces d'orange amère et coriandre pour l'épice.",
+    notesDegustation:
+      "Robe pâle et voilée, typique d'une blanche non filtrée, sous une mousse blanche et légère. Le nez est frais, porté par les agrumes et la coriandre. En bouche, elle est souple et désaltérante, peu amère, avec une texture ronde apportée par le blé.",
     animal: "/illustrations/animaux/la-carpe.png",
     etiquette: "/illustrations/etiquettes/la-carpe.png",
   },
@@ -196,6 +203,8 @@ export const bieres: readonly Biere[] = [
     houblons: ["East Kent Golding (Angleterre)"],
     origineIngredients:
       "Malts d'orge et malts torréfiés de la Malterie Franco-Belge, houblon anglais.",
+    notesDegustation:
+      "Robe noire et opaque, sous une mousse brune et compacte. Le nez est torréfié, café et chocolat noir en tête. En bouche, elle est riche et enveloppante, l'amertume, maîtrisée, prolonge les notes de torréfaction jusqu'en finale sans lourdeur.",
     animal: "/illustrations/animaux/le-corbeau.png",
     etiquette: "/illustrations/etiquettes/le-corbeau.png",
   },
@@ -213,6 +222,8 @@ export const bieres: readonly Biere[] = [
     houblons: ["Saaz (République tchèque)", "Styrian Golding (Slovénie)"],
     origineIngredients:
       "Malt d'orge de la Malterie Franco-Belge, sucre candi belge, houblons tchèque et slovène.",
+    notesDegustation:
+      "Robe dorée et trouble, sous une mousse blanche généreuse. Le nez est fruité et épicé, fruits jaunes et notes poivrées apportées par la levure. En bouche, elle est puissante et sèche, sans sucre résiduel, et l'alcool se fait sentir en une chaleur qui accompagne la finale.",
     animal: "/illustrations/animaux/la-guepe.png",
     etiquette: "/illustrations/etiquettes/la-guepe.png",
   },
@@ -230,6 +241,8 @@ export const bieres: readonly Biere[] = [
     houblons: ["Strisselspalt (Alsace, France)"],
     origineIngredients:
       "Malts d'orge de la Malterie Franco-Belge, châtaignes de Loire-Atlantique torréfiées à l'atelier, houblon d'Alsace.",
+    notesDegustation:
+      "Robe brun-roux, sous une mousse beige et fine. Le nez est boisé et gourmand, châtaigne grillée et caramel blond. En bouche, elle est ronde, portée par la châtaigne, avec une finale douce et peu amère, aux accents automnaux.",
     animal: "/illustrations/animaux/le-sanglier.png",
     etiquette: "/illustrations/etiquettes/le-sanglier.png",
   },
