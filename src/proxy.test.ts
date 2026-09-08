@@ -35,15 +35,16 @@ describe("la protection de la préproduction", () => {
   });
 
   /**
-   * L'optimiseur d'images de Next va chercher le PNG source par une requête
-   * serveur à serveur sans en-tête. Sans cette exception, `<Image>` échoue sur
-   * « received null » en préproduction, là où le mot de passe est actif.
+   * L'optimiseur d'images de Next va chercher le WebP source (converti depuis
+   * les PNG d'origine le 08/09/2026) par une requête serveur à serveur sans
+   * en-tête. Sans cette exception, `<Image>` échoue sur « received null » en
+   * préproduction, là où le mot de passe est actif.
    */
   it("laisse passer la requête interne de l'optimiseur d'images", () => {
     vi.stubEnv("SITE_PUBLIE", "non");
     vi.stubEnv("MOT_DE_PASSE_PREPROD", "secret");
 
-    const r = proxy(requete("/illustrations/etiquettes/le-renard.png"));
+    const r = proxy(requete("/illustrations/etiquettes/le-renard.webp"));
     expect(r.status).not.toBe(401);
     expect(r.headers.get("x-robots-tag")).toContain("noindex");
   });
@@ -53,7 +54,9 @@ describe("la protection de la préproduction", () => {
     vi.stubEnv("MOT_DE_PASSE_PREPROD", "secret");
 
     const r = proxy(
-      requete("/illustrations/etiquettes/le-renard.png", { "user-agent": "Mozilla/5.0" }),
+      requete("/illustrations/etiquettes/le-renard.webp", {
+        "user-agent": "Mozilla/5.0",
+      }),
     );
     expect(r.status).toBe(401);
   });

@@ -115,10 +115,10 @@ describe("les illustrations", () => {
   it("donnent à chaque permanente son animal et son étiquette dans public/illustrations", () => {
     for (const biere of bieres.filter((b) => b.etat === "permanente")) {
       expect(biere.animal, `${biere.nom} sans animal`).toBe(
-        `/illustrations/animaux/${biere.slug}.png`,
+        `/illustrations/animaux/${biere.slug}.webp`,
       );
       expect(biere.etiquette, `${biere.nom} sans étiquette`).toBe(
-        `/illustrations/etiquettes/${biere.slug}.png`,
+        `/illustrations/etiquettes/${biere.slug}.webp`,
       );
     }
   });
