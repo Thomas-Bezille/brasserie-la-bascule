@@ -21,7 +21,7 @@ export type Lien = {
 /** Les cinq pages du menu principal, dans l'ordre de la maquette validée. */
 export const navigationPrincipale: readonly Lien[] = [
   { libelle: "Accueil", href: "/", livree: true },
-  { libelle: "Nos bières", href: "/nos-bieres", livree: false },
+  { libelle: "Nos bières", href: "/nos-bieres", livree: true },
   { libelle: "Visites et dégustations", href: "/visites-et-degustations", livree: true },
   { libelle: "Où nous trouver", href: "/ou-nous-trouver", livree: false },
   { libelle: "Contact", href: "/contact", livree: true },
