@@ -41,14 +41,32 @@ export function VisuelBiere({
     return (
       <div className="flex h-full flex-col">
         <div className="flex min-h-[min(60vh,520px)] grow items-center justify-center px-[clamp(12px,3vw,28px)] py-[clamp(16px,3vw,32px)]">
+          {/*
+            Deux correctifs de l'audit Lighthouse du 08/09/2026, sur les
+            vraies étiquettes de Sophie (les précédentes mesures dataient
+            d'un visuel provisoire de 991 octets).
+
+            `fetchPriority="high"` : le seul `priority` de Next ne suffisait
+            pas, l'image de LCP restait servie en priorité réseau « Low »
+            malgré le préchargement. Chrome la traite maintenant en haute
+            priorité, ce qui mange directement dans le budget de LCP.
+
+            `aspect-[866/1817]` remplace `h-auto` : combiné à `max-h` dans ce
+            conteneur flex, `h-auto` laissait le navigateur découvrir la
+            hauteur réelle à l'arrivée de l'image, d'où un CLS de 0,038
+            (« Media element lacking an explicit size »). L'aspect-ratio
+            explicite, connu dès le HTML, réserve la bonne place tout de
+            suite.
+          */}
           <Image
             src={biere.etiquette}
             alt={`Étiquette ${complementDuNom(biere.nom)}`}
             width={866}
             height={1817}
             priority
+            fetchPriority="high"
             sizes="(min-width: 1024px) 440px, 88vw"
-            className="h-auto max-h-[min(84vh,800px)] w-auto"
+            className="aspect-[866/1817] max-h-[min(84vh,800px)] w-auto"
           />
         </div>
       </div>
