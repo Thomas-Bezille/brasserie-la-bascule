@@ -27,8 +27,11 @@ describe("le bandeau des informations pratiques", () => {
     ).toBeInTheDocument();
   });
 
-  it("n'invente pas de numéro de téléphone", () => {
+  it("affiche le numéro de téléphone, cliquable, sorti de la fiction le 08/09/2026", () => {
     const { container } = render(<BandeauPratique />);
-    expect(container.querySelector('a[href^="tel:"]')).toBeNull();
+    const lien = container.querySelector('a[href^="tel:"]');
+    expect(lien).not.toBeNull();
+    expect(lien).toHaveAttribute("href", "tel:+33261910412");
+    expect(lien).toHaveTextContent("02 61 91 04 12");
   });
 });

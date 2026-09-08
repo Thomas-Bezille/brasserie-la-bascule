@@ -59,14 +59,19 @@ export const adresse = {
  * cours. Elle est donc affichée avant d'être active : le site n'ouvre au public
  * que le 9 octobre, après l'aboutissement du transfert.
  *
- * **Il n'y a pas de numéro de téléphone public**, et ce n'est pas un oubli :
- * aucun n'a été fourni. Seuls les portables des deux gérants sont connus, et ce
- * n'est pas au prestataire de décider lequel se publie. Le cahier des charges
- * fait pourtant du téléphone caché un repoussoir cité par le client lui-même,
- * et prévoit un numéro cliquable dans le parcours du particulier. À obtenir.
+ * **Numéro de téléphone, sorti de la fiction le 08/09/2026.** Le cahier des
+ * charges fait du téléphone caché un repoussoir cité par le client lui-même, et
+ * prévoit un numéro cliquable dans le parcours du particulier — mais dans la
+ * fiction, seuls les portables personnels des deux gérants étaient connus, et
+ * ce n'était pas au prestataire de décider lequel publier. Pour finir le
+ * portfolio, Thomas a choisi un numéro fictif plutôt qu'un blanc permanent :
+ * `02 61 91` est l'un des préfixes que l'ARCEP réserve aux œuvres de fiction
+ * (article 2.5.12 de sa décision sur le plan de numérotation), donc garanti à
+ * vie sans abonné réel derrière, quels que soient les quatre derniers chiffres.
  */
 export const contact = {
   email: "contact@labascule.fr",
+  telephone: "02 61 91 04 12",
 } as const;
 
 export const boutique = {

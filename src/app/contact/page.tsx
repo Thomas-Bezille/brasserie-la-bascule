@@ -3,14 +3,15 @@ import Link from "next/link";
 import { ModuleContact } from "@/composants/contact/ModuleContact";
 import { Surtitre } from "@/composants/ui/Surtitre";
 import { contact } from "@/donnees/infos-pratiques";
+import { telephoneHref } from "@/lib/formats";
 
 /**
  * La page Contact.
  *
- * Deux voies : le courriel direct, toujours affiché, et le formulaire, qui
- * n&apos;apparaît qu&apos;une fois le service d&apos;envoi branché. Il n&apos;y a
- * pas de numéro de téléphone : aucun n&apos;a été fourni pour publication, et la
- * page est écrite pour s&apos;en passer proprement.
+ * Trois voies : le courriel direct et le numéro de téléphone, toujours
+ * affichés, et le formulaire, qui n&apos;apparaît qu&apos;une fois le service
+ * d&apos;envoi branché. Le numéro est sorti de la fiction le 08/09/2026, voir
+ * `donnees/infos-pratiques.ts`.
  *
  * Les demandes de visite avec créneau passent par la page Visites : le lien
  * l&apos;indique pour ne pas dédoubler le parcours de réservation.
@@ -43,6 +44,11 @@ export default function Page() {
         <p className="mt-4 text-[19px]">
           <a href={`mailto:${contact.email}`} className="underline">
             {contact.email}
+          </a>
+        </p>
+        <p className="mt-2 text-[19px]">
+          <a href={telephoneHref(contact.telephone)} className="underline">
+            {contact.telephone}
           </a>
         </p>
         <p className="text-papier/55 mt-3 max-w-[52ch] text-[15px]">

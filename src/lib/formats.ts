@@ -68,3 +68,8 @@ export function formaterDuree(minutes: number): string {
     ? `${heures}${INSECABLE}h`
     : `${heures}${INSECABLE}h${INSECABLE}${reste}`;
 }
+
+/** `"02 61 91 04 12"` → `tel:+33261910412`. Un seul format pour tous les liens cliquables. */
+export function telephoneHref(telephone: string): string {
+  return `tel:+33${telephone.replace(/\D/g, "").slice(1)}`;
+}

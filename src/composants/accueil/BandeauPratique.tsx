@@ -1,6 +1,6 @@
 import { Surtitre } from "@/composants/ui/Surtitre";
-import { adresse, boutique, marche } from "@/donnees/infos-pratiques";
-import { formaterCreneaux } from "@/lib/formats";
+import { adresse, boutique, contact, marche } from "@/donnees/infos-pratiques";
+import { formaterCreneaux, telephoneHref } from "@/lib/formats";
 
 /**
  * Le bloc que le cahier des charges veut « immédiatement visible » : où c'est,
@@ -14,13 +14,13 @@ import { formaterCreneaux } from "@/lib/formats";
  * C'est la question qu'on lui pose le plus souvent, et les visiteurs croient
  * devoir réserver une visite pour acheter une bouteille.
  *
- * Il manque une quatrième colonne, « nous appeler », que la maquette prévoyait :
- * aucun numéro public n'a été fourni. Voir `donnees/infos-pratiques.ts`.
+ * **Quatrième colonne, « nous appeler », posée le 08/09/2026** : la maquette la
+ * prévoyait, il manquait un numéro public. Voir `donnees/infos-pratiques.ts`.
  */
 export function BandeauPratique() {
   return (
     <section className="bg-beton border-trait px-marge border-y">
-      <dl className="mx-auto grid max-w-[1240px] gap-px sm:grid-cols-2 lg:grid-cols-3">
+      <dl className="mx-auto grid max-w-[1240px] gap-px sm:grid-cols-2 lg:grid-cols-4">
         <div className="border-trait py-9 sm:border-r sm:pr-8">
           <Surtitre as="dt" className="text-papier/55">
             L&apos;atelier et la boutique
@@ -50,12 +50,23 @@ export function BandeauPratique() {
           </dd>
         </div>
 
-        <div className="py-9 lg:pl-8">
+        <div className="border-trait py-9 sm:border-r sm:pr-8 lg:border-r lg:px-8">
           <Surtitre as="dt" className="text-papier/55">
             Marché de {marche.commune}
           </Surtitre>
           <dd className="mt-3 text-[15px] first-letter:uppercase">
             {marche.jour}, le {marche.moment}
+          </dd>
+        </div>
+
+        <div className="py-9 lg:pl-8">
+          <Surtitre as="dt" className="text-papier/55">
+            Nous appeler
+          </Surtitre>
+          <dd className="mt-3 text-[15px]">
+            <a href={telephoneHref(contact.telephone)} className="hover:text-papier/70">
+              {contact.telephone}
+            </a>
           </dd>
         </div>
       </dl>

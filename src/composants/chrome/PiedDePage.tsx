@@ -4,7 +4,7 @@ import { MessageSanitaire } from "@/composants/ui/MessageSanitaire";
 import { Surtitre } from "@/composants/ui/Surtitre";
 import { adresse, boutique, contact, marche } from "@/donnees/infos-pratiques";
 import { liensLegaux } from "@/donnees/navigation";
-import { formaterCreneaux } from "@/lib/formats";
+import { formaterCreneaux, telephoneHref } from "@/lib/formats";
 
 /**
  * Pied de page, **allégé de moitié** : c'est la correction 7 de Sophie.
@@ -36,6 +36,14 @@ export function PiedDePage() {
                 className="text-papier/60 hover:text-papier"
               >
                 {contact.email}
+              </a>
+            </p>
+            <p className="mt-1 text-[15px]">
+              <a
+                href={telephoneHref(contact.telephone)}
+                className="text-papier/60 hover:text-papier"
+              >
+                {contact.telephone}
               </a>
             </p>
           </div>
