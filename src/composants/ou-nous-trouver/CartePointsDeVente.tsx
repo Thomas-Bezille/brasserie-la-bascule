@@ -29,6 +29,10 @@ import "maplibre-gl/dist/maplibre-gl.css";
  * dépendance `maplibre-gl-shared.mjs`) viennent tels quels de
  * `node_modules/maplibre-gl/dist/` : à recopier si `maplibre-gl` change de
  * version, `maplibre-worker-copie.test.ts` fait échouer la CI si on l'oublie.
+ *
+ * **Le texte de la popup porte sa propre couleur, en style inline.** Son fond
+ * reste blanc, réglé par MapLibre : sans cette couleur, le texte hérite du
+ * papier clair du site et devient illisible sur ce fond clair.
  */
 export function CartePointsDeVente({ points }: { points: readonly PointDeVente[] }) {
   const conteneur = useRef<HTMLDivElement>(null);
@@ -69,7 +73,7 @@ export function CartePointsDeVente({ points }: { points: readonly PointDeVente[]
           .setLngLat([point.longitude, point.latitude])
           .setPopup(
             new maplibregl.Popup({ offset: 14, closeButton: false }).setHTML(
-              `<strong>${echapper(point.nom)}</strong><br>${echapper(point.adresse)}, ${echapper(point.commune)}`,
+              `<div style="color:#14110f"><strong>${echapper(point.nom)}</strong><br>${echapper(point.adresse)}, ${echapper(point.commune)}</div>`,
             ),
           )
           .addTo(carte);
