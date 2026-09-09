@@ -10,13 +10,13 @@ import { formaterCreneaux } from "@/lib/formats";
  *
  * L'atelier, la boutique et le marché viennent de la source unique
  * `donnees/infos-pratiques.ts`, vérifiée par le client le 21/09. Le bloc « Nos
- * coffrets » est publié depuis le 09/09/2026. La carte des bars et
- * cavistes partenaires attend la liste d'adresses du client (fil § 31-32).
+ * coffrets » est publié depuis le 09/09/2026. La liste des bars, cavistes et
+ * le restaurant partenaires est posée depuis le 09/09/2026
+ * (`donnees/points-de-vente.ts`), avec sa carte.
  *
  * **Pas de fond de carte Google.** Le cahier des charges (5.2) impose un fond
- * libre pour ne pas dépendre d'un compte de facturation au nom de la SAS. Ce
- * fond arrivera avec les points de vente, il n'a pas de valeur avec le seul
- * point de l'atelier.
+ * libre pour ne pas dépendre d'un compte de facturation au nom de la SAS :
+ * MapLibre sur les tuiles OpenFreeMap, voir `CartePointsDeVente.tsx`.
  */
 export const metadata: Metadata = {
   title: "Où nous trouver",
