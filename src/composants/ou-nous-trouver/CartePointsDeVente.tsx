@@ -20,6 +20,19 @@ import "maplibre-gl/dist/maplibre-gl.css";
  *
  * Chargée uniquement côté client : MapLibre dessine sur un `<canvas>`, qui
  * n'existe pas au rendu serveur.
+ *
+ * **`setWorkerUrl` pointe vers `public/maplibre/`, pas vers le fichier que
+ * Turbopack empaquette lui-même.** Sans ça, la carte restait blanche : le
+ * style et les tuiles se chargeaient (confirmé au réseau), mais le worker qui
+ * décode les tuiles vectorielles ne renvoyait jamais de résultat, sans la
+ * moindre erreur. Les deux fichiers copiés (`maplibre-gl-worker.mjs` et sa
+ * dépendance `maplibre-gl-shared.mjs`) viennent tels quels de
+ * `node_modules/maplibre-gl/dist/` : à recopier si `maplibre-gl` change de
+ * version, `maplibre-worker-copie.test.ts` fait échouer la CI si on l'oublie.
+ *
+ * **Le texte de la popup porte sa propre couleur, en style inline.** Son fond
+ * reste blanc, réglé par MapLibre : sans cette couleur, le texte hérite du
+ * papier clair du site et devient illisible sur ce fond clair.
  */
 export function CartePointsDeVente({ points }: { points: readonly PointDeVente[] }) {
   const conteneur = useRef<HTMLDivElement>(null);
@@ -32,6 +45,8 @@ export function CartePointsDeVente({ points }: { points: readonly PointDeVente[]
 
     import("maplibre-gl").then((maplibregl) => {
       if (annule || !conteneur.current) return;
+
+      maplibregl.setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
 
       const carte = new maplibregl.Map({
         container: conteneur.current,
@@ -58,7 +73,7 @@ export function CartePointsDeVente({ points }: { points: readonly PointDeVente[]
           .setLngLat([point.longitude, point.latitude])
           .setPopup(
             new maplibregl.Popup({ offset: 14, closeButton: false }).setHTML(
-              `<strong>${echapper(point.nom)}</strong><br>${echapper(point.adresse)}, ${echapper(point.commune)}`,
+              `<div style="color:#14110f"><strong>${echapper(point.nom)}</strong><br>${echapper(point.adresse)}, ${echapper(point.commune)}</div>`,
             ),
           )
           .addTo(carte);
