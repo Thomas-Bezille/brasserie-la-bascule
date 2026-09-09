@@ -99,7 +99,7 @@ describe("une bière en donnée structurée", () => {
 
   it("balise l'image quand l'étiquette de Sophie existe", () => {
     expect(donneesBiere(biere("le-renard")).image).toBe(
-      "https://labascule.fr/illustrations/etiquettes/le-renard.webp",
+      "https://brasserie-la-bascule.vercel.app/illustrations/etiquettes/le-renard.webp",
     );
   });
 
