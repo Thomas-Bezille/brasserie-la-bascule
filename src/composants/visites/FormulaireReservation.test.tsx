@@ -11,16 +11,17 @@ vi.mock("@/app/visites-et-degustations/actions", () => ({
 
 const decouverte = visites.find((f) => f.nom === "Visite découverte")!;
 
+// Vendredi 9 (17 h) et samedi 10 (10 h) à Vertou : deux jours, deux heures.
 const creneaux: readonly Creneau[] = [
   {
     debut: "2026-10-09T15:00:00.000Z",
     fin: "2026-10-09T16:30:00.000Z",
-    placesRestantes: 6,
+    placesRestantes: 1,
   },
   {
     debut: "2026-10-10T08:00:00.000Z",
     fin: "2026-10-10T09:30:00.000Z",
-    placesRestantes: 10,
+    placesRestantes: 1,
   },
 ];
 
@@ -58,13 +59,14 @@ describe("le formulaire de réservation", () => {
   it("déplie les horaires du jour cliqué, et un seul jour à la fois", () => {
     rendre();
 
+    // Vendredi 9 (17 h) et samedi 10 (10 h) : deux heures distinctes de la fixture.
     fireEvent.click(screen.getByRole("button", { name: "9" }));
-    expect(screen.getByRole("radio", { name: /6 places/ })).toBeInTheDocument();
-    expect(screen.queryByRole("radio", { name: /10 places/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: /17\sh/ })).toBeInTheDocument();
+    expect(screen.queryByRole("radio", { name: /10\sh/ })).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "10" }));
-    expect(screen.queryByRole("radio", { name: /6 places/ })).not.toBeInTheDocument();
-    expect(screen.getByRole("radio", { name: /10 places/ })).toBeInTheDocument();
+    expect(screen.queryByRole("radio", { name: /17\sh/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: /10\sh/ })).toBeInTheDocument();
   });
 
   it("oublie le créneau choisi quand on change de formule", () => {
@@ -72,7 +74,7 @@ describe("le formulaire de réservation", () => {
     const creneauEntreprise: Creneau = {
       debut: "2026-10-09T17:00:00.000Z",
       fin: "2026-10-09T19:30:00.000Z",
-      placesRestantes: 4,
+      placesRestantes: 1,
     };
 
     render(
@@ -85,14 +87,15 @@ describe("le formulaire de réservation", () => {
       />,
     );
 
+    // Le vendredi 9 a un créneau à 17 h en découverte, un autre à 19 h en entreprise.
     fireEvent.click(screen.getByRole("button", { name: "9" }));
-    const premierCreneau = screen.getByRole("radio", { name: /6 places/ });
+    const premierCreneau = screen.getByRole("radio", { name: /17\sh/ });
     fireEvent.click(premierCreneau);
     expect(premierCreneau).toBeChecked();
 
     fireEvent.click(screen.getByRole("radio", { name: "Visite entreprise" }));
     fireEvent.click(screen.getByRole("button", { name: "9" }));
-    expect(screen.getByRole("radio", { name: /4 places/ })).not.toBeChecked();
+    expect(screen.getByRole("radio", { name: /19\sh/ })).not.toBeChecked();
   });
 
   it("empêche d'envoyer quand aucun créneau n'est ouvert", () => {
