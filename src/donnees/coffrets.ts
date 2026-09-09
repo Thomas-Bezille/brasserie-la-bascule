@@ -1,10 +1,12 @@
 /**
  * Les trois coffrets, fournis par Julien le 30/09/2026 (fil client § 31).
  *
- * **Publication différée à fin octobre.** CDC v1.2, correction 12 : le bloc
- * « Nos coffrets » est offert et publié fin octobre, les coffrets sortant pour
- * les portes ouvertes des 24 et 25. `COFFRETS_PUBLIES` reste à `false` jusque-là,
- * la section ne s'affiche pas et n'entre pas dans le plan du site.
+ * **Publication avancée le 09/09/2026.** CDC v1.2, correction 12 prévoyait un
+ * différé à fin octobre, calé sur la mise en vente réelle des coffrets pour les
+ * portes ouvertes. Décision de Thomas, même logique que le reste des sorties de
+ * fiction de la session 18 : dans un projet fictif joué en solo, il n'y a pas de
+ * vraie mise en vente à attendre, `COFFRETS_PUBLIES` passe donc à `true`
+ * directement plutôt que d'attendre une date qui ne change plus rien.
  *
  * Les prix sont en euros entiers, tels qu'annoncés. Le tarif professionnel
  * n'apparaît sur aucune page.
@@ -14,8 +16,7 @@
  * promotionnelle et la recette la refuse.
  */
 
-/** À passer à `true` fin octobre, avec la mise en vente des coffrets. */
-export const COFFRETS_PUBLIES = false;
+export const COFFRETS_PUBLIES = true;
 
 export type Coffret = {
   readonly nom: string;

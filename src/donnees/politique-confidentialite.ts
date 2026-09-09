@@ -6,9 +6,11 @@
  * 1. Les durées de conservation et la base légale sont les mêmes valeurs qu'un
  *    registre des traitements devrait porter : les tenir en un tableau les rend
  *    relisables d'un coup, par le client comme par un juriste.
- * 2. Trois sous-traitants ne sont pas encore arrêtés (`aConfirmer`). Le marquer
- *    dans la donnée, plutôt que dans la tournure d'une phrase, permet à un test
- *    d'empêcher la mise en ligne tant qu'ils portent ce drapeau.
+ * 2. Certains sous-traitants ne sont pas encore arrêtés (`aConfirmer`). Le
+ *    marquer dans la donnée, plutôt que dans la tournure d'une phrase, permet à
+ *    un test d'empêcher la mise en ligne tant qu'ils portent ce drapeau.
+ *    Meetergo l'a porté à tort après son intégration : levé le 09/09/2026,
+ *    restent le service d'e-mails et l'outil de mesure d'audience.
  * 3. Les mentions légales rediront l'hébergeur et le siège : autant lire la même
  *    source.
  *
@@ -107,7 +109,6 @@ export const sousTraitants: readonly SousTraitant[] = [
     nom: "meetergo GmbH",
     role: "Agenda et enregistrement des réservations",
     hebergement: "Allemagne",
-    aConfirmer: true,
   },
   {
     nom: "Service d'acheminement des courriers électroniques",

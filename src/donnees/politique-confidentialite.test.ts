@@ -53,17 +53,14 @@ describe("les sous-traitants", () => {
   });
 
   /**
-   * Au 1er septembre 2026, trois prestataires ne sont pas choisis : l'agenda
-   * (Meetergo pressenti, compte non ouvert), le service d'e-mails et l'outil de
-   * mesure d'audience. Ils portent `aConfirmer`, la page affiche « (à confirmer) »
-   * en face, et ils doivent être arrêtés avant la mise en ligne du 9 octobre.
-   * Ce test suit cette liste : quand l'un est choisi, on retire son drapeau ici
-   * comme dans la donnée, donc on le veut.
+   * Meetergo est choisi et intégré depuis la session 12 : son drapeau est levé
+   * le 09/09/2026, oubli corrigé. Restent ouverts le service d'e-mails et
+   * l'outil de mesure d'audience. Ce test suit cette liste : quand l'un est
+   * choisi, on retire son drapeau ici comme dans la donnée, donc on le veut.
    */
-  it("gardent le drapeau « à confirmer » sur les trois prestataires encore ouverts", () => {
+  it("gardent le drapeau « à confirmer » sur les deux prestataires encore ouverts", () => {
     const ouverts = sousTraitants.filter((s) => s.aConfirmer).map((s) => s.nom);
     expect(ouverts).toEqual([
-      "meetergo GmbH",
       "Service d'acheminement des courriers électroniques",
       "Outil de mesure d'audience sans cookie",
     ]);
