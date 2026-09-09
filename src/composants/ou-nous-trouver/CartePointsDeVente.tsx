@@ -20,6 +20,15 @@ import "maplibre-gl/dist/maplibre-gl.css";
  *
  * Chargée uniquement côté client : MapLibre dessine sur un `<canvas>`, qui
  * n'existe pas au rendu serveur.
+ *
+ * **`setWorkerUrl` pointe vers `public/maplibre/`, pas vers le fichier que
+ * Turbopack empaquette lui-même.** Sans ça, la carte restait blanche : le
+ * style et les tuiles se chargeaient (confirmé au réseau), mais le worker qui
+ * décode les tuiles vectorielles ne renvoyait jamais de résultat, sans la
+ * moindre erreur. Les deux fichiers copiés (`maplibre-gl-worker.mjs` et sa
+ * dépendance `maplibre-gl-shared.mjs`) viennent tels quels de
+ * `node_modules/maplibre-gl/dist/` : à recopier si `maplibre-gl` change de
+ * version, `maplibre-worker-copie.test.ts` fait échouer la CI si on l'oublie.
  */
 export function CartePointsDeVente({ points }: { points: readonly PointDeVente[] }) {
   const conteneur = useRef<HTMLDivElement>(null);
@@ -32,6 +41,8 @@ export function CartePointsDeVente({ points }: { points: readonly PointDeVente[]
 
     import("maplibre-gl").then((maplibregl) => {
       if (annule || !conteneur.current) return;
+
+      maplibregl.setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
 
       const carte = new maplibregl.Map({
         container: conteneur.current,
