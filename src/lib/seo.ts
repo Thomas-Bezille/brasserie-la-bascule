@@ -35,16 +35,18 @@ import { complementDuNom, telephoneHref } from "@/lib/formats";
  * faut pas plus qu'un espace en trop pour rendre le site indéployable un
  * vendredi soir.
  *
- * Le repli est donc le domaine cible, qui est de toute façon la bonne valeur en
- * production. Une adresse fausse en préproduction n'a aucune conséquence : tout
- * y est en `noindex`.
+ * **Le repli est l'adresse Vercel du site, pas un domaine cible.** Décision du
+ * 09/09/2026 : il n'y aura pas de vrai domaine `labascule.fr` pour ce projet
+ * fictif, le site vit pour de bon sur `brasserie-la-bascule.vercel.app`. Une
+ * adresse fausse en préproduction n'a aucune conséquence : tout y est en
+ * `noindex`.
  */
 const URL_FOURNIE = process.env.NEXT_PUBLIC_SITE_URL?.trim();
 
 export const URL_SITE =
   URL_FOURNIE && /^https?:\/\/[^\s]+$/.test(URL_FOURNIE)
     ? URL_FOURNIE.replace(/\/+$/, "")
-    : "https://labascule.fr";
+    : "https://brasserie-la-bascule.vercel.app";
 
 /**
  * L'image de partage par défaut, reprise par toute page qui ne pose pas la

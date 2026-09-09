@@ -55,9 +55,13 @@ export const adresse = {
 } as const;
 
 /**
- * L'adresse `contact@labascule.fr` est créée avec le transfert du domaine, en
- * cours. Elle est donc affichée avant d'être active : le site n'ouvre au public
- * que le 9 octobre, après l'aboutissement du transfert.
+ * **Adresse et domaine, sortis de la fiction le 09/09/2026 : il n'y aura pas
+ * de vrai domaine.** Décision de Thomas, comme pour le numéro de téléphone
+ * ci-dessous : `labascule.fr` reste une donnée de décor du projet fictif, le
+ * site vit pour de bon sur son adresse Vercel (`URL_SITE`, `lib/seo.ts`).
+ * `contact@labascule.fr` reste donc affiché tel quel, plausible mais jamais
+ * fonctionnel — même logique que le préfixe téléphonique ci-dessous, pas une
+ * adresse en attente d'activation.
  *
  * **Numéro de téléphone, sorti de la fiction le 08/09/2026.** Le cahier des
  * charges fait du téléphone caché un repoussoir cité par le client lui-même, et

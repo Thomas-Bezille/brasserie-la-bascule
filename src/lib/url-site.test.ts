@@ -9,7 +9,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
  * dans une interface : elle arrive vide, avec un slash final, ou avec un espace,
  * et aucun de ces cas ne doit rendre le site indéployable.
  */
-const REPLI = "https://labascule.fr";
+const REPLI = "https://brasserie-la-bascule.vercel.app";
 
 const chargerUrlSite = async () => {
   vi.resetModules();
@@ -28,7 +28,7 @@ afterEach(() => {
 });
 
 describe("l'adresse du site", () => {
-  it("prend le domaine cible quand la variable est absente", async () => {
+  it("prend l'adresse Vercel par défaut quand la variable est absente", async () => {
     delete process.env.NEXT_PUBLIC_SITE_URL;
     expect(await chargerUrlSite()).toBe(REPLI);
   });

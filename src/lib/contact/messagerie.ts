@@ -17,10 +17,12 @@ import type { Messagerie } from "@/lib/contact/types";
  * - `MAIL_TO` : l'adresse de la brasserie qui reçoit les demandes
  * - `MAIL_FROM` : l'expéditeur vérifié sur le domaine
  *
- * L'adaptateur `resend` n'est pas écrit : il lui faut le domaine `labascule.fr`
- * transféré, un expéditeur vérifié et une clé. Tant qu'il manque, le module se
- * développe et se démontre sur `simulation`, exactement comme l'agenda l'a fait
- * avant que Meetergo ne soit branché.
+ * L'adaptateur `resend` n'est pas écrit : il lui faut un domaine vérifiable
+ * (pas `labascule.fr`, qui restera fictif — décision du 09/09/2026 — mais un
+ * domaine que Thomas possède, encore à choisir), un expéditeur vérifié et une
+ * clé. Tant qu'il manque, le module se développe et se démontre sur
+ * `simulation`, exactement comme l'agenda l'a fait avant que Meetergo ne soit
+ * branché.
  */
 
 export type NomDeService = "resend" | "simulation";

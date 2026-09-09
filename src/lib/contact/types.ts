@@ -2,10 +2,12 @@
  * Le vocabulaire du module de contact, indépendant de tout service d'e-mail.
  *
  * **Aucun nom de fournisseur n'apparaît ici, comme dans `src/lib/reservation`.**
- * Le service d'acheminement des courriers (Resend pressenti) n'est pas branché,
- * l'adresse de destination `@labascule.fr` n'existe pas encore (transfert de
- * domaine en cours), et le client gardera ce site trois à cinq ans. Changer de
- * service doit rester le travail d'une journée, pas une reprise du module.
+ * Le service d'acheminement des courriers (Resend pressenti) n'est pas branché :
+ * il lui faut un domaine vérifiable, qui ne sera pas `labascule.fr` (décision du
+ * 09/09/2026, il n'y aura pas de vrai domaine pour ce projet fictif) mais un
+ * domaine que Thomas possède par ailleurs, encore à choisir. Le client gardera
+ * ce site trois à cinq ans, changer de service doit rester le travail d'une
+ * journée, pas une reprise du module.
  */
 
 /** Les motifs proposés au visiteur, tous facultatifs. Source unique. */
