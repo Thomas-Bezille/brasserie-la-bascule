@@ -1,4 +1,5 @@
 import { visites } from "@/donnees/infos-pratiques";
+import { estUnCreneauOuvert } from "@/lib/reservation/grille-horaire";
 import type { DemandeDeReservation } from "@/lib/reservation/types";
 
 /**
@@ -47,6 +48,13 @@ export function validerDemande(demande: DemandeDeReservation): readonly Anomalie
 
   if (!Number.isFinite(Date.parse(demande.creneauDebut)))
     ajouter("creneauDebut", "Choisissez un créneau.");
+  else if (!estUnCreneauOuvert(demande.creneauDebut))
+    /**
+     * Rejoue côté serveur ce que `CalendrierCreneaux` empêche déjà côté
+     * client : sans ce garde-fou, une requête forgée pourrait réserver un
+     * horaire jamais publié, que l'agenda sous-jacent l'accepte ou non.
+     */
+    ajouter("creneauDebut", "Ce créneau ne fait plus partie des horaires proposés.");
 
   return anomalies;
 }

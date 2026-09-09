@@ -18,10 +18,11 @@ const ENV = {
   AGENDA_MEETERGO_URL_BASE: "https://api.exemple.test/v4",
 } as const;
 
+// Vendredi 16 h 30 à Vertou : un des horaires publiés (infos-pratiques.ts).
 const demande = (
   modifications: Partial<DemandeDeReservation> = {},
 ): DemandeDeReservation => ({
-  creneauDebut: "2026-10-09T15:00:00.000Z",
+  creneauDebut: "2026-10-09T14:30:00.000Z",
   formule: decouverte.nom,
   nombreDePersonnes: 8,
   nom: "Camille Rouaud",
@@ -311,7 +312,7 @@ describe("la réservation", () => {
     const post = appels.find((a) => a.methode === "POST")!;
     expect(post.corps).toMatchObject({
       meetingTypeId: "type-decouverte",
-      start: "2026-10-09T15:00:00.000Z",
+      start: "2026-10-09T14:30:00.000Z",
       hostIds: ["hote-1"],
     });
     const attendee = post.corps!.attendee as Record<string, unknown>;

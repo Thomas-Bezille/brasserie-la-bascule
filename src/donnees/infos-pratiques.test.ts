@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   boutique,
+  horairesDeVisite,
   marche,
   prixBouteilles,
   stationnement,
@@ -79,6 +80,28 @@ describe("les formules de visite", () => {
       effectifMax: 20,
       dureeMinutes: 150,
     });
+  });
+});
+
+describe("les créneaux de visite", () => {
+  it("propose un seul horaire le vendredi, à 16 h 30", () => {
+    expect(horairesDeVisite.filter((h) => h.jour === "vendredi")).toEqual([
+      { jour: "vendredi", heure: "16:30" },
+    ]);
+  });
+
+  it("propose trois horaires le samedi, à 10 h, 15 h et 17 h", () => {
+    expect(horairesDeVisite.filter((h) => h.jour === "samedi")).toEqual([
+      { jour: "samedi", heure: "10:00" },
+      { jour: "samedi", heure: "15:00" },
+      { jour: "samedi", heure: "17:00" },
+    ]);
+  });
+
+  it("n'ouvre que le vendredi et le samedi, comme la boutique", () => {
+    expect(new Set(horairesDeVisite.map((h) => h.jour))).toEqual(
+      new Set(["vendredi", "samedi"]),
+    );
   });
 });
 

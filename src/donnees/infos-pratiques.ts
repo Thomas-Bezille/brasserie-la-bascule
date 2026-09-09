@@ -133,6 +133,33 @@ export const visites: readonly Formule[] = [
   },
 ];
 
+export type HoraireDeVisite = {
+  readonly jour: string;
+  readonly heure: Heure;
+};
+
+/**
+ * Les créneaux de visite, source unique du calendrier de réservation.
+ *
+ * **Sortis de la fiction le 09/09/2026**, comme le numéro de téléphone : les
+ * horaires oraux de Marc (§ 31, « vendredi 17 h, samedi 10 h 30 et 14 h 30 »)
+ * n'ont jamais été saisis dans Meetergo, resté sur son réglage de démonstration
+ * (créneau toutes les 15 min, décision de session 17 de ne plus y toucher).
+ * Cette grille remplace ces horaires-là, cette fois pour de bon.
+ *
+ * La jauge par créneau n'est pas répétée ici : c'est l'effectif maximum de la
+ * formule (`visites` ci-dessus), 10 personnes en visite découverte, 20 en
+ * entreprise. `lib/reservation/grille-horaire.ts` filtre n'importe quel
+ * agenda — Meetergo compris, avec sa grille plus fine — sur ces seuls couples
+ * jour/heure, lus à l'heure de Vertou.
+ */
+export const horairesDeVisite: readonly HoraireDeVisite[] = [
+  { jour: "vendredi", heure: "16:30" },
+  { jour: "samedi", heure: "10:00" },
+  { jour: "samedi", heure: "15:00" },
+  { jour: "samedi", heure: "17:00" },
+];
+
 /**
  * La note Google, vendue au socle : la note et le nombre d'avis sur l'accueil et
  * sur la page Visites, avec un lien vers la fiche. C'est un actif de réassurance
