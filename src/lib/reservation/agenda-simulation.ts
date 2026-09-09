@@ -1,4 +1,4 @@
-import { visites } from "@/donnees/infos-pratiques";
+import { horairesDeVisite, visites } from "@/donnees/infos-pratiques";
 import { validerDemande } from "@/lib/reservation/validation";
 import type {
   Agenda,
@@ -15,18 +15,23 @@ import type {
  * fournisseur ne soit choisi, et montrer le parcours complet en revue. La
  * fabrique refuse de le servir dès que `SITE_PUBLIE` vaut `oui`.
  *
- * Ses créneaux ne sont pas les vrais et ne peuvent pas l'être : **les créneaux
- * de visite réels n'ont jamais été validés par le client.** Ceux de la maquette
- * (« vendredi 17 h, samedi 10 h 30 ») ne figurent pas dans les dix données
- * arrêtées du cahier des charges, section 6. Ils sont donc générés ici, sur le
- * rythme d'ouverture de la boutique, et ils seront remplacés par ceux que Julien
- * et Marc auront confirmés.
+ * **Ses créneaux suivent `horairesDeVisite`** (`infos-pratiques.ts`), la grille
+ * de visite publiée : il n'invente plus ses propres jours et heures. La même
+ * grille est appliquée en filtre à l'agenda Meetergo par
+ * `agenda.ts` — un jour, avant cette grille, la démonstration en avait une à
+ * elle, calée sur le rythme de la boutique plutôt que sur des horaires de
+ * visite jamais arrêtés ; ce n'est plus le cas.
  */
 
-/** Vendredi et samedi, les deux jours où la boutique est ouverte. */
-const JOURS_OUVERTS = [5, 6];
-
 const reservations = new Map<string, number>();
+
+/** L'heure d'un `HoraireDeVisite` (`"16:30"`), posée sur un jour donné. */
+function debutDuJour(jour: Date, heure: string): Date {
+  const [heures, minutes] = heure.split(":").map(Number);
+  const debut = new Date(jour);
+  debut.setHours(heures, minutes, 0, 0);
+  return debut;
+}
 
 function creneauxDeLaPeriode(formule: string, depuis: Date, jusqua: Date): Creneau[] {
   const capacite = visites.find((f) => f.nom === formule)?.effectifMax ?? 0;
@@ -37,21 +42,30 @@ function creneauxDeLaPeriode(formule: string, depuis: Date, jusqua: Date): Crene
   const jour = new Date(depuis);
   jour.setHours(0, 0, 0, 0);
 
-  while (jour <= jusqua) {
-    if (JOURS_OUVERTS.includes(jour.getDay())) {
-      for (const heure of [10, 17]) {
-        const debut = new Date(jour);
-        debut.setHours(heure, 0, 0, 0);
-        if (debut < depuis) continue;
+  const JOURS_INDEX: Record<string, number> = {
+    dimanche: 0,
+    lundi: 1,
+    mardi: 2,
+    mercredi: 3,
+    jeudi: 4,
+    vendredi: 5,
+    samedi: 6,
+  };
 
-        const fin = new Date(debut.getTime() + duree * 60_000);
-        const prises = reservations.get(debut.toISOString()) ?? 0;
-        creneaux.push({
-          debut: debut.toISOString(),
-          fin: fin.toISOString(),
-          placesRestantes: Math.max(0, capacite - prises),
-        });
-      }
+  while (jour <= jusqua) {
+    for (const horaire of horairesDeVisite) {
+      if (JOURS_INDEX[horaire.jour] !== jour.getDay()) continue;
+
+      const debut = debutDuJour(jour, horaire.heure);
+      if (debut < depuis) continue;
+
+      const fin = new Date(debut.getTime() + duree * 60_000);
+      const prises = reservations.get(debut.toISOString()) ?? 0;
+      creneaux.push({
+        debut: debut.toISOString(),
+        fin: fin.toISOString(),
+        placesRestantes: Math.max(0, capacite - prises),
+      });
     }
     jour.setDate(jour.getDate() + 1);
   }

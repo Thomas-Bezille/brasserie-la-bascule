@@ -7,10 +7,11 @@ import type { DemandeDeReservation } from "@/lib/reservation/types";
 
 const decouverte = visites.find((f) => f.nom === "Visite découverte")!;
 
+// Vendredi 16 h 30 à Vertou : un des horaires publiés (infos-pratiques.ts).
 const demande = (
   modifications: Partial<DemandeDeReservation> = {},
 ): DemandeDeReservation => ({
-  creneauDebut: "2026-10-09T17:00:00.000Z",
+  creneauDebut: "2026-10-09T14:30:00.000Z",
   formule: decouverte.nom,
   nombreDePersonnes: 8,
   nom: "Camille Rouaud",
@@ -86,6 +87,52 @@ describe("la configuration de l'agenda", () => {
 
     expect(agenda?.fournisseur).toBe("meetergo");
   });
+
+  /**
+   * La règle qui compte pour cette évolution : Meetergo reste réglé sur une
+   * grille fine (décision de session 17 de ne plus y toucher), c'est
+   * `agendaDuSite` qui la réduit aux horaires publiés, quel que soit ce que le
+   * fournisseur renvoie par ailleurs.
+   */
+  it("réduit les créneaux Meetergo aux seuls horaires de visite publiés", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: string | URL) => {
+        if (url.toString().includes("/meeting-type/")) {
+          return { ok: true, status: 200, json: async () => ({ userId: "hote-1" }) };
+        }
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({
+            dates: [
+              {
+                spots: [
+                  { startTime: "2026-10-09T14:30:00.000Z" }, // vendredi 16 h 30 à Vertou : publié
+                  { startTime: "2026-10-09T15:00:00.000Z" }, // vendredi 17 h à Vertou : pas publié
+                ],
+              },
+            ],
+          }),
+        };
+      }),
+    );
+
+    const agenda = await agendaDuSite({
+      AGENDA_FOURNISSEUR: "meetergo",
+      AGENDA_CLE_API: "rgo-x",
+      AGENDA_MEETERGO_TYPE_DECOUVERTE: "type-decouverte",
+      AGENDA_MEETERGO_TYPE_ENTREPRISE: "type-entreprise",
+    });
+
+    const creneaux = await agenda!.creneaux(
+      decouverte.nom,
+      new Date("2026-10-01T00:00:00.000Z"),
+      new Date("2026-10-20T00:00:00.000Z"),
+    );
+
+    expect(creneaux.map((c) => c.debut)).toEqual(["2026-10-09T14:30:00.000Z"]);
+  });
 });
 
 afterEach(() => {
@@ -112,6 +159,14 @@ describe("la validation d'une demande", () => {
       0,
     );
     expect(validerDemande(demande({ telephone: "12" })).length).toBeGreaterThan(0);
+  });
+
+  it("refuse un créneau hors des horaires de visite publiés", () => {
+    // Vendredi 9 octobre 2026, 17 h à Vertou : la grille ne publie que 16 h 30.
+    const anomalies = validerDemande(
+      demande({ creneauDebut: "2026-10-09T15:00:00.000Z" }),
+    );
+    expect(anomalies.map((a) => a.champ)).toContain("creneauDebut");
   });
 });
 

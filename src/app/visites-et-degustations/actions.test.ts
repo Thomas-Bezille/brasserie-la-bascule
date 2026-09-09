@@ -9,7 +9,8 @@ const decouverte = visites.find((f) => f.nom === "Visite découverte")!;
 function formulaire(modifications: Record<string, string> = {}) {
   const donnees = new FormData();
   const champs: Record<string, string> = {
-    creneau: "2026-10-09T17:00:00.000Z",
+    // Vendredi 16 h 30 à Vertou : un des horaires publiés (infos-pratiques.ts).
+    creneau: "2026-10-09T14:30:00.000Z",
     formule: decouverte.nom,
     nombreDePersonnes: "8",
     nom: "Camille Rouaud",

@@ -1,3 +1,4 @@
+import { filtrerSurLesHorairesDeVisite } from "@/lib/reservation/grille-horaire";
 import type { Agenda } from "@/lib/reservation/types";
 
 /**
@@ -76,19 +77,11 @@ export function etatDeLAgenda(env: Environnement = process.env): EtatAgenda {
   return { configure: true, fournisseur: nom };
 }
 
-/**
- * L'agenda du site, ou `null` s'il n'y en a pas.
- *
- * Renvoyer `null` plutôt que de lever : l'absence d'agenda est un état prévu du
- * site, pas une panne. La page de réservation l'affiche comme tel.
- */
-export async function agendaDuSite(
-  env: Environnement = process.env,
+async function agendaBrutDuFournisseur(
+  fournisseur: NomDeFournisseur,
+  env: Environnement,
 ): Promise<Agenda | null> {
-  const etat = etatDeLAgenda(env);
-  if (!etat.configure) return null;
-
-  switch (etat.fournisseur) {
+  switch (fournisseur) {
     case "simulation": {
       const { agendaDeSimulation } = await import("@/lib/reservation/agenda-simulation");
       return agendaDeSimulation();
@@ -101,4 +94,34 @@ export async function agendaDuSite(
     case "calcom":
       return null;
   }
+}
+
+/**
+ * L'agenda du site, ou `null` s'il n'y en a pas.
+ *
+ * Renvoyer `null` plutôt que de lever : l'absence d'agenda est un état prévu du
+ * site, pas une panne. La page de réservation l'affiche comme tel.
+ *
+ * **Les créneaux sont toujours réduits aux horaires de visite publiés**
+ * (`grille-horaire.ts`), quel que soit le fournisseur : c'est ici, au seul
+ * endroit qui les assemble tous, que la règle s'applique une fois pour toutes,
+ * plutôt que dans chaque adaptateur.
+ */
+export async function agendaDuSite(
+  env: Environnement = process.env,
+): Promise<Agenda | null> {
+  const etat = etatDeLAgenda(env);
+  if (!etat.configure) return null;
+
+  const brut = await agendaBrutDuFournisseur(etat.fournisseur, env);
+  if (!brut) return null;
+
+  return {
+    fournisseur: brut.fournisseur,
+    async creneaux(formule, depuis, jusqua) {
+      const creneaux = await brut.creneaux(formule, depuis, jusqua);
+      return filtrerSurLesHorairesDeVisite(creneaux, formule);
+    },
+    reserver: (demande) => brut.reserver(demande),
+  };
 }
