@@ -25,6 +25,12 @@ import type { Creneau } from "@/lib/reservation/types";
  * **Un jour fermé et un jour complet reçoivent donc le même traitement** dans
  * `CalendrierCreneaux` ci-dessous : aucun créneau ce jour-là, dans les deux
  * cas, et rien dans la donnée reçue ne distingue pourquoi.
+ *
+ * **`placesRestantes` ne s'affiche pas.** Une visite est un groupe privatisé
+ * par créneau (6 à 10 personnes en découverte, 15 à 20 en entreprise), pas une
+ * jauge que plusieurs réservations se partagent : Meetergo ferme le créneau
+ * entier dès la première réservation, quelle que soit sa taille. Un badge
+ * « 10 places » y aurait toujours affiché 1, jamais l'effectif de la formule.
  */
 
 /** `"2026-09-11"`, clé de regroupement par jour civil, lu dans le fuseau du visiteur. */
@@ -218,8 +224,7 @@ function CalendrierCreneaux({
                           onChange={() => onChoisir(creneau.debut)}
                           className="sr-only"
                         />
-                        {heureDuCreneau(creneau.debut)} · {creneau.placesRestantes}{" "}
-                        {creneau.placesRestantes > 1 ? "places" : "place"}
+                        {heureDuCreneau(creneau.debut)}
                       </label>
                     ))}
                   </div>
