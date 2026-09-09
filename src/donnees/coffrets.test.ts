@@ -16,12 +16,11 @@ describe("les coffrets", () => {
   });
 
   /**
-   * Publication différée à fin octobre, CDC v1.2 correction 12 : le bloc ne doit
-   * pas apparaître à la mise en ligne du 9. Le test garde l'intention, quand on
-   * passe le drapeau à `true` on le fait ici aussi.
+   * Publication avancée le 09/09/2026 (décision de Thomas, session 18) : plus de
+   * date à attendre dans un projet fictif joué en solo.
    */
-  it("ne sont pas publiés avant leur mise en vente de fin octobre", () => {
-    expect(COFFRETS_PUBLIES).toBe(false);
+  it("sont publiés", () => {
+    expect(COFFRETS_PUBLIES).toBe(true);
   });
 
   it("ne portent aucune mention promotionnelle (loi Evin)", () => {

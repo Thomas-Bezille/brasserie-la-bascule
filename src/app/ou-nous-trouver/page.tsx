@@ -10,7 +10,7 @@ import { formaterCreneaux } from "@/lib/formats";
  *
  * L'atelier, la boutique et le marché viennent de la source unique
  * `donnees/infos-pratiques.ts`, vérifiée par le client le 21/09. Le bloc « Nos
- * coffrets » ne s'affiche qu'à sa publication, fin octobre. La carte des bars et
+ * coffrets » est publié depuis le 09/09/2026. La carte des bars et
  * cavistes partenaires attend la liste d'adresses du client (fil § 31-32).
  *
  * **Pas de fond de carte Google.** Le cahier des charges (5.2) impose un fond

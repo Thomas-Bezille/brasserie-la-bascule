@@ -5,9 +5,9 @@ import { formaterPrix } from "@/lib/formats";
 /**
  * Le bloc « Nos coffrets ».
  *
- * **Il ne s'affiche pas avant fin octobre.** Les coffrets sortent pour les
- * portes ouvertes, la publication est différée (CDC v1.2, correction 12). Le
- * contenu est prêt, il attend `COFFRETS_PUBLIES`.
+ * **Publié depuis le 09/09/2026** (`COFFRETS_PUBLIES`, `donnees/coffrets.ts`) :
+ * la publication différée à fin octobre prévue au CDC v1.2 n'a plus lieu d'être
+ * dans un projet fictif joué en solo.
  *
  * `publies` est une entrée pour que le test puisse voir les deux états sans
  * toucher à la constante ; en vrai la page ne passe rien et c'est la constante
