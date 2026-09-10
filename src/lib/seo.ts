@@ -1,4 +1,5 @@
 import type { Biere } from "@/donnees/bieres";
+import { anneeCreation, communeOrigine } from "@/donnees/histoire";
 import {
   adresse,
   boutique,
@@ -156,6 +157,36 @@ export function donneesBiere(biere: Biere) {
       itemOffered: {
         "@type": "Product",
         name: `Bouteille 33 cl ${complementDuNom(biere.nom)}`,
+      },
+    },
+  };
+}
+
+/**
+ * La page « Notre histoire », en `AboutPage` qui pointe vers la brasserie déjà
+ * décrite par `donneesBrasserie` (`@id` commun). On n'y ajoute que ce que la
+ * page raconte et que la fiche d'entreprise ne porte pas : l'année de création
+ * et la commune des débuts. Rien de nouveau à inventer pour les moteurs, la
+ * règle vaut ici comme pour les bières.
+ */
+export function donneesHistoire() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "Notre histoire — Brasserie La Bascule",
+    url: `${URL_SITE}/notre-histoire`,
+    mainEntity: {
+      "@type": "Brewery",
+      "@id": `${URL_SITE}/#brasserie`,
+      name: "Brasserie La Bascule",
+      foundingDate: String(anneeCreation),
+      foundingLocation: {
+        "@type": "Place",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: communeOrigine,
+          addressCountry: "FR",
+        },
       },
     },
   };

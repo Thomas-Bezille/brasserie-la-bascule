@@ -97,20 +97,54 @@ describe("la page courante", () => {
     for (const lien of liens) expect(lien).toHaveAttribute("aria-current", "page");
   });
 
-  it("ne marque pas l'accueil quand on est ailleurs", () => {
+  it("ne marque pas le logo comme page courante quand on est ailleurs", () => {
     cheminCourant.valeur = "/contact";
     render(<Entete />);
 
-    for (const lien of screen.getAllByRole("link", { name: "Accueil" })) {
-      expect(lien).not.toHaveAttribute("aria-current");
-    }
+    const logo = screen.getAllByRole("link").find((l) => l.getAttribute("href") === "/");
+    expect(logo).toBeDefined();
+    expect(logo!).not.toHaveAttribute("aria-current");
   });
 });
 
-describe("le sixième lien, Portes ouvertes", () => {
+describe("les libellés du menu", () => {
   /**
-   * Hors des cinq pages de la maquette validée (session 16) : présent tant
-   * que `PORTES_OUVERTES_PUBLIEES` l'est, sur les deux menus.
+   * « Accueil » a été retiré du menu (session 19) : le logo mène à l'accueil,
+   * et la rangée était trop dense sur écran moyen depuis la sixième page.
+   */
+  it("n'affiche plus de lien « Accueil », le logo le remplace", () => {
+    render(<Entete />);
+    expect(screen.queryByRole("link", { name: "Accueil" })).toBeNull();
+  });
+
+  /**
+   * Deux libellés sont raccourcis pour le seul menu de bureau. Le menu de
+   * téléphone, qui a la place, garde le libellé complet de la maquette.
+   */
+  it("raccourcit sur le bureau, garde le libellé complet sur téléphone", async () => {
+    const utilisateur = userEvent.setup();
+    render(<Entete />);
+
+    const menuBureau = screen.getByRole("navigation", {
+      name: /^Navigation principale$/,
+    });
+    expect(within(menuBureau).getByRole("link", { name: "Visites" })).toHaveAttribute(
+      "href",
+      "/visites-et-degustations",
+    );
+
+    await utilisateur.click(screen.getByRole("button", { name: /ouvrir le menu/i }));
+    const menuTelephone = screen.getByRole("navigation", { name: /téléphone/i });
+    expect(
+      within(menuTelephone).getByRole("link", { name: "Visites et dégustations" }),
+    ).toHaveAttribute("href", "/visites-et-degustations");
+  });
+});
+
+describe("le lien Portes ouvertes, hors maquette", () => {
+  /**
+   * Ajouté au bout du menu tant que `PORTES_OUVERTES_PUBLIEES` l'est, sur les
+   * deux menus (session 16).
    */
   it("apparaît sur le menu de bureau et sur celui de téléphone", async () => {
     const utilisateur = userEvent.setup();
