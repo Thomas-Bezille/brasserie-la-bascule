@@ -1,5 +1,6 @@
 "use server";
 
+import { verifierAntiSpam } from "@/lib/contact/anti-spam";
 import { messagerieDuSite } from "@/lib/contact/messagerie";
 import { MOTIFS, type DemandeDeContact, type Motif } from "@/lib/contact/types";
 import { validerDemande } from "@/lib/contact/validation";
@@ -32,6 +33,22 @@ export async function envoyerUnMessage(
   _precedent: EtatDuFormulaireContact,
   donnees: FormData,
 ): Promise<EtatDuFormulaireContact> {
+  /**
+   * L'anti-spam d'abord : inutile de valider ou d'envoyer un message de robot,
+   * et on ne renseigne pas un robot sur les champs attendus. Sans script tiers
+   * ni cookie, voir `lib/contact/anti-spam.ts`.
+   */
+  const verdict = verifierAntiSpam(donnees);
+  if (!verdict.ok) {
+    return {
+      statut: "rejete",
+      message:
+        verdict.motif === "perime"
+          ? "Cette page est restée ouverte trop longtemps. Rechargez-la, puis renvoyez votre message."
+          : "Réessayez, ou écrivez-nous directement à l'adresse indiquée plus haut.",
+    };
+  }
+
   const motifBrut = texte(donnees, "motif");
   const demande: DemandeDeContact = {
     nom: texte(donnees, "nom"),
