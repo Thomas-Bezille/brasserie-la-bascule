@@ -18,12 +18,19 @@ export type Lien = {
   readonly livree: boolean;
 };
 
-/** Les cinq pages du menu principal, dans l'ordre de la maquette validée. */
+/**
+ * Le menu principal. Les cinq premières pages sont celles de la maquette
+ * validée, dans son ordre. « Notre histoire » est la sixième : hors maquette,
+ * réintégrée au périmètre par l'avenant n° 2, qui demande sa présence au menu,
+ * au pied de page et au plan du site. Elle s'insère avant « Contact », à la
+ * place que lui donnait la liste du client au rendez-vous de découverte.
+ */
 export const navigationPrincipale: readonly Lien[] = [
   { libelle: "Accueil", href: "/", livree: true },
   { libelle: "Nos bières", href: "/nos-bieres", livree: true },
   { libelle: "Visites et dégustations", href: "/visites-et-degustations", livree: true },
   { libelle: "Où nous trouver", href: "/ou-nous-trouver", livree: true },
+  { libelle: "Notre histoire", href: "/notre-histoire", livree: true },
   { libelle: "Contact", href: "/contact", livree: true },
 ];
 

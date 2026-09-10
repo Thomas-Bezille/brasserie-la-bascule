@@ -30,6 +30,14 @@ describe("le plan du site", () => {
   });
 
   /**
+   * Réintégrée au périmètre par l'avenant n° 2, qui demande sa présence au plan
+   * du site. Elle est `livree`, elle doit donc y figurer comme les cinq autres.
+   */
+  it("propose Notre histoire", () => {
+    expect(adresses()).toContain("/notre-histoire");
+  });
+
+  /**
    * Hors de `navigationPrincipale` (pas une des cinq pages de la maquette
    * validée), elle suit son propre interrupteur, `PORTES_OUVERTES_PUBLIEES`.
    */

@@ -2,9 +2,11 @@ import { describe, expect, it } from "vitest";
 import type { Biere } from "@/donnees/bieres";
 import { bieres } from "@/donnees/bieres";
 import { joursPortesOuvertes } from "@/donnees/portes-ouvertes";
+import { anneeCreation, communeOrigine } from "@/donnees/histoire";
 import {
   donneesBiere,
   donneesBrasserie,
+  donneesHistoire,
   donneesPortesOuvertes,
   IMAGE_PAR_DEFAUT,
 } from "./seo";
@@ -113,6 +115,20 @@ describe("l'image de partage par défaut", () => {
     expect(IMAGE_PAR_DEFAUT.url).toBe("/illustrations/bascule.png");
     expect(IMAGE_PAR_DEFAUT.width).toBe(IMAGE_PAR_DEFAUT.height);
     expect(IMAGE_PAR_DEFAUT.alt).not.toBe("");
+  });
+});
+
+describe("Notre histoire en donnée structurée", () => {
+  it("est une AboutPage rattachée à la brasserie par le même identifiant", () => {
+    const donnees = donneesHistoire();
+    expect(donnees["@type"]).toBe("AboutPage");
+    expect(donnees.mainEntity["@id"]).toBe(donneesBrasserie()["@id"]);
+  });
+
+  it("porte l'année de création et la commune des débuts de la source unique", () => {
+    const marque = donneesHistoire().mainEntity;
+    expect(marque.foundingDate).toBe(String(anneeCreation));
+    expect(marque.foundingLocation.address.addressLocality).toBe(communeOrigine);
   });
 });
 
