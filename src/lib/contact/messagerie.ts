@@ -17,12 +17,12 @@ import type { Messagerie } from "@/lib/contact/types";
  * - `MAIL_TO` : l'adresse de la brasserie qui reçoit les demandes
  * - `MAIL_FROM` : l'expéditeur vérifié sur le domaine
  *
- * L'adaptateur `resend` n'est pas écrit : il lui faut un domaine vérifiable
- * (pas `labascule.fr`, qui restera fictif — décision du 09/09/2026 — mais un
- * domaine que Thomas possède, encore à choisir), un expéditeur vérifié et une
- * clé. Tant qu'il manque, le module se développe et se démontre sur
- * `simulation`, exactement comme l'agenda l'a fait avant que Meetergo ne soit
- * branché.
+ * L'adaptateur `resend` est écrit (`messagerie-resend.ts`). Faute de domaine
+ * personnalisé pour ce projet fictif (décision du 09/09/2026), il envoie depuis
+ * le domaine bac à sable de Resend : `MAIL_FROM` = `onboarding@resend.dev` et
+ * `MAIL_TO` = l'adresse exacte du compte Resend, seule destination livrée. Le
+ * jour d'un vrai domaine, ces deux variables changent, pas le code.
+ * `simulation` reste là pour développer en local sans compte.
  */
 
 export type NomDeService = "resend" | "simulation";
@@ -97,9 +97,9 @@ export async function messagerieDuSite(
         await import("@/lib/contact/messagerie-simulation");
       return messagerieDeSimulation();
     }
-    // Resend reste à écrire : domaine transféré, expéditeur vérifié et clé.
-    // Voir le point 4 des attentes côté client dans le POINT-DE-REPRISE.
-    case "resend":
-      return null;
+    case "resend": {
+      const { messagerieDeResend } = await import("@/lib/contact/messagerie-resend");
+      return messagerieDeResend(env);
+    }
   }
 }
