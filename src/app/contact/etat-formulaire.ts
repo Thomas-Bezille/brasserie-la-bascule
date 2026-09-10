@@ -15,6 +15,12 @@ export type EtatDuFormulaireContact =
   | { readonly statut: "vierge" }
   | { readonly statut: "anomalies"; readonly anomalies: readonly Anomalie[] }
   | { readonly statut: "indisponible" }
+  /**
+   * Envoi écarté par l'anti-spam (`lib/contact/anti-spam.ts`). `message` porte
+   * l'indication utile au rare humain touché : réessayer, ou recharger la page.
+   * Comme `indisponible`, ce n'est jamais un faux « message envoyé ».
+   */
+  | { readonly statut: "rejete"; readonly message: string }
   | { readonly statut: "envoye" };
 
 export const FORMULAIRE_CONTACT_VIERGE: EtatDuFormulaireContact = { statut: "vierge" };

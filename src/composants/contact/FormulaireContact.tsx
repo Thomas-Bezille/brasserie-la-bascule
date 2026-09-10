@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useActionState, useId } from "react";
 import { envoyerUnMessage } from "@/app/contact/actions";
 import { FORMULAIRE_CONTACT_VIERGE } from "@/app/contact/etat-formulaire";
+import { CHAMP_APPAT, CHAMP_JETON } from "@/lib/contact/champs-anti-spam";
 import { MOTIFS } from "@/lib/contact/types";
 
 /**
@@ -19,9 +20,14 @@ import { MOTIFS } from "@/lib/contact/types";
  * Trois champs sont obligatoires : le nom, l'adresse et le message. Le
  * téléphone est mis en avant, le client préférant rappeler qu'écrire, mais il
  * reste facultatif.
+ *
+ * **Deux champs cachés servent l'anti-spam** (`lib/contact/anti-spam.ts`) : le
+ * champ appât, invisible et hors de l'ordre de tabulation, qu'un humain ne
+ * remplit pas, et le jeton horodaté fourni par le serveur. Aucun script tiers,
+ * aucun cookie.
  */
 
-export function FormulaireContact() {
+export function FormulaireContact({ jeton }: { jeton: string }) {
   const [etat, envoyer, enCours] = useActionState(
     envoyerUnMessage,
     FORMULAIRE_CONTACT_VIERGE,
@@ -49,6 +55,31 @@ export function FormulaireContact() {
 
   return (
     <form action={envoyer} className="max-w-[640px]" noValidate>
+      {/*
+        Anti-spam, sans script tiers ni cookie (lib/contact/anti-spam.ts).
+        Le champ appât est sorti de l'affichage et de l'arbre d'accessibilité,
+        hors tabulation, sans remplissage automatique : un humain ne le voit
+        pas, un robot qui remplit tout le remplit. Le jeton horodaté vient du
+        serveur, rendu à la requête pour être frais.
+      */}
+      <div
+        aria-hidden="true"
+        className="absolute -left-[9999px] h-px w-px overflow-hidden"
+      >
+        <label htmlFor={`${identifiant}-${CHAMP_APPAT}`}>
+          Ne remplissez pas ce champ
+        </label>
+        <input
+          id={`${identifiant}-${CHAMP_APPAT}`}
+          type="text"
+          name={CHAMP_APPAT}
+          tabIndex={-1}
+          autoComplete="off"
+          defaultValue=""
+        />
+      </div>
+      <input type="hidden" name={CHAMP_JETON} defaultValue={jeton} />
+
       <div>
         <label htmlFor={`${identifiant}-motif`} className="text-[15px] font-medium">
           Votre demande concerne (facultatif)
@@ -132,6 +163,13 @@ export function FormulaireContact() {
           L&apos;envoi du formulaire n&apos;est pas disponible pour le moment.{" "}
           <strong className="text-papier">Votre message n&apos;a pas été envoyé.</strong>{" "}
           Écrivez-nous directement à l&apos;adresse indiquée plus haut.
+        </p>
+      )}
+
+      {etat.statut === "rejete" && (
+        <p role="alert" className="border-papier/25 mt-6 border-l-2 pl-4 text-[15px]">
+          <strong className="text-papier">Votre message n&apos;a pas été envoyé.</strong>{" "}
+          {etat.message}
         </p>
       )}
 

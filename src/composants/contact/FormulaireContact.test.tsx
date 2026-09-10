@@ -1,14 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { FormulaireContact } from "@/composants/contact/FormulaireContact";
+import { CHAMP_APPAT, CHAMP_JETON } from "@/lib/contact/champs-anti-spam";
 
 vi.mock("@/app/contact/actions", () => ({
   envoyerUnMessage: vi.fn(),
 }));
 
+const JETON = "1700000000000.signature";
+
 describe("le formulaire de contact", () => {
   it("rend obligatoires le nom, le courriel et le message, pas le reste", () => {
-    render(<FormulaireContact />);
+    render(<FormulaireContact jeton={JETON} />);
 
     expect(screen.getByLabelText("Votre nom")).toBeRequired();
     expect(screen.getByLabelText("Courriel")).toBeRequired();
@@ -18,13 +21,38 @@ describe("le formulaire de contact", () => {
   });
 
   /**
+   * Anti-spam sans script tiers : le champ appât doit être hors de l'arbre
+   * d'accessibilité et hors tabulation (un humain ne le voit pas, ne le
+   * remplit pas), et le jeton du serveur doit être posé tel quel.
+   */
+  it("cache le champ appât et transporte le jeton anti-spam", () => {
+    const { container } = render(<FormulaireContact jeton={JETON} />);
+
+    const appat = container.querySelector<HTMLInputElement>(
+      `input[name="${CHAMP_APPAT}"]`,
+    );
+    expect(appat).not.toBeNull();
+    expect(appat!.tabIndex).toBe(-1);
+    expect(appat!.getAttribute("autocomplete")).toBe("off");
+    // Sous un ancêtre aria-hidden : hors de l'arbre d'accessibilité pour un
+    // vrai lecteur d'écran, quoi qu'en dise le sélecteur de Testing Library.
+    expect(appat!.closest("[aria-hidden='true']")).not.toBeNull();
+
+    const jeton = container.querySelector<HTMLInputElement>(
+      `input[name="${CHAMP_JETON}"]`,
+    );
+    expect(jeton?.value).toBe(JETON);
+    expect(jeton?.type).toBe("hidden");
+  });
+
+  /**
    * Le CDC prévoyait une case de consentement. La politique de confidentialité,
    * écrite ensuite, fonde ce traitement sur l'intérêt légitime : une case
    * laisserait croire à un choix qui n'existe pas, puisque refuser rend la
    * réponse impossible. Ce qui est dû, c'est l'information.
    */
   it("informe sur l'usage des données sans faire cocher un faux consentement", () => {
-    const { container } = render(<FormulaireContact />);
+    const { container } = render(<FormulaireContact jeton={JETON} />);
 
     expect(container.querySelector('input[type="checkbox"]')).toBeNull();
     expect(
@@ -36,7 +64,7 @@ describe("le formulaire de contact", () => {
   });
 
   it("propose les motifs, mais laisse le champ sans réponse par défaut", () => {
-    render(<FormulaireContact />);
+    render(<FormulaireContact jeton={JETON} />);
 
     const motif = screen.getByLabelText(/Votre demande concerne/);
     expect(motif).toHaveValue("");

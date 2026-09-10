@@ -153,6 +153,7 @@ for (const { nom, html } of pages()) {
  */
 const ROUTES_DYNAMIQUES_ADMISES = new Set([
   "/visites-et-degustations", // module de réservation, créneaux lus à la requête
+  "/contact", // jeton anti-spam du formulaire, posé frais à chaque requête
 ]);
 
 const routesDuBuild = () => {

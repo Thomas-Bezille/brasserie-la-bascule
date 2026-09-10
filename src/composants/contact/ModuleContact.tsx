@@ -1,4 +1,6 @@
+import { connection } from "next/server";
 import { FormulaireContact } from "@/composants/contact/FormulaireContact";
+import { jetonAntiSpam } from "@/lib/contact/anti-spam";
 import { etatDeLaMessagerie, messagerieDuSite } from "@/lib/contact/messagerie";
 
 /**
@@ -15,12 +17,14 @@ import { etatDeLaMessagerie, messagerieDuSite } from "@/lib/contact/messagerie";
  * vrai service, et la recette refuse la mention « ouvrira avec le site » sur un
  * site publié.
  *
- * **La configuration est lue au build.** La mise en ligne du 9 octobre est un
- * redéploiement (passage de `SITE_PUBLIE` à `oui`), la valeur est donc à jour à
- * ce moment-là. Ce composant n'a pas de donnée sensible au temps, contrairement
- * au module de réservation et à ses créneaux.
+ * **Rendu à la requête** (`connection()`), pour poser à chaque visiteur un jeton
+ * anti-spam frais (`jetonAntiSpam`, `lib/contact/anti-spam.ts`). C'est la seule
+ * donnée sensible au temps de la page ; `/contact` est déclarée dynamique dans
+ * `scripts/recette.mjs`, comme la page des visites.
  */
 export async function ModuleContact() {
+  await connection();
+
   const etat = etatDeLaMessagerie();
   const messagerie = await messagerieDuSite();
 
@@ -48,7 +52,7 @@ export async function ModuleContact() {
       )}
 
       <div className="mt-10">
-        <FormulaireContact />
+        <FormulaireContact jeton={jetonAntiSpam()} />
       </div>
     </>
   );
