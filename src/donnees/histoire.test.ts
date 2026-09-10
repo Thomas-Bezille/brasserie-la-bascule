@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { anneeCreation, jalons } from "./histoire";
+import { AUTEURS_PHOTOS, anneeCreation, jalons, photos } from "./histoire";
 
 /**
  * La page « Notre histoire » lit ces jalons dans l'ordre du tableau. Ce test
@@ -22,5 +22,26 @@ describe("le fil de Notre histoire", () => {
       expect(jalon.titre.trim().length).toBeGreaterThan(0);
       expect(jalon.recit.trim().length).toBeGreaterThan(40);
     }
+  });
+});
+
+describe("les photos de Notre histoire", () => {
+  it("pointent vers un WebP de public/, avec des dimensions et un texte de remplacement", () => {
+    for (const photo of Object.values(photos)) {
+      expect(photo.src).toMatch(/^\/photos\/histoire\/.+\.webp$/);
+      expect(photo.largeur).toBeGreaterThan(0);
+      expect(photo.hauteur).toBeGreaterThan(0);
+      expect(photo.alt.trim().length).toBeGreaterThan(15);
+      expect(photo.auteur.trim().length).toBeGreaterThan(0);
+    }
+  });
+
+  it("liste les auteurs dans l'ordre d'apparition sur la page, pour les mentions légales", () => {
+    expect(AUTEURS_PHOTOS).toEqual([
+      photos.atelier.auteur,
+      photos.vignes.auteur,
+      photos.grain.auteur,
+      photos.service.auteur,
+    ]);
   });
 });

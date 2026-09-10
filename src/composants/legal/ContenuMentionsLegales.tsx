@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Surtitre } from "@/composants/ui/Surtitre";
 import { entreprise } from "@/donnees/entreprise";
+import { AUTEURS_PHOTOS } from "@/donnees/histoire";
 
 /**
  * Le corps des mentions légales.
@@ -23,6 +24,12 @@ const hebergeur = {
   nom: "Vercel Inc.",
   adresse: "440 N Barranca Ave #4133, Covina, CA 91723, États-Unis",
 } as const;
+
+/** « A, B et C » à partir d'une liste. */
+function enumeration(elements: readonly string[]): string {
+  if (elements.length <= 1) return elements.join("");
+  return `${elements.slice(0, -1).join(", ")} et ${elements[elements.length - 1]}`;
+}
 
 export function ContenuMentionsLegales() {
   const capital = entreprise.capitalEuros.toLocaleString("fr-FR");
@@ -90,10 +97,10 @@ export function ContenuMentionsLegales() {
         <section>
           <h2 className="text-[clamp(22px,3vw,30px)]">3. Propriété intellectuelle</h2>
           <p className="text-papier/70 mt-4">
-            L&apos;ensemble de ce site, textes, illustrations, photographies et charte
-            graphique, est protégé par le droit d&apos;auteur. Toute reproduction, même
-            partielle, est interdite sans autorisation écrite de la{" "}
-            {entreprise.raisonSociale}.
+            Les textes, les illustrations et la charte graphique de ce site sont protégés
+            par le droit d&apos;auteur. Toute reproduction, même partielle, est interdite
+            sans autorisation écrite de la {entreprise.raisonSociale}. Les photographies
+            d&apos;illustration relèvent d&apos;un régime distinct, décrit ci-dessous.
           </p>
         </section>
 
@@ -106,6 +113,18 @@ export function ContenuMentionsLegales() {
             </Link>
             , qui précise leur finalité, leur base légale, leur durée de conservation et
             vos droits.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-[clamp(22px,3vw,30px)]">5. Crédits photographiques</h2>
+          <p className="text-papier/70 mt-4">
+            Les photographies d&apos;illustration de la page{" "}
+            <Link href="/notre-histoire" className="underline">
+              Notre histoire
+            </Link>{" "}
+            proviennent d&apos;Unsplash et sont utilisées selon la licence Unsplash.
+            Auteurs : {enumeration(AUTEURS_PHOTOS)}.
           </p>
         </section>
       </div>

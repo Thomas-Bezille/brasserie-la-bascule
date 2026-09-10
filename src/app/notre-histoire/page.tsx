@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { DonneesStructurees } from "@/composants/ui/DonneesStructurees";
 import { Surtitre } from "@/composants/ui/Surtitre";
-import { jalons } from "@/donnees/histoire";
+import { jalons, photos } from "@/donnees/histoire";
 import { donneesHistoire } from "@/lib/seo";
 
 /**
@@ -17,8 +18,10 @@ import { donneesHistoire } from "@/lib/seo";
  * dans le même esprit que les autres sorties de fiction. Tout est dans
  * `donnees/histoire.ts`, y compris le raisonnement.
  *
- * **Version typographique**, sans photo d'archive : le fonds ancien est perdu,
- * l'article 6 de l'avenant prévoit ce cas à prix inchangé.
+ * **Quatre photos d'illustration** (session 19), pas des images du lieu réel :
+ * un bandeau d'atelier, puis trois images calées dans leur section (les vignes,
+ * le grain dans les mains, le service au comptoir). Elles disent le métier, pas
+ * « voici la Brasserie La Bascule ». Détail et crédits dans `donnees/histoire.ts`.
  *
  * **Reliée au menu et au plan du site** (`navigationPrincipale` dans
  * `donnees/navigation.ts`, `sitemap.ts`). L'article 2 de l'avenant demandait
@@ -33,6 +36,35 @@ export const metadata: Metadata = {
     "La Brasserie La Bascule est née dans un garage à Saint-Sébastien en 2022, avant de s'installer à Vertou en 2024. Trois associés, et une orge qu'on malte en partie soi-même.",
   alternates: { canonical: "/notre-histoire" },
 };
+
+/** Une photo dans un cadre au ratio fixe, recouvert. `ratio` est une classe
+    Tailwind `aspect-[l/h]` reprise de `donnees/histoire.ts`. */
+function Illustration({
+  photo,
+  ratio,
+  sizes,
+  priority = false,
+  className = "",
+}: {
+  photo: (typeof photos)[keyof typeof photos];
+  ratio: string;
+  sizes: string;
+  priority?: boolean;
+  className?: string;
+}) {
+  return (
+    <div className={`bg-beton relative w-full overflow-hidden ${ratio} ${className}`}>
+      <Image
+        src={photo.src}
+        alt={photo.alt}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className="object-cover"
+      />
+    </div>
+  );
+}
 
 export default function Page() {
   return (
@@ -53,6 +85,14 @@ export default function Page() {
           </p>
         </div>
       </section>
+
+      <Illustration
+        photo={photos.atelier}
+        ratio="aspect-[2400/1139]"
+        sizes="100vw"
+        priority
+        className="max-h-[70vh]"
+      />
 
       <section className="border-trait px-marge border-t py-[clamp(56px,9vw,110px)]">
         <div className="mx-auto max-w-[1240px]">
@@ -77,24 +117,40 @@ export default function Page() {
               </article>
             ))}
           </div>
+
+          <Illustration
+            photo={photos.vignes}
+            ratio="aspect-[1800/864]"
+            sizes="(min-width: 1240px) 1240px, 100vw"
+            className="mt-[clamp(20px,3vw,36px)]"
+          />
         </div>
       </section>
 
       <section className="border-trait px-marge border-t py-[clamp(56px,9vw,110px)]">
-        <div className="mx-auto max-w-[1240px]">
-          <Surtitre className="text-papier/55">Le grain</Surtitre>
-          <h2 className="mt-5 max-w-[20ch] text-[clamp(30px,4.5vw,52px)]">
-            On malte une partie de notre orge.
-          </h2>
-          <p className="text-papier/60 mt-6 max-w-[58ch] text-[19px] leading-[1.55]">
-            Avant d&apos;être du malt, l&apos;orge est trempée, mise à germer, puis
-            séchée. La plupart des brasseries l&apos;achètent déjà maltée. Nous en maltons
-            une part nous-mêmes, dans l&apos;atelier, à partir d&apos;orge cultivée dans
-            des fermes des environs. C&apos;est encombrant, c&apos;est lent, et on est à
-            peu près les seuls à le faire dans le coin. Ce qu&apos;on y gagne : savoir
-            exactement d&apos;où vient ce qui entre dans la cuve, et une note de pain
-            grillé qu&apos;on retrouve dans La Rouquine comme dans Le Corbeau.
-          </p>
+        <div className="mx-auto grid max-w-[1240px] items-start gap-[clamp(28px,5vw,72px)] lg:grid-cols-[1fr_0.82fr]">
+          <div>
+            <Surtitre className="text-papier/55">Le grain</Surtitre>
+            <h2 className="mt-5 max-w-[20ch] text-[clamp(30px,4.5vw,52px)]">
+              On malte une partie de notre orge.
+            </h2>
+            <p className="text-papier/60 mt-6 max-w-[54ch] text-[19px] leading-[1.55]">
+              Avant d&apos;être du malt, l&apos;orge est trempée, mise à germer, puis
+              séchée. La plupart des brasseries l&apos;achètent déjà maltée. Nous en
+              maltons une part nous-mêmes, dans l&apos;atelier, à partir d&apos;orge
+              cultivée dans des fermes des environs. C&apos;est encombrant, c&apos;est
+              lent, et on est à peu près les seuls à le faire dans le coin. Ce qu&apos;on
+              y gagne : savoir exactement d&apos;où vient ce qui entre dans la cuve, et
+              une note de pain grillé qu&apos;on retrouve dans La Rouquine comme dans Le
+              Corbeau.
+            </p>
+          </div>
+          <Illustration
+            photo={photos.grain}
+            ratio="aspect-[1200/1500]"
+            sizes="(min-width: 1024px) 40vw, 100vw"
+            className="mx-auto max-w-[420px] lg:mt-2"
+          />
         </div>
       </section>
 
@@ -117,23 +173,31 @@ export default function Page() {
       </section>
 
       <section className="border-trait px-marge border-t py-[clamp(56px,9vw,110px)]">
-        <div className="mx-auto max-w-[1240px]">
-          <Surtitre className="text-papier/55">Aujourd&apos;hui</Surtitre>
-          <h2 className="mt-5 max-w-[20ch] text-[clamp(30px,4.5vw,52px)]">
-            Le mieux, c&apos;est de passer.
-          </h2>
-          <p className="text-papier/60 mt-6 max-w-[56ch] text-[19px] leading-[1.55]">
-            On brasse trois cents hectolitres par an, on fournit une quinzaine de bars et
-            sept cavistes entre Nantes et Clisson, et la boutique est ouverte le vendredi
-            et le samedi. Le reste se raconte mal par écrit : l&apos;atelier se visite,
-            avec Marc qui explique du grain à la bouteille et une dégustation à la fin.
-          </p>
-          <Link
-            href="/visites-et-degustations"
-            className="bg-papier text-encre hover:bg-papier/85 border-papier mt-8 inline-block border px-[22px] py-3 text-[14px] font-medium transition-colors"
-          >
-            Réserver une visite
-          </Link>
+        <div className="mx-auto grid max-w-[1240px] items-center gap-[clamp(28px,5vw,72px)] lg:grid-cols-2">
+          <div>
+            <Surtitre className="text-papier/55">Aujourd&apos;hui</Surtitre>
+            <h2 className="mt-5 max-w-[20ch] text-[clamp(30px,4.5vw,52px)]">
+              Le mieux, c&apos;est de passer.
+            </h2>
+            <p className="text-papier/60 mt-6 max-w-[52ch] text-[19px] leading-[1.55]">
+              On brasse trois cents hectolitres par an, on fournit une quinzaine de bars
+              et sept cavistes entre Nantes et Clisson, et la boutique est ouverte le
+              vendredi et le samedi. Le reste se raconte mal par écrit : l&apos;atelier se
+              visite, avec Marc qui explique du grain à la bouteille et une dégustation à
+              la fin.
+            </p>
+            <Link
+              href="/visites-et-degustations"
+              className="bg-papier text-encre hover:bg-papier/85 border-papier mt-8 inline-block border px-[22px] py-3 text-[14px] font-medium transition-colors"
+            >
+              Réserver une visite
+            </Link>
+          </div>
+          <Illustration
+            photo={photos.service}
+            ratio="aspect-[1400/1167]"
+            sizes="(min-width: 1024px) 45vw, 100vw"
+          />
         </div>
       </section>
     </main>

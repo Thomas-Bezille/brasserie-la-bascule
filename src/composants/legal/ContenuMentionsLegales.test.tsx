@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { ContenuMentionsLegales } from "@/composants/legal/ContenuMentionsLegales";
 import { entreprise } from "@/donnees/entreprise";
+import { AUTEURS_PHOTOS } from "@/donnees/histoire";
 
 describe("les mentions légales", () => {
   it("n'a qu'un seul titre de niveau 1", () => {
@@ -42,5 +43,18 @@ describe("les mentions légales", () => {
     expect(
       screen.getByRole("link", { name: /politique de confidentialité/i }),
     ).toHaveAttribute("href", "/politique-de-confidentialite");
+  });
+
+  it("crédite les photos d'Unsplash et nomme les auteurs", () => {
+    render(<ContenuMentionsLegales />);
+
+    const bloc = screen.getByText(/licence Unsplash/);
+    for (const auteur of AUTEURS_PHOTOS) {
+      expect(bloc).toHaveTextContent(auteur);
+    }
+    expect(screen.getByRole("link", { name: "Notre histoire" })).toHaveAttribute(
+      "href",
+      "/notre-histoire",
+    );
   });
 });
