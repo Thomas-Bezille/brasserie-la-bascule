@@ -2,12 +2,11 @@
  * Le vocabulaire du module de contact, indépendant de tout service d'e-mail.
  *
  * **Aucun nom de fournisseur n'apparaît ici, comme dans `src/lib/reservation`.**
- * Le service d'acheminement des courriers (Resend pressenti) n'est pas branché :
- * il lui faut un domaine vérifiable, qui ne sera pas `labascule.fr` (décision du
- * 09/09/2026, il n'y aura pas de vrai domaine pour ce projet fictif) mais un
- * domaine que Thomas possède par ailleurs, encore à choisir. Le client gardera
- * ce site trois à cinq ans, changer de service doit rester le travail d'une
- * journée, pas une reprise du module.
+ * L'acheminement des courriers passe par Resend (`messagerie-resend.ts`), sur
+ * son domaine bac à sable faute de domaine personnalisé pour ce projet fictif
+ * (décision du 09/09/2026). Le client gardera ce site trois à cinq ans, changer
+ * de service, ou brancher un vrai domaine, doit rester le travail d'une journée,
+ * pas une reprise du module.
  */
 
 /** Les motifs proposés au visiteur, tous facultatifs. Source unique. */

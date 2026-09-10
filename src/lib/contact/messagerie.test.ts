@@ -15,9 +15,9 @@ const demande = (modifications: Partial<DemandeDeContact> = {}): DemandeDeContac
 
 const resend = {
   MESSAGERIE_FOURNISSEUR: "resend",
-  MAIL_API_KEY: "cle",
-  MAIL_TO: "contact@labascule.fr",
-  MAIL_FROM: "site@labascule.fr",
+  MAIL_API_KEY: "re_cle",
+  MAIL_TO: "brasserie@exemple.fr",
+  MAIL_FROM: "onboarding@resend.dev",
 };
 
 describe("la configuration de la messagerie", () => {
@@ -69,8 +69,9 @@ describe("la configuration de la messagerie", () => {
     await expect(messagerieDuSite({})).resolves.toBeNull();
   });
 
-  it("ne rend pas encore de messagerie Resend, l'adaptateur n'étant pas écrit", async () => {
-    await expect(messagerieDuSite(resend)).resolves.toBeNull();
+  it("rend la messagerie Resend une fois clé, expéditeur et destinataire fournis", async () => {
+    const messagerie = await messagerieDuSite(resend);
+    expect(messagerie?.fournisseur).toBe("resend");
   });
 });
 
