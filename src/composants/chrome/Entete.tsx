@@ -51,8 +51,9 @@ export function Entete() {
   const estCourante = (href: string) =>
     href === "/" ? cheminCourant === "/" : cheminCourant.startsWith(href);
 
-  // Sixième lien, hors des cinq pages de la maquette validée : voir
-  // `lienPortesOuvertes` dans `donnees/navigation.ts`.
+  // « Portes ouvertes », hors des pages de la maquette validée, s'ajoute au bout
+  // tant qu'elle est publiée : voir `lienPortesOuvertes` dans
+  // `donnees/navigation.ts`.
   const liens = lienPortesOuvertes
     ? [...navigationPrincipale, lienPortesOuvertes]
     : navigationPrincipale;
@@ -70,14 +71,13 @@ export function Entete() {
 
         <nav
           aria-label="Navigation principale"
-          // **Défaut préexistant trouvé en posant le sixième lien (session 16),
-          // gap resserré de 30 à 22 px en même temps.** Entre 1024 px (`lg`,
-          // seuil d'apparition de ce menu) et environ 1080 px, les cinq liens
-          // d'origine débordaient déjà de la largeur disponible et repliaient
-          // les libellés longs sur deux lignes ; « Portes ouvertes » élargissait
-          // cette zone cassée jusqu'à environ 1225 px. Le menu bascule donc à
-          // `xl` (1280 px) plutôt que `lg` : en dessous, le menu téléphone
-          // prend le relais, où il n'y a jamais ce risque de repli.
+          // **Le menu bascule à `xl` (1280 px), pas à `lg`.** Trouvé session 16 :
+          // entre 1024 et environ 1080 px, les libellés longs se repliaient sur
+          // deux lignes. Depuis la session 19, « Accueil » est sorti du menu et
+          // deux libellés sont raccourcis ici (`libelleCourt`), ce qui rend la
+          // rangée bien plus courte ; le seuil reste à `xl` par prudence tant
+          // que « Portes ouvertes » ajoute un septième lien. Le `gap` est à
+          // 22 px, resserré en même temps que la correction de la session 16.
           className="hidden items-center gap-[22px] xl:flex"
         >
           {liens.map((lien) => (
@@ -91,7 +91,7 @@ export function Entete() {
                   : "text-papier/60 hover:text-papier border-transparent"
               }`}
             >
-              {lien.libelle}
+              {lien.libelleCourt ?? lien.libelle}
             </Link>
           ))}
         </nav>

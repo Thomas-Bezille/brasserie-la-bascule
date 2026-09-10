@@ -20,10 +20,12 @@ import { donneesHistoire } from "@/lib/seo";
  * **Version typographique**, sans photo d'archive : le fonds ancien est perdu,
  * l'article 6 de l'avenant prévoit ce cas à prix inchangé.
  *
- * **Reliée au menu, au pied de page et au plan du site** (`navigationPrincipale`
- * dans `donnees/navigation.ts`, `sitemap.ts`), comme le demande l'article 2 de
- * l'avenant. C'est la sixième page du menu, la seule hors des cinq de la
- * maquette validée à y entrer pour de bon.
+ * **Reliée au menu et au plan du site** (`navigationPrincipale` dans
+ * `donnees/navigation.ts`, `sitemap.ts`). L'article 2 de l'avenant demandait
+ * aussi une présence au pied de page : sans objet depuis la correction 7 de
+ * Sophie, qui a retiré du pied de page la colonne recopiant le menu, pour
+ * toutes les pages. C'est la seule page hors maquette validée à entrer au menu
+ * pour de bon.
  */
 export const metadata: Metadata = {
   title: "Notre histoire",

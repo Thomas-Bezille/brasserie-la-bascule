@@ -22,8 +22,13 @@ describe("le plan du site", () => {
     }
   });
 
+  /**
+   * L'accueil a quitté `navigationPrincipale` avec le retrait de « Accueil » du
+   * menu (session 19) : le plan du site doit continuer de le porter, en propre.
+   */
   it("propose l'accueil et les six fiches de bières", () => {
     expect(adresses()).toContain("/");
+    expect([...navigationPrincipale].some(({ href }) => href === "/")).toBe(false);
     for (const { slug } of bieres) {
       expect(adresses()).toContain(`/nos-bieres/${slug}`);
     }
