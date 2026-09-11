@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Fraunces, Work_Sans } from "next/font/google";
 import { BandeauPortesOuvertes } from "@/composants/chrome/BandeauPortesOuvertes";
@@ -61,6 +62,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {children}
         <PiedDePage />
         <BandeauPortesOuvertes />
+        <Analytics />
       </body>
     </html>
   );

@@ -54,15 +54,14 @@ describe("les sous-traitants", () => {
 
   /**
    * Meetergo est choisi et intégré depuis la session 12 : son drapeau est levé
-   * le 09/09/2026, oubli corrigé. Restent ouverts le service d'e-mails et
-   * l'outil de mesure d'audience. Ce test suit cette liste : quand l'un est
-   * choisi, on retire son drapeau ici comme dans la donnée, donc on le veut.
+   * le 09/09/2026, oubli corrigé. La mesure d'audience (Vercel Web Analytics,
+   * 11/09/2026) n'a jamais porté de drapeau, son rôle a rejoint l'entrée Vercel
+   * Inc. déjà arrêtée. Reste ouvert le service d'e-mails. Ce test suit cette
+   * liste : quand il est choisi, on retire son drapeau ici comme dans la
+   * donnée, donc on le veut.
    */
-  it("gardent le drapeau « à confirmer » sur les deux prestataires encore ouverts", () => {
+  it("gardent le drapeau « à confirmer » sur le seul prestataire encore ouvert", () => {
     const ouverts = sousTraitants.filter((s) => s.aConfirmer).map((s) => s.nom);
-    expect(ouverts).toEqual([
-      "Service d'acheminement des courriers électroniques",
-      "Outil de mesure d'audience sans cookie",
-    ]);
+    expect(ouverts).toEqual(["Service d'acheminement des courriers électroniques"]);
   });
 });
