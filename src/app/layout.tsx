@@ -8,12 +8,14 @@ import { DonneesStructurees } from "@/composants/ui/DonneesStructurees";
 import { donneesBrasserie, IMAGE_PAR_DEFAUT, URL_SITE } from "@/lib/seo";
 import "./globals.css";
 
-// Titres. Axes variables demandés par Sophie : SOFT arrondit les terminaisons,
-// WONK active les glyphes penchés, opsz adapte le dessin à la taille.
-// Fraunces remplace Recoleta, dont la licence est desktop uniquement.
+// Titres. opsz adapte le dessin à la taille (utile : les titres vont de 46 à
+// 104px). SOFT et WONK retirés le 11/09 : ils n'étaient jamais fait varier
+// (toujours fixés à 40 et 1 dans globals.css), et coûtaient 53 Ko sur les 121 Ko
+// du fichier, le plus gros poste de l'audit LCP. Fraunces remplace Recoleta,
+// dont la licence est desktop uniquement.
 const policeTitre = Fraunces({
   subsets: ["latin"],
-  axes: ["SOFT", "WONK", "opsz"],
+  axes: ["opsz"],
   variable: "--police-titre",
   display: "swap",
 });

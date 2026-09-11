@@ -45,8 +45,6 @@
     line-height: 1.65;
   }
 
-  /* Fraunces est une police variable : ses axes optiques font la voix des
-     titres. SOFT arrondit les terminaisons, WONK active les glyphes penchés. */
   h1,
   h2,
   h3 {
@@ -54,9 +52,6 @@
     font-weight: 500;
     line-height: 1.02;
     letter-spacing: -0.02em;
-    font-variation-settings:
-      "SOFT" 40,
-      "WONK" 1;
   }
 
   /* Focus au crème, jamais à une couleur de bière */
