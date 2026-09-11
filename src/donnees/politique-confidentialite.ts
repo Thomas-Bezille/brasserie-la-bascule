@@ -9,8 +9,11 @@
  * 2. Certains sous-traitants ne sont pas encore arrêtés (`aConfirmer`). Le
  *    marquer dans la donnée, plutôt que dans la tournure d'une phrase, permet à
  *    un test d'empêcher la mise en ligne tant qu'ils portent ce drapeau.
- *    Meetergo l'a porté à tort après son intégration : levé le 09/09/2026,
- *    restent le service d'e-mails et l'outil de mesure d'audience.
+ *    Meetergo l'a porté à tort après son intégration : levé le 09/09/2026.
+ *    L'outil de mesure d'audience (Vercel Web Analytics, choisi le 11/09/2026)
+ *    n'a jamais eu besoin d'une ligne à lui : il tourne chez l'hébergeur déjà
+ *    listé, son rôle est venu s'ajouter à l'entrée Vercel Inc. Reste le service
+ *    d'e-mails.
  * 3. Les mentions légales rediront l'hébergeur et le siège : autant lire la même
  *    source.
  *
@@ -101,7 +104,7 @@ export type SousTraitant = {
 export const sousTraitants: readonly SousTraitant[] = [
   {
     nom: "Vercel Inc.",
-    role: "Hébergement du site",
+    role: "Hébergement du site et mesure d'audience sans cookie (Vercel Web Analytics)",
     hebergement:
       "États-Unis, avec un encadrement par les clauses contractuelles types de la Commission européenne",
   },
@@ -113,12 +116,6 @@ export const sousTraitants: readonly SousTraitant[] = [
   {
     nom: "Service d'acheminement des courriers électroniques",
     role: "Transmission des demandes vers la brasserie",
-    hebergement: "Union européenne",
-    aConfirmer: true,
-  },
-  {
-    nom: "Outil de mesure d'audience sans cookie",
-    role: "Statistiques de fréquentation agrégées",
     hebergement: "Union européenne",
     aConfirmer: true,
   },
