@@ -12,8 +12,11 @@
  *    Meetergo l'a porté à tort après son intégration : levé le 09/09/2026.
  *    L'outil de mesure d'audience (Vercel Web Analytics, choisi le 11/09/2026)
  *    n'a jamais eu besoin d'une ligne à lui : il tourne chez l'hébergeur déjà
- *    listé, son rôle est venu s'ajouter à l'entrée Vercel Inc. Reste le service
- *    d'e-mails.
+ *    listé, son rôle est venu s'ajouter à l'entrée Vercel Inc. **Le service
+ *    d'e-mails portait le même oubli que la mesure d'audience** : Resend est
+ *    branché depuis la session 19, l'entrée générique n'avait jamais été mise à
+ *    jour pour le nommer. Corrigé le 11/09/2026 (réel). Plus aucun sous-traitant
+ *    `aConfirmer` à ce jour.
  * 3. Les mentions légales rediront l'hébergeur et le siège : autant lire la même
  *    source.
  *
@@ -114,10 +117,10 @@ export const sousTraitants: readonly SousTraitant[] = [
     hebergement: "Allemagne",
   },
   {
-    nom: "Service d'acheminement des courriers électroniques",
+    nom: "Resend (Plus Five Five, Inc.)",
     role: "Transmission des demandes vers la brasserie",
-    hebergement: "Union européenne",
-    aConfirmer: true,
+    hebergement:
+      "États-Unis, avec un encadrement par les clauses contractuelles types de la Commission européenne",
   },
 ];
 
