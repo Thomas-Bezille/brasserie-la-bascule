@@ -47,21 +47,31 @@ describe("les sous-traitants", () => {
     expect(vercel?.aConfirmer).toBeFalsy();
   });
 
-  it("nomme le transfert hors UE pour l'hébergeur, et lui seul", () => {
+  it("nomme le transfert hors UE, un par sous-traitant américain, avec son encadrement", () => {
     const horsUE = sousTraitants.filter((s) => /États-Unis/.test(s.hebergement));
-    expect(horsUE.map((s) => s.nom)).toEqual(["Vercel Inc."]);
+    expect(horsUE.map((s) => s.nom)).toEqual([
+      "Vercel Inc.",
+      "Resend (Plus Five Five, Inc.)",
+    ]);
+    for (const s of horsUE) {
+      expect(s.hebergement, `${s.nom} sans encadrement du transfert`).toMatch(
+        /clauses contractuelles types/,
+      );
+    }
   });
 
   /**
    * Meetergo est choisi et intégré depuis la session 12 : son drapeau est levé
-   * le 09/09/2026, oubli corrigé. La mesure d'audience (Vercel Web Analytics,
-   * 11/09/2026) n'a jamais porté de drapeau, son rôle a rejoint l'entrée Vercel
-   * Inc. déjà arrêtée. Reste ouvert le service d'e-mails. Ce test suit cette
-   * liste : quand il est choisi, on retire son drapeau ici comme dans la
-   * donnée, donc on le veut.
+   * le 09/09/2026, oubli corrigé. La mesure d'audience (Vercel Web Analytics)
+   * et le service d'e-mails (Resend) n'ont jamais porté de drapeau à eux, tous
+   * les deux le 11/09/2026 : la mesure d'audience a rejoint l'entrée Vercel
+   * Inc. déjà arrêtée, Resend était déjà branché côté code depuis la session 19
+   * sans que la donnée le nomme. Ce test suit cette liste : quand un
+   * sous-traitant est choisi, on retire son drapeau ici comme dans la donnée,
+   * donc on le veut vide.
    */
-  it("gardent le drapeau « à confirmer » sur le seul prestataire encore ouvert", () => {
+  it("ne gardent plus aucun drapeau « à confirmer »", () => {
     const ouverts = sousTraitants.filter((s) => s.aConfirmer).map((s) => s.nom);
-    expect(ouverts).toEqual(["Service d'acheminement des courriers électroniques"]);
+    expect(ouverts).toEqual([]);
   });
 });
