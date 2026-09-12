@@ -11,15 +11,24 @@
    `src/donnees/bieres.ts` et ne sont injectées qu'en variable locale `--biere`
    sur le conteneur d'une fiche. Rien d'autre dans le site ne peut les atteindre.
 
-   Il n'y a pas de couleur d'accent. Liens et états se distinguent par le
-   soulignement, la graisse et la taille.
+   Il n'y a pas de couleur d'accent décorative. Liens et états se distinguent
+   par le soulignement, la graisse et la taille.
+
+   EXCEPTION posée le 12/09/2026, après un test utilisateur réel : les erreurs
+   de validation des formulaires (contact, réservation) étaient invisibles
+   sans une couleur pour les distinguer du reste du texte, malgré le
+   soulignement et le rôle d'alerte ajoutés en même temps. `--color-erreur`
+   n'est utilisée que pour ça, jamais pour du contenu ou de la décoration.
+   Contraste vérifié face à `--color-encre` : 5,57:1, au-dessus du seuil AA de
+   4,5 (voir `src/lib/contraste.ts`). Voir ADR 0006.
    ========================================================================= */
 
 @theme {
-  /* Les trois seules couleurs du site */
+  /* Les trois couleurs du site, plus l'erreur (voir l'exception ci-dessus) */
   --color-encre: #14110f; /* fond, noir chaud, jamais de noir pur */
   --color-papier: #f3ede3; /* texte, le crème des étiquettes */
   --color-beton: #2a2724; /* blocs secondaires, gris chaud */
+  --color-erreur: #e0674f; /* erreurs de formulaire, uniquement */
 
   /* Le trait, seule bordure du site */
   --color-trait: rgb(243 237 227 / 0.14);

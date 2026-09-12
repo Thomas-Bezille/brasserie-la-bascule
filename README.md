@@ -117,13 +117,16 @@ Correction non négociable de Sophie Vasseur, autrice de l'identité visuelle. L
 L'Abeille n'est pas une couleur de marque : si une couleur de bière devient la couleur du site,
 aucune bière n'a plus d'identité propre sur une étagère de caviste.
 
-En pratique : `globals.css` ne déclare que **trois** couleurs, encre, papier et béton. Les sept
-couleurs de bière vivent dans `donnees/bieres.ts` et ne sont injectées qu'en variable CSS locale
-`--biere`, sur le conteneur d'une fiche. Rien d'autre dans le site ne peut les atteindre.
+En pratique : `globals.css` ne déclare que **trois** couleurs de contenu, encre, papier et béton.
+Les sept couleurs de bière vivent dans `donnees/bieres.ts` et ne sont injectées qu'en variable
+CSS locale `--biere`, sur le conteneur d'une fiche. Rien d'autre dans le site ne peut les
+atteindre.
 
-Il n'y a **pas de couleur d'accent**. Liens et états se distinguent par le soulignement, la
-graisse et la taille. Le test `src/lib/charte.test.ts` fait échouer la CI si une quatrième
-couleur apparaît dans la feuille globale.
+Il n'y a **pas de couleur d'accent décorative**. Liens et états se distinguent par le
+soulignement, la graisse et la taille. Le test `src/lib/charte.test.ts` fait échouer la CI si une
+couleur non prévue apparaît dans la feuille globale. **Seule exception, posée le 12/09/2026** :
+`--color-erreur`, réservée aux erreurs de validation des formulaires — sans elle, un message
+d'erreur trop discret passait inaperçu ([ADR 0006](docs/adr/0006-couleur-erreur-formulaires.md)).
 
 ### 2. Les données publiées ont une source unique
 
