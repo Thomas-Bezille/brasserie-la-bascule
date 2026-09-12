@@ -198,4 +198,4 @@ présentant la brasserie fictive (textes, données, identité visuelle) ne le so
 
 ## Auteur
 
-**Thomas Bezille** — développeur web freelance en cours de lancement, région de Nantes.
+**Thomas Bezille** — développeur web, région de Nantes.
