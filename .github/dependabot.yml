@@ -3,9 +3,7 @@ updates:
   # Correctifs de sécurité et mises à jour npm. Groupées en un seul lot pour
   # les mises à jour mineures/correctives (même logique que la revue
   # manuelle du 11-12/09/2026 : un lot sans rupture connue, les majeures
-  # traitées à part). eslint et typescript restent bloqués en amont sur des
-  # paquets tiers (voir docs/adr/), Dependabot proposera quand même leurs PR,
-  # à fermer tant que le blocage n'est pas levé.
+  # traitées à part).
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
@@ -16,6 +14,15 @@ updates:
           - "minor"
           - "patch"
     open-pull-requests-limit: 10
+    # eslint 10 et typescript 7 sont bloqués en amont (eslint-plugin-react et
+    # typescript-eslint pas encore compatibles, confirmé en pratique le
+    # 12/09/2026, PR #77 et #78 fermées). Pas de majeure proposée tant que ce
+    # n'est pas résolu, pour ne pas rouvrir la même PR bloquée chaque semaine.
+    ignore:
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
 
   # Les actions utilisées par la CI (actions/checkout, actions/setup-node).
   - package-ecosystem: "github-actions"
