@@ -1,5 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { demanderUneReservation } from "@/app/visites-et-degustations/actions";
 import { visites } from "@/donnees/infos-pratiques";
 import { FormulaireReservation } from "@/composants/visites/FormulaireReservation";
 import type { Creneau } from "@/lib/reservation/types";
@@ -132,5 +134,27 @@ describe("le formulaire de réservation", () => {
         new RegExp(`De ${decouverte.effectifMin} à ${decouverte.effectifMax} personnes`),
       ),
     ).toBeInTheDocument();
+  });
+
+  /**
+   * Même correctif que le formulaire de contact (12/09/2026) : une erreur de
+   * validation invisible ne sert à rien. Verrouille les trois correctifs
+   * (alerte, couleur, focus) sur ce second formulaire, même logique.
+   */
+  it("annonce l'erreur en alerte colorée et y renvoie le focus", async () => {
+    vi.mocked(demanderUneReservation).mockResolvedValue({
+      statut: "anomalies",
+      anomalies: [{ champ: "nom", message: "Indiquez votre nom." }],
+    });
+
+    const utilisateur = userEvent.setup();
+    rendre();
+
+    await utilisateur.click(screen.getByRole("button", { name: /Réserver ce créneau/ }));
+
+    const alerte = await screen.findByRole("alert");
+    expect(alerte).toHaveTextContent("Indiquez votre nom.");
+    expect(alerte).toHaveClass("text-erreur");
+    expect(screen.getByLabelText("Votre nom")).toHaveFocus();
   });
 });
