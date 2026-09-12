@@ -1,15 +1,49 @@
 # Brasserie La Bascule
 
-Site vitrine de la Brasserie La Bascule, microbrasserie artisanale à Vertou (44).
+[![CI](https://github.com/Thomas-Bezille/brasserie-la-bascule/actions/workflows/ci.yml/badge.svg)](https://github.com/Thomas-Bezille/brasserie-la-bascule/actions/workflows/ci.yml)
+[![Licence MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
+
+Site vitrine d'une microbrasserie artisanale à Vertou (44) : gamme de bières, réservation de
+visites en ligne, formulaire de contact avec envoi réel, carte des points de vente.
 
 > **Projet de démonstration.** L'entreprise est fictive. Le site sert de projet de portfolio et
-> de banc d'essai pour la méthodologie projet web de Thomas Bezille. La mention figure au pied de
-> page du site publié.
+> de banc d'essai pour la méthodologie projet web de Thomas Bezille : cadrage, cahier des
+> charges, conception, développement en continu (65 pull requests à ce jour), performance,
+> accessibilité, conformité (RGPD, loi Evin). La mention figure au pied de page du site publié.
 >
-> Documentation, cahier des charges et suivi :
-> `mimir/livrables/projet-web-perso/2026-08-26-brasserie-la-bascule/`
+> Documentation complète (cahier des charges, suivi de projet, échanges client fictifs) :
+> `mimir/livrables/projet-web-perso/2026-08-26-brasserie-la-bascule/`, dans le dépôt du reste de
+> la méthodologie de Thomas Bezille.
+
+**Démo en ligne :** [brasserie-la-bascule.vercel.app](https://brasserie-la-bascule.vercel.app)
+(protégée par mot de passe tant que le site n'est pas officiellement lancé — voir
+[Déploiement](#déploiement)).
 
 ---
+
+## Fonctionnalités
+
+- **Gamme de sept bières**, fiche dédiée par bière en génération statique, données structurées
+  `Product` pour chacune
+- **Réservation de visites en ligne** (formule découverte et formule entreprise), agenda
+  Meetergo, créneaux réduits aux horaires réellement publiés, calendrier mensuel
+- **Formulaire de contact avec envoi réel** (adaptateur Resend), anti-spam sans script tiers ni
+  cookie (champ appât, jeton horodaté signé)
+- **Carte des points de vente** (bars, cavistes), MapLibre GL sur des tuiles libres
+  (OpenFreeMap), sans dépendance à Google Maps
+- **Mesure d'audience sans cookie** (Vercel Web Analytics), donc sans bandeau de consentement
+- **Référencement complet** : métadonnées par page, Open Graph, données structurées `Brewery` et
+  `Product`, plan du site limité aux pages réellement écrites
+- **Préproduction fermée au public et aux moteurs de recherche**, par le site lui-même, sans
+  dépendre d'une offre payante de l'hébergeur
+- **Garde-fous automatisés** : une couleur de bière ne peut pas s'échapper de sa fiche, aucune
+  mention promotionnelle ne peut apparaître (loi Evin), une donnée corrigée par le client ne peut
+  pas réapparaître — tous vérifiés en intégration continue
+
+## Stack technique
+
+Next.js 16 (App Router, génération statique) · React 19 · TypeScript strict · Tailwind CSS 4 ·
+Vitest · ESLint · Prettier · Husky · déploiement continu sur Vercel.
 
 ## Démarrer
 
@@ -22,8 +56,11 @@ cp .env.example .env.local
 npm run dev      # http://localhost:3000
 ```
 
-Aucune variable n'est nécessaire pour lancer le site en local à ce stade : les contenus sont
-statiques. `.env.local` ne sert qu'à partir du lot 2 (formulaire) et du lot 3 (agenda).
+Aucune variable n'est requise pour lancer le site en local avec son contenu statique. Le
+formulaire de contact et l'agenda de réservation ont besoin de leurs variables respectives pour
+fonctionner réellement ; sans elles, les pages concernées l'affichent clairement au visiteur
+plutôt que de simuler un envoi qui n'aurait pas lieu. Le détail de chaque variable est commenté
+dans `.env.example`, à copier en `.env.local` et à ne jamais commiter.
 
 ## Les commandes
 
@@ -38,11 +75,6 @@ statiques. `.env.local` ne sert qu'à partir du lot 2 (formulaire) et du lot 3 (
 | `npm run format`  | Prettier sur tout le dépôt                     |
 | `npm run recette` | Relit le site construit, après `npm run build` |
 
-## Stack
-
-Next.js 16 (App Router, génération statique) · React 19 · TypeScript strict · Tailwind CSS 4 ·
-déploiement Vercel.
-
 ## Organisation du code
 
 ```
@@ -52,13 +84,30 @@ src/
 │   ├── chrome/     en-tête, navigation, pied de page
 │   ├── accueil/    blocs propres à la page d'accueil
 │   ├── biere/      fiche, visuel, vignette, spécifications
+│   ├── contact/    formulaire, anti-spam
+│   ├── ou-nous-trouver/  carte MapLibre, liste des points de vente
 │   └── ui/         éléments transverses
 ├── donnees/        source unique des contenus structurés
-└── lib/            utilitaires, SEO, garde-fous
+└── lib/
+    ├── contact/      messagerie (Resend), anti-spam
+    ├── reservation/  agenda (Meetergo), grille d'horaires
+    └── ...           SEO, garde-fous, utilitaires
+
+docs/adr/           décisions d'architecture (contexte, options, conséquences)
+scripts/recette.mjs relecture du site construit avant tout envoi
 ```
 
 **Le code est en français**, du nom de fichier au nom de variable. Convention arrêtée le
 22/09/2026 pour rester cohérente avec l'intégralité du dossier projet.
+
+## Décisions d'architecture
+
+Les choix techniques significatifs sont documentés en [ADR](docs/adr/) : contexte, options
+envisagées, ce qui a été retenu et pourquoi, conséquences assumées. Par exemple, pourquoi la
+protection de la préproduction est assurée par le site plutôt que par l'hébergeur
+([0001](docs/adr/0001-protection-preproduction-applicative.md)), ou l'arbitrage posé entre poids
+des polices et fidélité à l'identité visuelle pour tenir le budget de performance
+([0005](docs/adr/0005-budget-lcp-polices-variables.md)).
 
 ## Deux règles à connaître avant de toucher au code
 
@@ -102,19 +151,24 @@ d'envoyer une adresse de préproduction au client.
 - **Loi Evin.** Message sanitaire sur toute page présentant un produit. Aucune mention
   promotionnelle, la remise de 10 % ne figure nulle part
 - **Performance.** Lighthouse 90 et plus, contenu principal affiché en moins de 2,5 s sur
-  téléphone en 4G. C'est une exigence du cahier des charges, pas un confort
+  téléphone en 4G. C'est une exigence du cahier des charges, pas un confort (voir
+  [ADR 0005](docs/adr/0005-budget-lcp-polices-variables.md) pour l'arbitrage posé face au
+  dépassement mesuré)
 - **Accessibilité.** Structure sémantique, focus visible, contrastes vérifiés
 - **Mesure d'audience sans cookie**, donc sans bandeau de consentement
+- **RGPD.** Politique de confidentialité qui ne documente que les traitements réels, sous-traitants
+  identifiés (hébergement et mesure d'audience chez Vercel, envoi de messages chez Resend)
 
 ## Déploiement
 
-Préproduction et production sur Vercel.
+Préproduction et production sur Vercel, en déploiement continu depuis `main`.
 
 ### La préproduction est fermée, et c'est le site qui la ferme
 
 La protection par mot de passe de Vercel est réservée à son offre payante. Elle est donc assurée
 par le site lui-même, dans `src/proxy.ts` : authentification HTTP Basic sur toutes les routes,
-fichiers statiques compris, plus un en-tête `X-Robots-Tag: noindex` et un `robots.txt` fermé.
+fichiers statiques compris, plus un en-tête `X-Robots-Tag: noindex` et un `robots.txt` fermé (le
+choix et ses alternatives : [ADR 0001](docs/adr/0001-protection-preproduction-applicative.md)).
 
 Deux variables la pilotent :
 
@@ -134,5 +188,14 @@ préproduction accessible à tous. En local, l'absence de mot de passe n'appliqu
 > Le `noindex` compte autant que le mot de passe : le site présente une entreprise fictive, il ne
 > doit pas se retrouver indexé comme un commerce réel.
 
-Le domaine `labascule.fr` est en cours de transfert. Si le transfert n'aboutit pas à temps, la
-mise en ligne se fait sur une adresse temporaire puis bascule, sans décaler la date.
+Le site n'a pas de domaine personnalisé : l'adresse `brasserie-la-bascule.vercel.app` est
+l'adresse canonique, choix documenté en [ADR 0004](docs/adr/0004-pas-de-domaine-personnalise.md).
+
+## Licence
+
+[MIT](LICENSE). Projet de démonstration : le code est librement réutilisable, les contenus
+présentant la brasserie fictive (textes, données, identité visuelle) ne le sont pas.
+
+## Auteur
+
+**Thomas Bezille** — développeur web freelance en cours de lancement, région de Nantes.
