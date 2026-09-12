@@ -1,0 +1,24 @@
+version: 2
+updates:
+  # Correctifs de sécurité et mises à jour npm. Groupées en un seul lot pour
+  # les mises à jour mineures/correctives (même logique que la revue
+  # manuelle du 11-12/09/2026 : un lot sans rupture connue, les majeures
+  # traitées à part). eslint et typescript restent bloqués en amont sur des
+  # paquets tiers (voir docs/adr/), Dependabot proposera quand même leurs PR,
+  # à fermer tant que le blocage n'est pas levé.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      mineures-et-correctives:
+        update-types:
+          - "minor"
+          - "patch"
+    open-pull-requests-limit: 10
+
+  # Les actions utilisées par la CI (actions/checkout, actions/setup-node).
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
