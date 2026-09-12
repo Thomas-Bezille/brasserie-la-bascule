@@ -1,8 +1,158 @@
 # Journal des modifications
 
-Les dates sont celles du calendrier du projet.
+Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/), avec des sections datées
+plutôt que des numéros de version : le site est déployé en continu sur Vercel, il n'y a pas de
+publication versionnée. Les dates sont celles des commits, du plus récent au plus ancien.
 
 ## [Non publié]
+
+### Modifié
+
+- Dépendances : `next` / `eslint-config-next` 16.3.5, `typescript` 6.0.3 (étape intermédiaire,
+  la 7.0 est bloquée par `typescript-eslint` qui refuse explicitement de tourner dessus tant que
+  son support n'est pas prêt), `vitest` 5, `@types/node` 26.5.1. `eslint` reste en 9, bloqué en
+  amont par `eslint-plugin-react` (embarqué par `eslint-config-next`), qui ne supporte pas encore
+  ESLint 10 en stable
+
+## 2026-09-11
+
+### Ajouté
+
+- Mesure d'audience : Vercel Web Analytics, sans cookie ni bandeau de consentement, données
+  déjà couvertes par le sous-traitant Vercel existant (hébergement)
+
+### Corrigé
+
+- Politique de confidentialité : Resend correctement nommé comme sous-traitant e-mail
+  (hébergement des données aux États-Unis, clauses contractuelles types), qui remplace une
+  entrée générique laissée `à confirmer` depuis son intégration
+
+### Performance
+
+- Polices : retrait des axes variables `SOFT` et `WONK` de Fraunces, jamais utilisés en
+  pratique (toujours fixés à une valeur constante) mais téléchargés en intégralité — -54 Ko sur
+  le poids de page, LCP mobile mesuré en amélioration nette sur la préproduction
+
+## 2026-09-10
+
+### Ajouté
+
+- Contact : adaptateur Resend pour l'envoi réel des messages du formulaire (`Reply-To` sur
+  l'adresse du visiteur, comportement fermé sans configuration)
+- Page « Notre histoire », origine de la brasserie et sens du nom
+- Contact : anti-spam sans script tiers ni cookie (champ appât caché, jeton horodaté signé)
+- « Notre histoire » : quatre photos d'illustration, mise en page mixte bandeau et grille
+
+## 2026-09-09
+
+### Ajouté
+
+- Visites : grille d'horaires de visite publiée (vendredi et samedi), qui filtre tous les
+  fournisseurs d'agenda
+- Page « Où nous trouver » : remplacement du texte d'attente par la carte (MapLibre GL, tuiles
+  libres OpenFreeMap) et la liste des bars et cavistes partenaires
+
+### Corrigé
+
+- Visites : retrait d'un nombre de places affiché par le calendrier, trompeur au regard du
+  réglage réel de l'agenda
+- « Où nous trouver » : fond de carte resté blanc en préproduction (le bundler n'embarquait pas
+  correctement le worker de décodage des tuiles)
+
+### Modifié
+
+- SEO : remplacement d'un nom de domaine non acquis par l'adresse Vercel réelle dans les
+  métadonnées, le plan du site et les données structurées
+- Coffrets cadeaux publiés sur la page « Où nous trouver »
+
+## 2026-09-08
+
+### Ajouté
+
+- Bières : IBU, malts, houblons, origine des ingrédients et notes de dégustation pour les sept
+  bières de la gamme
+- Page « Nos bières », grille des sept fiches, remplace la page d'attente
+- Page « Mentions légales » complète (éditeur, hébergement, propriété intellectuelle, TVA
+  intracommunautaire, numéro d'entrepositaire agréé)
+- Image de partage par défaut sur tout le site, et par bière sur chaque fiche
+- Contact : numéro de téléphone (préfixe réservé par l'ARCEP aux œuvres de fiction, garanti
+  sans abonné réel)
+- Visites : calendrier mensuel pour choisir un créneau, remplace une liste déroulante plate
+
+### Corrigé
+
+- Performance : CLS sur les fiches bière (dimensions de l'étiquette non réservées) et priorité
+  réseau de l'image de LCP restée basse malgré le préchargement Next.js
+
+### Performance
+
+- Étiquettes et illustrations converties en WebP, poids du dépôt réduit de 78 %
+
+## 2026-09-07
+
+### Ajouté
+
+- Illustrations du Sanglier (animal et étiquette de bouteille), bière de la page Portes ouvertes
+- Portes ouvertes reliée au menu principal et au plan du site
+- Degré d'alcool des six bières permanentes restantes, lu sur les étiquettes bon à tirer
+
+## 2026-09-04
+
+### Ajouté
+
+- Illustrations définitives des sept bières : l'animal au trait pour les vignettes, l'étiquette
+  de bouteille complète pour la fiche
+- Page « Portes ouvertes » : programme, dégustation, bandeau d'accueil
+- Bandeau Portes ouvertes rendu persistant (sticky, fermable, mémorisé) sur tout le site plutôt
+  que la seule page d'accueil
+
+### Corrigé
+
+- Accueil sur téléphone : illustration du héro mal centrée, scroll horizontal causé par une
+  légende qui ne pouvait pas passer à la ligne
+
+## 2026-09-02
+
+### Ajouté
+
+- Page Contact et sa messagerie, indépendante du fournisseur d'envoi (repli fermé sans
+  configuration)
+- Page « Où nous trouver » : atelier, boutique, bloc coffrets (masqué jusqu'à leur mise en vente)
+- Étiquettes définitives des bières intégrées
+
+### Corrigé
+
+- Réservation : fenêtre de créneaux ramenée à 8 semaines glissantes, un réglage à 4 mois avait
+  vidé l'agenda affiché
+
+## 2026-09-01
+
+### Ajouté
+
+- Politique de confidentialité, sur les traitements réellement effectués par le site
+- Réservation : adaptateur Meetergo pour l'agenda de visites
+
+### Corrigé
+
+- Trois corrections visuelles de Sophie Vasseur (identité visuelle) appliquées sur la
+  préproduction
+- Réservation : transmission des identifiants d'hôtes à Meetergo pour lister les créneaux,
+  tolérance aux guillemets superflus dans les variables d'environnement
+
+## 2026-08-31
+
+### Ajouté
+
+- Contraste des couleurs de bière tenu par un calcul plutôt qu'une valeur choisie à l'œil
+- Page « Visites et dégustations », sans encore son module de réservation
+- Note de dégustation du Renard (bière offerte au lot 1), passée au filtre loi Evin
+- Couche de réservation indépendante du fournisseur, formulaire et affichage des créneaux
+
+### Corrigé
+
+- Nom accessible du logo, qui ne portait pas le texte réellement affiché
+
+## 2026-08-30
 
 ### Ajouté
 
