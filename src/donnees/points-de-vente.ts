@@ -31,7 +31,7 @@
  *   « où la boire ».
  */
 
-export type CategorieDePointDeVente = "bar" | "caviste" | "restaurant";
+type CategorieDePointDeVente = "bar" | "caviste" | "restaurant";
 
 export type PointDeVente = {
   readonly nom: string;

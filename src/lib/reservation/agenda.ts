@@ -16,15 +16,14 @@ import type { Agenda } from "@/lib/reservation/types";
  * - `AGENDA_FOURNISSEUR` : `meetergo`, `calcom`, ou `simulation` en développement
  * - `AGENDA_CLE_API` : le jeton, qui ne quitte jamais le serveur
  *
- * L'adaptateur `meetergo` est écrit (`agenda-meetergo.ts`) : l'essai du 01/09 a
- * confirmé l'accès à l'API sur le plan gratuit avec un Personal Access Token.
- * Il lui manque, pour servir, les identifiants de types de rendez-vous
- * (`AGENDA_MEETERGO_TYPE_*`) et des créneaux réels validés par le client. Voir
- * `03-conception/decision-agenda-reservation.md` et
- * `04-developpement/integration-meetergo.md`.
+ * L'adaptateur `meetergo` est écrit et en service (`agenda-meetergo.ts`), filtré
+ * par la grille d'horaires de visite publiée (`grille-horaire.ts`). `calcom`
+ * reste un repli de réversibilité déclaré mais jamais implémenté (son
+ * adaptateur renvoie `null`, traité comme une absence d'agenda) : Meetergo a
+ * suffi, l'écrire n'a jamais été nécessaire.
  */
 
-export type NomDeFournisseur = "meetergo" | "calcom" | "simulation";
+type NomDeFournisseur = "meetergo" | "calcom" | "simulation";
 
 const FOURNISSEURS_CONNUS: readonly NomDeFournisseur[] = [
   "meetergo",
