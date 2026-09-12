@@ -1,5 +1,7 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { envoyerUnMessage } from "@/app/contact/actions";
 import { FormulaireContact } from "@/composants/contact/FormulaireContact";
 import { CHAMP_APPAT, CHAMP_JETON } from "@/lib/contact/champs-anti-spam";
 
@@ -71,5 +73,31 @@ describe("le formulaire de contact", () => {
     expect(
       screen.getByRole("option", { name: "Vente aux bars et cavistes" }),
     ).toBeInTheDocument();
+  });
+
+  /**
+   * Trouvé par Thomas le 12/09/2026 en testant à la main : un message trop
+   * court était refusé, mais l'erreur ne se voyait pas (pas de rôle d'alerte,
+   * simple soulignement, pas de focus renvoyé). Ce test verrouille les trois
+   * correctifs pour que la régression ne repasse pas inaperçue une deuxième
+   * fois.
+   */
+  it("annonce l'erreur en alerte colorée et y renvoie le focus", async () => {
+    vi.mocked(envoyerUnMessage).mockResolvedValue({
+      statut: "anomalies",
+      anomalies: [
+        { champ: "message", message: "Écrivez votre message, quelques mots suffisent." },
+      ],
+    });
+
+    const utilisateur = userEvent.setup();
+    render(<FormulaireContact jeton={JETON} />);
+
+    await utilisateur.click(screen.getByRole("button", { name: /Envoyer le message/ }));
+
+    const alerte = await screen.findByRole("alert");
+    expect(alerte).toHaveTextContent("Écrivez votre message, quelques mots suffisent.");
+    expect(alerte).toHaveClass("text-erreur");
+    expect(screen.getByLabelText("Votre message")).toHaveFocus();
   });
 });
