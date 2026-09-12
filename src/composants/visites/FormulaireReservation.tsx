@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useId, useMemo, useState } from "react";
+import { useActionState, useEffect, useId, useMemo, useState } from "react";
 import { demanderUneReservation } from "@/app/visites-et-degustations/actions";
 import { FORMULAIRE_VIERGE } from "@/app/visites-et-degustations/etat-formulaire";
 import type { Formule } from "@/donnees/infos-pratiques";
@@ -264,6 +264,17 @@ export function FormulaireReservation({
       ? etat.anomalies.find((a) => a.champ === champ)
       : undefined;
 
+  /**
+   * Même correctif que le formulaire de contact (12/09/2026) : renvoyer le
+   * focus vers le premier champ en erreur après un envoi refusé, pour qu'il
+   * ne passe pas inaperçu en bas de formulaire.
+   */
+  useEffect(() => {
+    if (etat.statut !== "anomalies" || etat.anomalies.length === 0) return;
+    const champ = document.getElementsByName(etat.anomalies[0].champ)[0];
+    if (champ instanceof HTMLElement) champ.focus();
+  }, [etat]);
+
   if (etat.statut === "confirme") {
     return (
       <div className="border-trait border p-[clamp(24px,3.5vw,40px)]" role="status">
@@ -413,16 +424,16 @@ export function FormulaireReservation({
       </div>
 
       {etat.statut === "creneau-complet" && (
-        <p role="alert" className="border-papier/25 mt-6 border-l-2 pl-4 text-[15px]">
+        <p role="alert" className="border-erreur mt-6 border-l-2 pl-4 text-[15px]">
           Ce créneau vient d&apos;être complété. Choisissez-en un autre, votre demande
           n&apos;a pas été enregistrée.
         </p>
       )}
 
       {etat.statut === "indisponible" && (
-        <p role="alert" className="border-papier/25 mt-6 border-l-2 pl-4 text-[15px]">
+        <p role="alert" className="border-erreur mt-6 border-l-2 pl-4 text-[15px]">
           La réservation en ligne n&apos;est pas disponible pour le moment.{" "}
-          <strong className="text-papier">Votre demande n&apos;a pas été envoyée.</strong>
+          <strong className="text-erreur">Votre demande n&apos;a pas été envoyée.</strong>
         </p>
       )}
 
@@ -480,7 +491,11 @@ function Champ({
         {...attributs}
       />
       {anomalie && (
-        <p id={`${identifiant}-anomalie`} className="mt-2 text-[14px] underline">
+        <p
+          id={`${identifiant}-anomalie`}
+          role="alert"
+          className="text-erreur mt-2 text-[14px] font-medium"
+        >
           {anomalie.message}
         </p>
       )}

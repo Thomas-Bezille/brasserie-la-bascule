@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useId } from "react";
+import { useActionState, useEffect, useId } from "react";
 import { envoyerUnMessage } from "@/app/contact/actions";
 import { FORMULAIRE_CONTACT_VIERGE } from "@/app/contact/etat-formulaire";
 import { CHAMP_APPAT, CHAMP_JETON } from "@/lib/contact/champs-anti-spam";
@@ -38,6 +38,18 @@ export function FormulaireContact({ jeton }: { jeton: string }) {
     etat.statut === "anomalies"
       ? etat.anomalies.find((a) => a.champ === champ)
       : undefined;
+
+  /**
+   * Renvoie le focus vers le premier champ en erreur après un envoi refusé :
+   * le navigateur le fait défiler à l'écran tout seul. Sans ça, l'anomalie du
+   * message (ex. « écrivez quelques mots de plus ») passait inaperçue en bas
+   * de formulaire, découvert par Thomas le 12/09/2026 en testant à la main.
+   */
+  useEffect(() => {
+    if (etat.statut !== "anomalies" || etat.anomalies.length === 0) return;
+    const champ = document.getElementsByName(etat.anomalies[0].champ)[0];
+    if (champ instanceof HTMLElement) champ.focus();
+  }, [etat]);
 
   if (etat.statut === "envoye") {
     return (
@@ -98,7 +110,9 @@ export function FormulaireContact({ jeton }: { jeton: string }) {
           ))}
         </select>
         {anomalie("motif") && (
-          <p className="mt-2 text-[14px] underline">{anomalie("motif")!.message}</p>
+          <p role="alert" className="text-erreur mt-2 text-[14px] font-medium">
+            {anomalie("motif")!.message}
+          </p>
         )}
       </div>
 
@@ -151,7 +165,8 @@ export function FormulaireContact({ jeton }: { jeton: string }) {
         {anomalie("message") && (
           <p
             id={`${identifiant}-message-anomalie`}
-            className="mt-2 text-[14px] underline"
+            role="alert"
+            className="text-erreur mt-2 text-[14px] font-medium"
           >
             {anomalie("message")!.message}
           </p>
@@ -159,16 +174,16 @@ export function FormulaireContact({ jeton }: { jeton: string }) {
       </div>
 
       {etat.statut === "indisponible" && (
-        <p role="alert" className="border-papier/25 mt-6 border-l-2 pl-4 text-[15px]">
+        <p role="alert" className="border-erreur mt-6 border-l-2 pl-4 text-[15px]">
           L&apos;envoi du formulaire n&apos;est pas disponible pour le moment.{" "}
-          <strong className="text-papier">Votre message n&apos;a pas été envoyé.</strong>{" "}
+          <strong className="text-erreur">Votre message n&apos;a pas été envoyé.</strong>{" "}
           Écrivez-nous directement à l&apos;adresse indiquée plus haut.
         </p>
       )}
 
       {etat.statut === "rejete" && (
-        <p role="alert" className="border-papier/25 mt-6 border-l-2 pl-4 text-[15px]">
-          <strong className="text-papier">Votre message n&apos;a pas été envoyé.</strong>{" "}
+        <p role="alert" className="border-erreur mt-6 border-l-2 pl-4 text-[15px]">
+          <strong className="text-erreur">Votre message n&apos;a pas été envoyé.</strong>{" "}
           {etat.message}
         </p>
       )}
@@ -234,7 +249,11 @@ function Champ({
         </p>
       )}
       {anomalie && (
-        <p id={idAnomalie} className="mt-2 text-[14px] underline">
+        <p
+          id={idAnomalie}
+          role="alert"
+          className="text-erreur mt-2 text-[14px] font-medium"
+        >
           {anomalie.message}
         </p>
       )}

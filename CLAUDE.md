@@ -5,9 +5,10 @@ l'organisation du code et les contraintes du projet.
 
 ## Les trois règles qui ne se discutent pas
 
-1. **Une couleur de bière ne sort jamais de sa fiche.** `globals.css` ne déclare que trois
-   couleurs. Les couleurs de bière vivent dans `donnees/bieres.ts` et ne sont injectées qu'en
-   variable locale `--biere` sur le conteneur d'une fiche. Pas de couleur d'accent, nulle part.
+1. **Une couleur de bière ne sort jamais de sa fiche.** `globals.css` ne déclare que quatre
+   couleurs (trois plus `--color-erreur`, réservée aux erreurs de formulaire, voir ADR 0006). Les
+   couleurs de bière vivent dans `donnees/bieres.ts` et ne sont injectées qu'en variable locale
+   `--biere` sur le conteneur d'une fiche. Pas de couleur d'accent décorative, nulle part.
 2. **Aucune donnée technique sur les bières qui ne vienne de Marc.** Degré, IBU, malts, houblons,
    origines : un champ absent s'affiche comme absent. Ne jamais combler un trou par une valeur
    plausible.

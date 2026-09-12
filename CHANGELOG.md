@@ -6,6 +6,16 @@ publication versionnée. Les dates sont celles des commits, du plus récent au p
 
 ## [Non publié]
 
+### Corrigé
+
+- Formulaires (contact, réservation) : les erreurs de validation par champ passaient inaperçues
+  (aucun rôle d'alerte, pas de mise en avant visuelle, pas de focus renvoyé vers le champ
+  concerné). Ajout d'une couleur d'erreur dédiée (seule exception à la charte visuelle, voir
+  [ADR 0006](docs/adr/0006-couleur-erreur-formulaires.md)), d'un rôle `alert` et du renvoi
+  automatique du focus vers le premier champ en erreur
+
+## 2026-09-12
+
 ### Modifié
 
 - Dépendances : `next` / `eslint-config-next` 16.3.5, `typescript` 6.0.3 (étape intermédiaire,
