@@ -60,7 +60,7 @@ export function jetonAntiSpam(
   return cle ? `${charge}.${signer(charge, cle)}` : charge;
 }
 
-export type MotifDeRejet = "appat" | "trop-rapide" | "perime" | "jeton-invalide";
+type MotifDeRejet = "appat" | "trop-rapide" | "perime" | "jeton-invalide";
 
 export type VerdictAntiSpam =
   { readonly ok: true } | { readonly ok: false; readonly motif: MotifDeRejet };

@@ -25,7 +25,7 @@ import type { Messagerie } from "@/lib/contact/types";
  * `simulation` reste là pour développer en local sans compte.
  */
 
-export type NomDeService = "resend" | "simulation";
+type NomDeService = "resend" | "simulation";
 
 const SERVICES_CONNUS: readonly NomDeService[] = ["resend", "simulation"];
 
