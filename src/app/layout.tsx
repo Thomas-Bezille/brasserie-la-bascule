@@ -4,6 +4,7 @@ import { Fraunces, Work_Sans } from "next/font/google";
 import { BandeauPortesOuvertes } from "@/composants/chrome/BandeauPortesOuvertes";
 import { Entete } from "@/composants/chrome/Entete";
 import { PiedDePage } from "@/composants/chrome/PiedDePage";
+import { PopupProjetFictif } from "@/composants/chrome/PopupProjetFictif";
 import { DonneesStructurees } from "@/composants/ui/DonneesStructurees";
 import { donneesBrasserie, IMAGE_PAR_DEFAUT, URL_SITE } from "@/lib/seo";
 import "./globals.css";
@@ -67,6 +68,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {children}
         <PiedDePage />
         <BandeauPortesOuvertes />
+        <PopupProjetFictif />
         <Analytics />
       </body>
     </html>
