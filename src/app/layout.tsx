@@ -50,6 +50,9 @@ export const metadata: Metadata = {
     url: "/",
     images: [IMAGE_PAR_DEFAUT],
   },
+  verification: {
+    google: "UOHQiB8N5RMspYpCHx5rxA89mPDmmwgUMB03-kyNQ2c",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
